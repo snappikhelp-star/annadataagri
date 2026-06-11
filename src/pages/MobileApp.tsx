@@ -612,7 +612,7 @@ function HomeTab({ onTabChange }: { onTabChange: (t: Tab) => void }) {
           <div className="text-white/45 text-[10px] font-black uppercase tracking-widest text-center mb-3">📱 Social Media Follow करें</div>
           <div className="grid grid-cols-2 gap-2">
             {[
-              { label: "@lifeofkeshavmeena", sub: "45K+ Followers", color: "#e1306c", icon: <FaInstagram className="w-4 h-4" />, href: "https://www.instagram.com/lifeofkeshavmeena?igsh=MXc0emJjanFrbzluOQ==" },
+              { label: "@lifeofkeshavmeena", sub: "44.9+ Followers", color: "#e1306c", icon: <FaInstagram className="w-4 h-4" />, href: "https://www.instagram.com/lifeofkeshavmeena?igsh=MXc0emJjanFrbzluOQ==" },
               { label: "Facebook Page", sub: "31K+ Likes", color: "#1877f2", icon: <FaFacebook className="w-4 h-4" />, href: "https://www.facebook.com/share/1NNq1tBFvf/?mibextid=wwXIfr" },
               { label: "YouTube Channel", sub: "8.7K+ Subscribers", color: "#ff0000", icon: <FaYoutube className="w-4 h-4" />, href: "https://youtube.com/@keshavmeena2912?si=pB_hKbc32HgS1aWt" },
             ].map((s, i) => (
@@ -1014,7 +1014,7 @@ function GalleryTab() {
           style={{ background: "linear-gradient(135deg, #405de6, #833ab4, #c13584, #e1306c)", border: "none" }}>
           <FaInstagram className="w-7 h-7 text-white flex-shrink-0" />
           <div className="flex-1">
-            <div className="text-white font-bold text-sm">45K+ Followers</div>
+            <div className="text-white font-bold text-sm">44.9K+ Followers</div>
             <div className="text-white/80 text-xs">@lifeofkeshavmeena — Keshav Bhai की Life</div>
           </div>
           <ChevronRight className="w-4 h-4 text-white/80 flex-shrink-0" />
@@ -1406,7 +1406,7 @@ function ContactTab() {
           <div className="text-white font-bold text-sm mb-3">📱 Social Media Follow करें</div>
           <div className="space-y-2">
             {[
-              { label: "Instagram — Keshav Bhai", handle: "@lifeofkeshavmeena", followers: "45K+", icon: <FaInstagram className="w-4 h-4" />, color: "#c13584", href: "https://www.instagram.com/lifeofkeshavmeena?igsh=MXc0emJjanFrbzluOQ==" },
+              { label: "Instagram — Keshav Bhai", handle: "@lifeofkeshavmeena", followers: "44.9K+", icon: <FaInstagram className="w-4 h-4" />, color: "#c13584", href: "https://www.instagram.com/lifeofkeshavmeena?igsh=MXc0emJjanFrbzluOQ==" },
               { label: "Facebook", handle: "Annadata Agri & Seeds", followers: "31K+", icon: <FaFacebook className="w-4 h-4" />, color: "#1877f2", href: "https://www.facebook.com/share/1NNq1tBFvf/?mibextid=wwXIfr" },
               { label: "YouTube", handle: "@keshavmeena2912", followers: "8.7K+", icon: <FaYoutube className="w-4 h-4" />, color: "#ff0000", href: "https://youtube.com/@keshavmeena2912?si=pB_hKbc32HgS1aWt" },
             ].map(s => (
