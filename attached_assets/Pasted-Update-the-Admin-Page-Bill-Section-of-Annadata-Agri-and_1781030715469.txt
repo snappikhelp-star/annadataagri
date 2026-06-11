@@ -1,0 +1,94 @@
+Update the Admin Page Bill Section of Annadata Agri and Seeds website/app.
+
+Current bill section is too simple and text is not professional. Make it look like a real agriculture shop billing system.
+
+Main requirements:
+
+1. Professional Bill Design
+
+* Add Annadata Agri & Seeds logo at the top of bill.
+* Add shop name: ANNADATA AGRI & SEEDS
+* Add tagline: जय जवान जय किसान
+* Add owner name: Keshav Meena
+* Add correct phone number, address, Google Maps link from website data.
+* Add bill number auto-generate.
+* Add bill date and time auto-fill.
+* Add customer name, mobile number, village name, crop name.
+* Add product table with:
+
+  * Product Name
+  * Category: Seeds / Fertilizer / Crop Medicine / Other
+  * Quantity
+  * Rate
+  * Discount
+  * Total
+* Add subtotal, discount, final total, paid amount, remaining amount.
+* Add payment mode: Cash / UPI / Credit / Partial Payment.
+* Add note section: “सही दवाई और सही सलाह के लिए फिर से पधारें।”
+
+2. Bill Print / Download
+
+* Add “Print Bill” button.
+* Add “Download PDF” button.
+* Bill should look clean in print mode.
+* Hide admin buttons while printing.
+* Bill should fit properly on A4 and mobile print.
+* Add QR code area for Google Review or UPI payment if available.
+* Add footer text: “धन्यवाद किसान भाई | Annadata Agri & Seeds”
+
+3. Better Hindi Text
+   Use simple farmer-friendly Hindi/Hinglish:
+
+* “ग्राहक का नाम”
+* “मोबाइल नंबर”
+* “गांव”
+* “फसल”
+* “प्रोडक्ट”
+* “मात्रा”
+* “रेट”
+* “कुल राशि”
+* “जमा राशि”
+* “बाकी राशि”
+
+4. Admin Page Professional Features
+   Add useful cards/dashboard for Keshav bhai:
+
+* Today’s Bills
+* Today’s Sales
+* Pending Payments
+* Total Customers
+* Recent Enquiries
+* Low Stock Alert
+* Top Selling Products
+* Customer Follow-up List
+
+5. Unique Helpful Features
+   Add these farmer-helpful admin features:
+
+* Customer crop history: which farmer asked for which crop product.
+* Follow-up reminder: remind after 7 days for medicine result.
+* Pending payment tracking.
+* Village-wise customer list.
+* Quick WhatsApp button to send bill to customer.
+* Quick call button beside customer number.
+* Search bill by customer name/mobile/bill number.
+* Filter bills by date.
+* Export sales data button.
+
+6. Design Style
+
+* Use professional green, white, and light yellow agriculture theme.
+* Make admin page clean, modern, and mobile-friendly.
+* Use cards, tables, icons, and proper spacing.
+* Do not make it look AI-generated.
+* Make it practical like a real local shop software.
+
+7. Technical Work
+
+* Fix all existing bill section bugs.
+* Make all buttons functional.
+* Make bill data save properly.
+* Do not remove existing login/admin system.
+* Do not break other pages.
+* Fix TypeScript/React errors if any.
+* After update, tell me which files changed and what new features were added.

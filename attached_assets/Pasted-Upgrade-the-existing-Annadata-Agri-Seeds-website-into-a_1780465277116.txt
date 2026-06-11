@@ -1,0 +1,227 @@
+Upgrade the existing Annadata Agri & Seeds website into a farmer-helpful conversion website.
+
+Main goal:
+Website should give real value to farmers and also increase genuine enquiries/sales for Annadata Agri & Seeds.
+
+Brand:
+Annadata Agri & Seeds
+Owner: Keshav Bhai
+Location: Salamatpur, Raisen, Madhya Pradesh
+Theme: premium agriculture, green + gold, farmer-friendly Hindi/Hinglish, mobile-first.
+
+Important:
+Do not make website only like a brochure.
+Make it like a “Farmer Problem Solving + Enquiry System”.
+
+Add these sections:
+
+1. Smart Farmer Help Section
+Heading:
+“आपकी खेती की समस्या क्या है?”
+
+Create big clickable cards:
+- धान बीज चाहिए
+- 1886 धान Variety चाहिए
+- PB1 धान चाहिए
+- धान का प्रोजेक्ट कराना है
+- धान की दवाई चाहिए
+- First Spray Guidance
+- फसल में रोग लग गया
+- खरपतवार नाशक चाहिए
+- घर से धान उठवाई
+- गेहूं बीज चाहिए
+- किसान सलाह चाहिए
+- अन्य समस्या
+
+When farmer clicks any card, open a simple form:
+- नाम
+- मोबाइल नंबर
+- गांव
+- फसल
+- कितने एकड़
+- समस्या / जरूरत
+
+Then button:
+“WhatsApp पर Keshav Bhai को भेजें”
+
+WhatsApp message should auto-fill all details and selected problem.
+
+2. Seasonal Crop Calendar Section
+Heading:
+“इस महीने किसान क्या करें?”
+
+Make month-wise tabs:
+June:
+- धान बीज
+- 1886 / PB1 variety
+- Nursery preparation
+- Dhan project enquiry
+
+July:
+- रोपाई
+- First spray
+- Dhan dawa
+- Growth guidance
+
+August:
+- रोग पहचान
+- कीट नियंत्रण
+- Growth booster
+- Spray guidance
+
+September:
+- Fertilizer guidance
+- Disease control
+- Crop health check
+
+October-November:
+- कटाई तैयारी
+- Gardan Tod
+- धान खरीदी
+- घर से धान उठवाई
+
+Rabi Season:
+- गेहूं बीज
+- चना बीज
+- गेहूं दवाई
+- Spray guidance
+
+Each month card should have CTA:
+“इस बारे में सलाह लें”
+
+Click opens WhatsApp enquiry with that topic.
+
+3. Product Categories Section Upgrade
+Current product cards should become clickable.
+
+Cards:
+- बीज
+- कीटनाशक
+- फसल दवाई
+- खरपतवार नाशक
+- खाद
+- Growth Booster
+- Dhan Varieties
+- Farmer Support
+
+On click, open related enquiries.
+
+Example:
+If click “बीज”, show:
+- धान
+- गेहूं
+- चना
+- 1886
+- PB1
+- Other
+
+If click “फसल दवाई”, show:
+- पत्ता पीला
+- जड़ सड़न
+- कीट
+- रोग
+- घास
+- Other
+
+Then WhatsApp enquiry.
+
+4. Shop Photo Gallery Section
+Add premium photo gallery for shop photos.
+
+Heading:
+“हमारी दुकान और उपलब्ध उत्पाद”
+
+Gallery categories:
+- Shop Interior
+- Seeds
+- Medicines
+- Fertilizers
+- Farmer Visits
+- Seasonal Products
+
+Make images responsive, clean, professional grid.
+Add lightbox view on click.
+Use lazy loading for speed.
+
+5. Keshav Bhai Trust Section
+Heading:
+“किसान भाइयों का भरोसा — Keshav Bhai”
+
+Add owner image / shop image.
+Text:
+“Keshav Bhai किसानों को सिर्फ product नहीं, सही समय पर सही सलाह देने की कोशिश करते हैं.”
+
+Add buttons:
+- WhatsApp पर पूछें
+- Instagram Follow करें
+- Google Maps पर देखें
+
+6. Farmer Review Assistant Section
+Add QR-friendly review section:
+Customer selects rating 1–5.
+Selects service:
+- धान बीज
+- 1886 Variety
+- PB1
+- धान प्रोजेक्ट
+- दवाई
+- खरीदी / उठवाई
+- किसान सलाह
+
+Generate natural short review suggestions, editable.
+Buttons:
+- Copy Review
+- Post on Google
+
+Rules:
+Do not force positive review.
+Do not hide low ratings.
+Do not generate fake-looking reviews.
+Review should be 18–35 words, natural farmer language.
+
+7. Lead Database Idea
+For now store enquiries by sending WhatsApp.
+Later make admin dashboard optional.
+No backend required now.
+
+8. Sticky Mobile CTA
+On mobile bottom sticky buttons:
+- Call
+- WhatsApp
+- Google Map
+- Enquiry
+
+9. SEO Improvements
+Add Hindi and English keywords naturally:
+Annadata Agri & Seeds Salamatpur
+Agri shop in Raisen
+Dhan beej Salamatpur
+Dhan project Raisen
+1886 dhan variety
+PB1 dhan
+Fertilizer shop
+Crop medicine
+Keshav Bhai agri guidance
+
+10. Performance
+Website should be fast.
+Use webp images.
+Lazy-load gallery.
+No heavy videos.
+Mobile-first.
+Smooth animations but not slow.
+
+11. Design Style
+Indian farmer psychology.
+Trust-based.
+Simple Hindi.
+Premium green and gold.
+Clear CTA.
+No confusing English-heavy content.
+
+Final goal:
+Make website feel like:
+“किसान भाई अपनी समस्या लेकर आएं और सही solution लेकर जाएं.”
+
+Also make it a conversion system:
+Farmer visits website → selects problem → sends WhatsApp enquiry → Annadata gets lead → sales chance increases.
