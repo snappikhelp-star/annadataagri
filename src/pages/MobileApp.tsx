@@ -38,7 +38,7 @@ const PRODUCTS = [
   { id: 2, name: "PB1 धान बीज", nameEn: "PB1 Dhan Seed", category: "Seeds", crop: "Dhan", emoji: "🌾", badge: "HOT", badgeColor: "#ef4444", desc: "लोकप्रिय किस्म • अधिक उपज", price: "₹ On Request" },
   { id: 3, name: "JS-335 सोयाबीन", nameEn: "JS-335 Soyabean", category: "Seeds", crop: "Soyabean", emoji: "🌿", badge: "HOT", badgeColor: "#f59e0b", desc: "प्रमाणित बीज • जल्दी अंकुरण", price: "₹ On Request" },
   { id: 4, name: "JS-9305 सोयाबीन", nameEn: "JS-9305 Soyabean", category: "Seeds", crop: "Soyabean", emoji: "🌿", badge: null, badgeColor: "", desc: "NRC-86 • RKS-45 भी उपलब्ध", price: "₹ On Request" },
-  { id: 5, name: "गेहूं बीज (रबी)", nameEn: "Wheat Seed (Rabi)", category: "Seeds", crop: "Gehu", emoji: "🌻", badge: null, badgeColor: "", desc: "प्रमाणित किस्म • सभी वेराइटी", price: "₹ On Request" },
+  { id: 5, name: "गेहूं बीज (रबी)", nameEn: "Wheat Seed (Rabi)", category: "Seeds", crop: "Gehu", emoji: "🌾", badge: null, badgeColor: "", desc: "प्रमाणित किस्म • सभी वेराइटी", price: "₹ On Request" },
   { id: 6, name: "चना बीज", nameEn: "Chana Seed", category: "Seeds", crop: "Chana", emoji: "🫘", badge: null, badgeColor: "", desc: "JG-14 • Vikas — देसी व काबुली चना", price: "₹ On Request" },
 ];
 
@@ -281,36 +281,6 @@ function HomeTab({ onTabChange }: { onTabChange: (t: Tab) => void }) {
               <span className="font-hindi">धान • गेहूं • सोयाबीन</span>
             </motion.div>
 
-            {/* Top-right: OPEN badge */}
-            <motion.div
-              animate={{ scale: [1, 1.06, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="absolute top-3 right-3 bg-green-600/90 text-white rounded-full px-2.5 py-1.5 text-[9px] font-black flex items-center gap-1 shadow z-20"
-              style={{ backdropFilter: "blur(6px)" }}>
-              <motion.span
-                animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
-                transition={{ duration: 1.2, repeat: Infinity }}
-                className="w-1.5 h-1.5 rounded-full bg-yellow-300 flex-shrink-0"
-              />
-              OPEN • 8am–8pm
-            </motion.div>
-
-            {/* Google rating */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.9, type: "spring", stiffness: 260 }}
-              className="absolute top-12 right-3 bg-white rounded-xl px-2.5 py-1.5 shadow-xl flex items-center gap-1.5 z-20">
-              <FaGoogle className="w-3 h-3 text-[#EA4335]" />
-              <div className="flex flex-col leading-none">
-                <div className="flex items-center gap-0.5">
-                  <Star className="w-2.5 h-2.5 fill-yellow-400 text-yellow-400" />
-                  <span className="text-xs font-black text-gray-800">4.9</span>
-                </div>
-                <span className="text-[8px] text-gray-500 font-bold">200+ Reviews</span>
-              </div>
-            </motion.div>
-
             {/* Bottom gradient with shop name */}
             <div className="absolute bottom-0 left-0 right-0 px-4 py-4 z-10"
               style={{ background: "linear-gradient(to top, rgba(5,46,22,0.85) 0%, rgba(5,46,22,0.35) 60%, transparent 100%)" }}>
@@ -318,23 +288,6 @@ function HomeTab({ onTabChange }: { onTabChange: (t: Tab) => void }) {
               <div className="font-hindi text-white/75 text-[10px] mt-0.5">रायसेन रोड, सलामतपुर, जि. रायसेन</div>
             </div>
           </div>
-
-          {/* Floating Keshav Meena card */}
-          <motion.div
-            animate={{ y: [0, -3, 0] }}
-            transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute left-3 bg-white rounded-2xl shadow-xl px-3 py-2 flex items-center gap-2 border border-green-100 z-30"
-            style={{ bottom: "calc(4rem + 4px)" }}
-          >
-            <div className="w-8 h-8 rounded-full bg-green-700 flex items-center justify-center text-white font-black text-xs flex-shrink-0 shadow">K</div>
-            <div>
-              <div className="font-black text-gray-800 text-[11px]">Keshav Meena</div>
-              <div className="font-hindi text-gray-500 text-[9px]">किसान सलाहकार</div>
-              <div className="flex mt-0.5 gap-0.5">
-                {[1,2,3,4,5].map(s => <Star key={s} className="w-2 h-2 fill-yellow-400 text-yellow-400" />)}
-              </div>
-            </div>
-          </motion.div>
 
           {/* ── TEXT + CTAs below image ── */}
           <div className="px-4 pt-4 pb-4 space-y-3 bg-white rounded-b-2xl">
@@ -479,7 +432,7 @@ function HomeTab({ onTabChange }: { onTabChange: (t: Tab) => void }) {
             {[
               { name: "धान", nameEn: "Dhan", emoji: "🌾", desc: "1886 • PB1 • बासमती • हाइब्रिड", color: "#22c55e", badge: "खरीफ 2026", hot: true },
               { name: "सोयाबीन", nameEn: "Soyabean", emoji: "🌿", desc: "JS-335 • JS-9305 • NRC-86", color: "#84cc16", badge: "खरीफ HOT", hot: true },
-              { name: "गेहूं", nameEn: "Gehu", emoji: "🌻", desc: "सभी प्रमाणित किस्में उपलब्ध", color: "#f59e0b", badge: "रबी सीजन", hot: false },
+              { name: "गेहूं", nameEn: "Gehu", emoji: "🌾", desc: "सभी प्रमाणित किस्में उपलब्ध", color: "#f59e0b", badge: "रबी सीजन", hot: false },
               { name: "चना", nameEn: "Chana", emoji: "🫘", desc: "JG-14 • Vikas — देसी व काबुली चना", color: "#fb923c", badge: "रबी सीजन", hot: false },
             ].map((crop, i) => (
               <motion.button key={crop.name}
@@ -526,7 +479,7 @@ function HomeTab({ onTabChange }: { onTabChange: (t: Tab) => void }) {
               { label: "धान", emoji: "🌾", color: "#22c55e" },
               { label: "सोयाबीन", emoji: "🌿", color: "#84cc16" },
               { label: "चना", emoji: "🫘", color: "#fb923c" },
-              { label: "गेहूं", emoji: "🌻", color: "#f59e0b" },
+              { label: "गेहूं", emoji: "🌾", color: "#f59e0b" },
             ].map((cat, i) => (
               <motion.button key={cat.label}
                 initial={{ opacity: 0, y: 8 }}
