@@ -1,0 +1,45 @@
+run = "npm install && npm run dev"
+modules = ["nodejs-20", "python-3.11"]
+
+[deployment]
+run = ["sh", "-c", "npm install && npm run build && npx serve -s dist -l 3000"]
+
+[agent]
+expertMode = true
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Start application"
+
+[[workflows.workflow]]
+name = "Start application"
+author = "agent"
+
+[workflows.workflow.metadata]
+outputType = "webview"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm install && npm run dev"
+waitForPort = 5000
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[nix]
+channel = "stable-25_05"
+
+[userenv]
+
+[userenv.shared]
+VITE_SUPABASE_URL = "https://gcbtlojjpmsbflhsoukv.supabase.co"
+VITE_SUPABASE_ANON_KEY = "sb_publishable_adaOc1XzYtCvk6omX8v57w_4ZvoJscC"
