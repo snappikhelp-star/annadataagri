@@ -59,84 +59,186 @@ function parseMeta(notes?: string) {
 /* ──────────────────────── Print (new-window approach) ──────────────────────── */
 function generatePrintHTML(inv: any, items: CartItem[]) {
   const { mode, crop, note } = parseMeta(inv?.notes);
-  const rows = items.map((it, i) => `
-    <tr style="background:${i % 2 === 0 ? "#f9fafb" : "#fff"}">
-      <td>${i + 1}</td>
-      <td><strong>${it.name}</strong>${it.category ? `<br/><small style="color:#6b7280">${it.category}</small>` : ""}</td>
-      <td style="text-align:center">${it.quantity}</td>
-      <td style="text-align:center">${it.unit}</td>
-      <td style="text-align:right">${it.selling_price}</td>
-      <td style="text-align:right">${it.discount > 0 ? it.discount : "—"}</td>
-      <td style="text-align:right;font-weight:700">${((it.selling_price * it.quantity) - it.discount).toLocaleString("en-IN")}</td>
-    </tr>`).join("");
+  const safe = (value: any) => String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 
-  const udhaarLine = Number(inv?.udhaar_amount) > 0
-    ? `<div style="color:#b91c1c;font-weight:700">बाकी राशि: ${fmtRs(inv.udhaar_amount)}</div>` : "";
+  const rows = items.map((it, i) => {
+    const itemTotal = (Number(it.selling_price) * Number(it.quantity)) - Number(it.discount || 0);
+    return `
+      <tr>
+        <td class="center sr">${i + 1}</td>
+        <td class="product">
+          <strong>${safe(it.name)}</strong>
+          ${it.category ? `<span>${safe(it.category)}</span>` : ""}
+        </td>
+        <td class="center">${safe(it.quantity)}</td>
+        <td class="center">${safe(it.unit)}</td>
+        <td class="right">${fmtRs(Number(it.selling_price))}</td>
+        <td class="right">${Number(it.discount) > 0 ? fmtRs(Number(it.discount)) : "—"}</td>
+        <td class="right amount">${fmtRs(itemTotal)}</td>
+      </tr>`;
+  }).join("");
+
+  const dateText = inv?.created_at
+    ? new Date(inv.created_at).toLocaleDateString("hi-IN", { day: "2-digit", month: "long", year: "numeric" })
+    : new Date().toLocaleDateString("hi-IN", { day: "2-digit", month: "long", year: "numeric" });
+  const timeText = inv?.created_at
+    ? new Date(inv.created_at).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })
+    : new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" });
+  const paymentLabel = inv?.payment_status === "paid" ? "PAID / पूरा जमा" : inv?.payment_status === "udhaar" ? "UDHAAR / पूरा उधार" : "PARTIAL / आंशिक";
+  const modeLabel = mode ? mode.toUpperCase() : "CASH";
 
   return `<!DOCTYPE html><html><head><meta charset="utf-8">
-<title>Bill ${inv?.invoice_number}</title>
+<title>Annadata Bill ${safe(inv?.invoice_number)}</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800;900&display=swap');
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Noto Sans Devanagari',Arial,sans-serif;font-size:11px;color:#111;background:#fff;padding:10mm}
-  .header{text-align:center;border-bottom:3px double #166534;padding-bottom:10px;margin-bottom:12px}
-  .shop-name{font-weight:900;font-size:18px;color:#166534;letter-spacing:1px}
-  .shop-sub{font-size:10px;color:#444;margin-top:3px;line-height:1.6}
-  .meta{display:flex;justify-content:space-between;margin-bottom:10px;font-size:11px}
-  table{width:100%;border-collapse:collapse;margin-bottom:10px;font-size:10.5px}
-  th{background:#166534;color:#fff;padding:5px 7px;text-align:left}
-  td{padding:4px 7px;border-bottom:1px solid #e5e7eb}
-  .totals{border-top:2px solid #166534;padding-top:8px;text-align:right;margin-bottom:10px}
-  .grand{font-size:16px;font-weight:900;color:#166534;margin:4px 0}
-  .footer{border-top:2px double #166534;padding-top:8px;text-align:center;font-size:10px;color:#166534;margin-top:10px}
-  @media print{@page{margin:8mm;size:A4}body{padding:0}}
+  body{font-family:'Noto Sans Devanagari',Arial,sans-serif;color:#111827;background:#e5e7eb;padding:10mm;font-size:13px;line-height:1.35}
+  .invoice{width:190mm;min-height:277mm;margin:0 auto;background:#fff;border:2px solid #166534;position:relative;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.12)}
+  .topbar{height:9mm;background:linear-gradient(90deg,#14532d,#166534,#22c55e);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:12px;letter-spacing:.7px}
+  .header{padding:9mm 10mm 6mm;border-bottom:2px solid #166534;position:relative}
+  .brand-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .logo-box{width:22mm;height:22mm;border:2px solid #166534;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;background:#f0fdf4;flex-shrink:0}
+  .brand{text-align:center;flex:1}
+  .shop-name{font-size:27px;font-weight:900;color:#14532d;letter-spacing:.4px;line-height:1.1}
+  .shop-tag{font-size:12px;color:#92400e;font-weight:800;margin-top:3px;letter-spacing:.3px}
+  .badge{width:28mm;text-align:center;border:2px solid #f59e0b;border-radius:10px;padding:6px 5px;background:#fffbeb;color:#92400e;font-weight:900;font-size:11px;flex-shrink:0}
+  .shop-sub{text-align:center;color:#374151;font-size:12px;margin-top:6px;font-weight:600;line-height:1.55}
+  .invoice-title{display:flex;align-items:center;justify-content:space-between;padding:4mm 10mm;background:#f0fdf4;border-bottom:1px solid #bbf7d0}
+  .invoice-title h1{font-size:18px;color:#14532d;font-weight:900;letter-spacing:.5px}
+  .status-pill{padding:5px 12px;border-radius:999px;background:#dcfce7;color:#166534;border:1px solid #86efac;font-size:12px;font-weight:900}
+  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:5mm;padding:7mm 10mm 5mm}
+  .box{border:1.5px solid #d1d5db;border-radius:12px;overflow:hidden;background:#fff}
+  .box-title{background:#14532d;color:#fff;padding:7px 10px;font-weight:900;font-size:12px;letter-spacing:.2px}
+  .box-body{padding:9px 10px;display:grid;gap:6px}
+  .line{display:flex;justify-content:space-between;gap:8px;border-bottom:1px dashed #e5e7eb;padding-bottom:4px}
+  .line:last-child{border-bottom:0;padding-bottom:0}
+  .label{color:#6b7280;font-size:11px;font-weight:700;white-space:nowrap}
+  .value{font-weight:800;color:#111827;text-align:right}
+  .items-wrap{padding:0 10mm 5mm}
+  table{width:100%;border-collapse:collapse;border:1.5px solid #166534;font-size:12px}
+  th{background:#166534;color:#fff;padding:10px 8px;text-align:left;font-weight:900;border-right:1px solid rgba(255,255,255,.25)}
+  td{padding:9px 8px;border-bottom:1px solid #e5e7eb;border-right:1px solid #e5e7eb;vertical-align:top}
+  tbody tr:nth-child(even){background:#f9fafb}
+  .center{text-align:center}.right{text-align:right}.sr{font-weight:900;color:#166534}.product strong{display:block;font-size:12.5px}.product span{display:block;color:#6b7280;font-size:10.5px;margin-top:2px}.amount{font-weight:900;color:#14532d}
+  .summary-row{display:grid;grid-template-columns:1.25fr .75fr;gap:6mm;padding:0 10mm 5mm;align-items:start}
+  .terms{border:1px solid #d1d5db;border-radius:12px;padding:10px;min-height:38mm;background:#fafafa}
+  .terms h3{color:#14532d;font-size:13px;font-weight:900;margin-bottom:6px}
+  .terms ul{padding-left:18px;color:#4b5563;font-size:11.5px;line-height:1.6}
+  .note{margin-top:8px;color:#374151;font-size:11.5px;background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:7px}
+  .totals{border:2px solid #166534;border-radius:14px;overflow:hidden;background:#fff}
+  .total-line{display:flex;justify-content:space-between;padding:8px 11px;border-bottom:1px solid #e5e7eb;font-size:12.5px}
+  .total-line span:first-child{color:#4b5563;font-weight:700}.total-line span:last-child{font-weight:900}
+  .grand{background:#14532d;color:#fff;padding:11px;font-size:20px;font-weight:900;display:flex;justify-content:space-between;align-items:center}
+  .paid{color:#15803d}.due{color:#b91c1c}.discount{color:#b45309}
+  .sign-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8mm;padding:8mm 10mm 6mm;margin-top:4mm}
+  .sign{text-align:center;border-top:1.5px solid #111;padding-top:7px;font-size:11px;font-weight:800;color:#374151}
+  .footer{position:absolute;left:0;right:0;bottom:0;background:#14532d;color:#fff;text-align:center;padding:8px 10mm;font-size:11.5px;font-weight:700;line-height:1.45}
+  .review-strip{margin:0 10mm 5mm;border:1px dashed #f59e0b;border-radius:12px;background:#fffbeb;color:#92400e;text-align:center;padding:8px;font-weight:900;font-size:12px}
+  @media print{body{background:#fff;padding:0}.invoice{box-shadow:none;margin:0;width:190mm;min-height:277mm}@page{size:A4;margin:10mm}.no-print{display:none!important}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style></head><body>
-<div class="header">
-  <div class="shop-name">🌿 अन्नदाता एग्री एण्ड सीड्स</div>
-  <div class="shop-sub">
-    रायसेन रोड, त्रिमूर्ति चौराहा, सलामतपुर, जि. रायसेन (म.प्र.)<br>
-    📞 6261737388 / 9691712455 &nbsp;|&nbsp; केशव मीणा (किसान सलाहकार)<br>
-    Google Rating: ⭐ 4.9 &nbsp;|&nbsp; 200+ किसान भाइयों का भरोसा
+  <div class="invoice">
+    <div class="topbar">TAX / RETAIL INVOICE • किसान सेवा बिल</div>
+
+    <div class="header">
+      <div class="brand-row">
+        <div class="logo-box">🌿</div>
+        <div class="brand">
+          <div class="shop-name">अन्नदाता एग्री एण्ड सीड्स</div>
+          <div class="shop-tag">बीज • खाद • कीटनाशक • फसल सलाह</div>
+        </div>
+        <div class="badge">Google ⭐ 4.9<br/>200+ Farmers</div>
+      </div>
+      <div class="shop-sub">
+        रायसेन रोड, त्रिमूर्ति चौराहा, सलामतपुर, जिला रायसेन (म.प्र.)<br/>
+        📞 6261737388 / 9691712455 &nbsp; | &nbsp; केशव मीणा — किसान सलाहकार
+      </div>
+    </div>
+
+    <div class="invoice-title">
+      <h1>बिल / Invoice</h1>
+      <div class="status-pill">${safe(paymentLabel)}</div>
+    </div>
+
+    <div class="info-grid">
+      <div class="box">
+        <div class="box-title">Invoice Details</div>
+        <div class="box-body">
+          <div class="line"><span class="label">Bill No.</span><span class="value">${safe(inv?.invoice_number)}</span></div>
+          <div class="line"><span class="label">Date</span><span class="value">${safe(dateText)}</span></div>
+          <div class="line"><span class="label">Time</span><span class="value">${safe(timeText)}</span></div>
+          <div class="line"><span class="label">Payment Mode</span><span class="value">${safe(modeLabel)}</span></div>
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-title">Customer Details</div>
+        <div class="box-body">
+          <div class="line"><span class="label">Name</span><span class="value">${safe(inv?.customer_name)}</span></div>
+          ${inv?.customer_mobile ? `<div class="line"><span class="label">Mobile</span><span class="value">${safe(inv.customer_mobile)}</span></div>` : ""}
+          ${inv?.customer_village ? `<div class="line"><span class="label">Village</span><span class="value">${safe(inv.customer_village)}</span></div>` : ""}
+          ${crop ? `<div class="line"><span class="label">Crop</span><span class="value">${safe(crop)}</span></div>` : ""}
+        </div>
+      </div>
+    </div>
+
+    <div class="items-wrap">
+      <table>
+        <thead><tr>
+          <th style="width:9%;text-align:center">Sr.</th>
+          <th style="width:35%">Product / Category</th>
+          <th style="width:10%;text-align:center">Qty</th>
+          <th style="width:10%;text-align:center">Unit</th>
+          <th style="width:13%;text-align:right">Rate</th>
+          <th style="width:10%;text-align:right">Disc.</th>
+          <th style="width:13%;text-align:right">Amount</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+
+    <div class="summary-row">
+      <div class="terms">
+        <h3>नियम व सूचना</h3>
+        <ul>
+          <li>खरीदा हुआ सामान जांचकर लें।</li>
+          <li>बीज/दवाई का उपयोग सलाह और निर्देश अनुसार करें।</li>
+          <li>उधार राशि समय पर जमा करें।</li>
+          <li>फसल की समस्या में फोटो WhatsApp पर भेजें।</li>
+        </ul>
+        ${note ? `<div class="note"><strong>नोट:</strong> ${safe(note)}</div>` : ""}
+      </div>
+      <div class="totals">
+        <div class="total-line"><span>उप-कुल</span><span>${fmtRs(inv?.total_amount || 0)}</span></div>
+        ${Number(inv?.discount) > 0 ? `<div class="total-line"><span>छूट</span><span class="discount">− ${fmtRs(inv?.discount || 0)}</span></div>` : ""}
+        <div class="grand"><span>कुल राशि</span><span>${fmtRs(inv?.final_amount || 0)}</span></div>
+        <div class="total-line"><span>जमा राशि</span><span class="paid">${fmtRs(inv?.paid_amount || 0)}</span></div>
+        <div class="total-line"><span>बाकी / उधार</span><span class="due">${fmtRs(inv?.udhaar_amount || 0)}</span></div>
+      </div>
+    </div>
+
+    <div class="review-strip">🙏 धन्यवाद किसान भाई! Google Review देकर हमें और किसानों तक पहुंचाने में मदद करें.</div>
+
+    <div class="sign-row">
+      <div class="sign">Customer Signature</div>
+      <div class="sign">Checked By</div>
+      <div class="sign">For Annadata Agri & Seeds</div>
+    </div>
+
+    <div class="footer">
+      🌾 Annadata Agri & Seeds — सलामतपुर, रायसेन | Call/WhatsApp: 6261737388 / 9691712455<br/>
+      असली माल • सही सलाह • किसान भाई का भरोसा
+    </div>
   </div>
-</div>
-<div class="meta">
-  <div>
-    <div><strong>बिल नं:</strong> ${inv?.invoice_number}</div>
-    <div><strong>तारीख:</strong> ${inv?.created_at ? new Date(inv.created_at).toLocaleDateString("hi-IN", { day: "2-digit", month: "long", year: "numeric" }) : ""}</div>
-    ${mode ? `<div><strong>भुगतान तरीका:</strong> ${mode.toUpperCase()}</div>` : ""}
-  </div>
-  <div style="text-align:right">
-    <div><strong>ग्राहक:</strong> ${inv?.customer_name}</div>
-    ${inv?.customer_mobile ? `<div><strong>मोबाइल:</strong> ${inv.customer_mobile}</div>` : ""}
-    ${inv?.customer_village ? `<div><strong>गांव:</strong> ${inv.customer_village}</div>` : ""}
-    ${crop ? `<div><strong>फसल:</strong> ${crop}</div>` : ""}
-  </div>
-</div>
-<table>
-  <thead><tr>
-    <th>#</th><th>प्रोडक्ट / केटेगरी</th><th style="text-align:center">मात्रा</th>
-    <th style="text-align:center">यूनिट</th><th style="text-align:right">रेट (₹)</th>
-    <th style="text-align:right">छूट</th><th style="text-align:right">राशि (₹)</th>
-  </tr></thead>
-  <tbody>${rows}</tbody>
-</table>
-<div class="totals">
-  <div>उप-कुल: ${fmtRs(inv?.total_amount || 0)}</div>
-  ${Number(inv?.discount) > 0 ? `<div>छूट: − ${fmtRs(inv?.discount || 0)}</div>` : ""}
-  <div class="grand">कुल राशि: ${fmtRs(inv?.final_amount || 0)}</div>
-  <div style="color:#15803d">जमा राशि: ${fmtRs(inv?.paid_amount || 0)}</div>
-  ${udhaarLine}
-</div>
-${note ? `<div style="font-size:10px;color:#555;margin-bottom:8px"><strong>नोट:</strong> ${note}</div>` : ""}
-<div class="footer">
-  <strong>🙏 धन्यवाद किसान भाई! आपकी सेवा में सदैव तत्पर 🌾</strong><br>
-  Annadata Agri &amp; Seeds — सलामतपुर, रायसेन | Google ⭐ 4.9
-</div>
 </body></html>`;
 }
 
+
 function openPrintWindow(inv: any, items: CartItem[]) {
-  const win = window.open("", "_blank", "width=820,height=700,toolbar=0,scrollbars=1");
+  const win = window.open("", "_blank", "width=1100,height=850,toolbar=0,scrollbars=1");
   if (!win) { alert("Popup blocked! Please allow popups for printing."); return; }
   win.document.write(generatePrintHTML(inv, items));
   win.document.close();
