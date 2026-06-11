@@ -1,0 +1,156 @@
+Upgrade my existing Annadata Agri & Seeds website into a farmer-friendly conversion system.
+
+Goal:
+Website should help farmers solve real crop problems and also generate genuine WhatsApp enquiries for Keshav Bhai.
+
+Keep existing design, colors, logo, hero section and footer. Add new sections without breaking existing website.
+
+Add these sections:
+
+1. “Aapko Kya Chahiye?” Smart Help Section
+Create big clickable cards:
+- धान बीज चाहिए
+- 1886 धान Variety
+- PB1 धान
+- धान का प्रोजेक्ट कराना है
+- धान की दवाई चाहिए
+- First Spray Guidance
+- फसल में रोग लग गया
+- खरपतवार नाशक चाहिए
+- धान घर से उठवाई
+- गेहूं बीज चाहिए
+- किसान सलाह चाहिए
+- अन्य समस्या
+
+When user clicks any card, open a simple enquiry form:
+- नाम
+- मोबाइल नंबर
+- गांव
+- फसल
+- कितने एकड़
+- समस्या
+
+Button:
+“WhatsApp पर Keshav Bhai को भेजें”
+
+WhatsApp message should auto-fill selected problem + farmer details and send to:
+916261737388
+
+2. Monthly Crop Calendar Section
+Heading:
+“इस महीने किसान क्या करें?”
+
+Tabs:
+June: धान बीज, 1886/PB1, Nursery, Dhan Project
+July: रोपाई, First Spray, Dhan Dawa
+August: रोग नियंत्रण, Growth Booster
+September: Fertilizer, Disease Control
+October-November: Gardan Tod, Dhan Katai, Ghar Se Dhan Uthwai
+Rabi Season: गेहूं बीज, चना बीज, गेहूं दवाई
+
+Each item should have CTA:
+“सलाह लें”
+Click opens WhatsApp enquiry for that topic.
+
+3. Crop Doctor Section
+Heading:
+“फसल में क्या समस्या है?”
+
+Clickable options:
+- पत्ता पीला पड़ रहा है
+- फसल की ग्रोथ रुक गई है
+- कीड़ा लग गया है
+- रोग लग गया है
+- घास / खरपतवार
+- जड़ सड़न
+- First Spray पूछना है
+- कौन सी दवाई डालें?
+
+After click, show short helpful text + WhatsApp enquiry button.
+
+4. Dhan Project Form
+Heading:
+“धान का प्रोजेक्ट कराना है?”
+
+Form:
+- नाम
+- मोबाइल
+- गांव
+- कितने एकड़
+- धान variety
+- कब लगाना है
+
+Button:
+“Project Enquiry भेजें”
+
+Send all details to WhatsApp.
+
+5. Dhan Uthwai Request
+Heading:
+“धान घर से उठवाई चाहिए?”
+
+Form:
+- नाम
+- मोबाइल
+- गांव
+- अनुमानित quantity
+- कटाई कब होगी
+
+Button:
+“Uthwai Request भेजें”
+
+Send details to WhatsApp.
+
+6. Farmer WhatsApp Club
+Heading:
+“Annadata Kisan Club Join करें”
+
+Text:
+“Seasonal spray alert, new variety update, dhan project update aur kheti ki useful jankari WhatsApp par paayen.”
+
+Form:
+- नाम
+- मोबाइल
+- गांव
+- फसल
+
+Button:
+“Join WhatsApp Club”
+
+7. Farmer Review Assistant
+Customer selects rating 1–5 and service used:
+- धान बीज
+- 1886 Variety
+- PB1
+- धान Project
+- दवाई
+- खरीदी / उठवाई
+- किसान सलाह
+
+Generate natural short review suggestions:
+18–35 words only.
+No fake over-promotional language.
+No “guaranteed”, “number one”, “first and last choice”.
+Keep review editable.
+Buttons:
+Copy Review
+Post on Google
+
+8. Design Rules
+Use green + gold premium agriculture theme.
+Mobile-first.
+Large farmer-friendly Hindi buttons.
+Use agriculture icons only:
+Sprout, Wheat, Tractor, Leaf, Bug, Truck, PhoneCall, Search, TrendingUp.
+No medical/hospital looking icons.
+Use smooth Framer Motion animations.
+Fast loading.
+No heavy images.
+Do not break existing sections.
+
+Final goal:
+Make website feel like:
+“किसान भाई अपनी समस्या चुनें और Keshav Bhai से direct solution पाएं.”
+
+This website should work as:
+Farmer Help Center + WhatsApp Lead Generation System + Digital Trust Builder.
