@@ -531,7 +531,19 @@ function HeroSection() {
                 className="absolute -bottom-5 -left-5 bg-white rounded-2xl shadow-xl px-3 py-2.5 flex items-center gap-2.5 border border-green-100"
                 style={{ minWidth: 175 }}
               >
-      
+                <div className="w-9 h-9 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                  <Sprout className="w-4 h-4 text-green-700" />
+                </div>
+                <div className="leading-tight">
+                  <div className="font-hindi font-black text-gray-900 text-xs">
+                    Keshav Bhai
+                  </div>
+                  <div className="font-hindi text-gray-500 text-[10px]">
+                    किसान सलाह उपलब्ध
+                  </div>
+                </div>
+              </motion.div>
+
               {/* Floating crop tag */}
               <motion.div
                 custom={2}
