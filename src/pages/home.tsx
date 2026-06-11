@@ -240,7 +240,7 @@ function Navbar() {
 /* ─── Ticker Strip ─── */
 function TickerStrip() {
   const items = [
-    "🌱 खरीफ 2026 — हाइब्रिड धान और सोयाबीन बीज उपलब्ध हैं",
+    "🌱 खरीफ 2026 — हाइब्रिड और सोयाबीन बीज उपलब्ध हैं",
     "🧴 फसल दवाइयों पर विशेष सुविधा — अभी जानकारी लें",
     "🌾 गेहूं • सोयाबीन • धान • चना — सभी फसलों के बीज",
     "📞 Keshav Bhai से बात करें: 6261737388",
@@ -519,7 +519,7 @@ function HeroSection() {
                     transition={{ duration: 1.2, repeat: Infinity }}
                     className="w-1.5 h-1.5 rounded-full bg-yellow-300 flex-shrink-0"
                   />
-                  OPEN • 8am–8pm
+            
                 </motion.div>
               </div>
 
@@ -531,16 +531,7 @@ function HeroSection() {
                 className="absolute -bottom-5 -left-5 bg-white rounded-2xl shadow-xl px-3 py-2.5 flex items-center gap-2.5 border border-green-100"
                 style={{ minWidth: 175 }}
               >
-                <div className="w-10 h-10 rounded-full bg-green-700 flex items-center justify-center flex-shrink-0 text-white font-black text-sm shadow">K</div>
-                <div>
-                  <div className="font-black text-gray-800 text-xs">Keshav Meena</div>
-                  <div className="font-hindi text-gray-500 text-[10px] leading-tight">किसान सलाहकार</div>
-                  <div className="flex mt-0.5 gap-0.5">
-                    {[1,2,3,4,5].map(s => <Star key={s} className="w-2.5 h-2.5 fill-yellow-400 text-yellow-400" />)}
-                  </div>
-                </div>
-              </motion.div>
-
+      
               {/* Floating crop tag */}
               <motion.div
                 custom={2}
@@ -661,8 +652,6 @@ function SmartFarmerHelpSection() {
 
   const problems = [
     { emoji: "🌾", label: "धान बीज चाहिए", color: "#22c55e" },
-    { emoji: "🌾", label: "1886 धान Variety चाहिए", color: "#16a34a" },
-    { emoji: "🌾", label: "PB1 धान चाहिए", color: "#15803d" },
     { emoji: "🗒️", label: "धान का प्रोजेक्ट कराना है", color: "#F9A825" },
     { emoji: "🌿", label: "धान की दवाई चाहिए", color: "#00897B" },
     { emoji: "💦", label: "First Spray Guidance", color: "#26A69A" },
@@ -736,13 +725,13 @@ function SmartFarmerHelpSection() {
 function CropDoctorSection() {
   const [selected, setSelected] = useState<number | null>(null);
   const problems = [
-    { emoji: "🍂", label: "पत्ता पीला पड़ रहा है", tip: "💡 पोषक तत्वों की कमी या पत्ता पीलापन रोग हो सकता है। Zinc या Urea Spray + Fungicide की जरूरत है।" },
+    { emoji: "🍂", label: "पत्ते पीले पड़ रहे हैं", tip: "💡 पोषक तत्वों की कमी या पत्ता पीलापन रोग हो सकता है। Zinc या Urea Spray + Fungicide की जरूरत है।" },
     { emoji: "🌱", label: "फसल की ग्रोथ रुक गई है", tip: "💡 जड़ कमज़ोर हो सकती है या मिट्टी में NPK की कमी है। Growth Booster + Root Strengthener की जरूरत है।" },
-    { emoji: "🐛", label: "कीड़ा लग गया है", tip: "💡 रस चूसक कीट (BPH) या इल्ली हो सकती है। सही कीटनाशक की Spray जरूरी है — Keshav Bhai से पूछें।" },
+    { emoji: "🐛", label: "कीड़े लग रहे हैं।", tip: "💡 रस चूसक कीट (BPH) या इल्ली हो सकती है। सही कीटनाशक की Spray जरूरी है — Keshav Bhai से पूछें।" },
     { emoji: "🍃", label: "रोग लग गया है", tip: "💡 Blast, Sheath Blight या Bacterial Blight हो सकता है। तुरंत Fungicide Spray करें।" },
     { emoji: "🌿", label: "धान खरपतवार नाशक", tip: "💡 धान में खरपतवार से फसल की पैदावार 30–50% कम हो सकती है। सही खरपतवार नाशक जल्दी डालें।" },
     { emoji: "🌾", label: "जड़ सड़न", tip: "💡 अधिक पानी या Sheath Rot रोग हो सकता है। Carbendazim या Tricyclazole Spray लें।" },
-    { emoji: "💦", label: "First Spray पूछना है", tip: "💡 रोपाई के 15–20 दिन बाद First Spray जरूरी है। Keshav Bhai से सही Spray Schedule लें।" },
+    { emoji: "💦", label: "धान First Spray पूछना है", tip: "💡 रोपाई के 15–20 दिन बाद First Spray जरूरी है। Keshav Bhai से सही Spray Schedule लें।" },
     { emoji: "🌾", label: "धान कल्ले नहीं कर रही", tip: "💡 कल्ले न फूटना जिंक या नाइट्रोजन की कमी का संकेत है। Zinc Sulphate + Urea Spray तुरंत करें।" },
     { emoji: "🧪", label: "कौन सी दवाई डालें?", tip: "💡 फसल की अवस्था और समस्या देखकर सही दवाई चुनें। WhatsApp पर फोटो भेजें — निःशुल्क सलाह पाएं।" },
   ];
@@ -1270,11 +1259,11 @@ function DhanUthwaiSection() {
         <div className="text-center mb-5 md:mb-8">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             className="inline-flex items-center gap-2 bg-orange-500/20 text-orange-400 font-bold px-4 py-2 rounded-full mb-3 text-sm font-hindi">
-            🚜 घर से उठवाई
+            🚜 धान घर से उठवाई
           </motion.div>
           <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
             className="text-2xl md:text-4xl font-hindi font-black text-white">
-            धान घर से उठवाई चाहिए?
+            घर से धान उठवाना है
           </motion.h2>
           <p className="text-white/60 font-hindi mt-1.5 text-sm">Request भेजें — Keshav Bhai खुद व्यवस्था करेंगे</p>
         </div>
