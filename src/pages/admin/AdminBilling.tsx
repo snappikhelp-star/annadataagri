@@ -89,7 +89,7 @@ function generatePrintHTML(inv: any, items: CartItem[]) {
   const timeText = inv?.created_at
     ? new Date(inv.created_at).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })
     : new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" });
-  const paymentLabel = inv?.payment_status === "paid" ? "PAID / पूरा जमा" : inv?.payment_status === "udhaar" ? "UDHAAR / पूरा उधार" : "PARTIAL / आंशिक";
+  const paymentLabel = inv?.payment_status === "paid" ? "PAID / पूरा जमा" : inv?.payment_status === "udhaar" ? "@" : "PARTIAL / आंशिक";
   const modeLabel = mode ? mode.toUpperCase() : "CASH";
 
   return `<!DOCTYPE html><html><head><meta charset="utf-8">
@@ -206,7 +206,6 @@ function generatePrintHTML(inv: any, items: CartItem[]) {
         <ul>
           <li>खरीदा हुआ सामान जांचकर लें।</li>
           <li>बीज/दवाई का उपयोग सलाह और निर्देश अनुसार करें।</li>
-          <li>उधार राशि समय पर जमा करें।</li>
           <li>फसल की समस्या में फोटो WhatsApp पर भेजें।</li>
         </ul>
         ${note ? `<div class="note"><strong>नोट:</strong> ${safe(note)}</div>` : ""}
