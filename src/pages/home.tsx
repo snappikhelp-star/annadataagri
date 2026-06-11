@@ -339,7 +339,7 @@ function HeroSection() {
                   className="absolute -bottom-1 left-0 right-0 h-[3px] rounded-full bg-yellow-400 origin-left"
                 />
               </span>{" "}
-              बीज और फसल दवाई
+             दवाई फसल और बीज 
             </motion.h1>
 
             {/* Subheading */}
@@ -522,27 +522,6 @@ function HeroSection() {
             
                 </motion.div>
               </div>
-
-              {/* Floating name card */}
-              <motion.div
-                custom={1}
-                variants={floatVariants}
-                animate="idle"
-                className="absolute -bottom-5 -left-5 bg-white rounded-2xl shadow-xl px-3 py-2.5 flex items-center gap-2.5 border border-green-100"
-                style={{ minWidth: 175 }}
-              >
-                <div className="w-9 h-9 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
-                  <Sprout className="w-4 h-4 text-green-700" />
-                </div>
-                <div className="leading-tight">
-                  <div className="font-hindi font-black text-gray-900 text-xs">
-                    Keshav Bhai
-                  </div>
-                  <div className="font-hindi text-gray-500 text-[10px]">
-                    किसान सलाह उपलब्ध
-                  </div>
-                </div>
-              </motion.div>
 
               {/* Floating crop tag */}
               <motion.div
@@ -1766,7 +1745,7 @@ function ShopGallerySection() {
           <a href="https://www.instagram.com/lifeofkeshavmeena?igsh=MXc0emJjanFrbzluOQ==" target="_blank" rel="noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-white text-sm transition-all hover:scale-105 shadow-lg"
             style={{ background: "linear-gradient(135deg, #405DE6, #833AB4, #C13584, #E1306C, #FD1D1D, #F56040, #F77737, #FCAF45)" }}>
-            <FaInstagram className="w-4 h-4" /> @lifeofkeshavmeena — 45K+ Followers
+            <FaInstagram className="w-4 h-4" /> @lifeofkeshavmeena — 44.9K+ Followers
           </a>
         </motion.div>
       </div>
@@ -2339,7 +2318,7 @@ function Footer() {
           <div className="flex flex-wrap gap-3 justify-center">
             <a href="https://www.instagram.com/lifeofkeshavmeena?igsh=MXc0emJjanFrbzluOQ==" target="_blank" rel="noreferrer"
               className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/10 hover:bg-secondary hover:text-foreground transition-all border border-white/10 text-sm font-medium text-white">
-              <FaInstagram className="w-4 h-4 text-pink-400" />@lifeofkeshavmeena 45K+
+              <FaInstagram className="w-4 h-4 text-pink-400" />@lifeofkeshavmeena 44.9K+
             </a>
             <a href={FACEBOOK_LINK} target="_blank" rel="noreferrer"
               className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/10 hover:bg-[#1877F2] transition-all border border-white/10 text-sm font-medium text-white">
