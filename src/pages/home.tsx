@@ -1745,7 +1745,7 @@ function ShopGallerySection() {
           <a href="https://www.instagram.com/lifeofkeshavmeena?igsh=MXc0emJjanFrbzluOQ==" target="_blank" rel="noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-white text-sm transition-all hover:scale-105 shadow-lg"
             style={{ background: "linear-gradient(135deg, #405DE6, #833AB4, #C13584, #E1306C, #FD1D1D, #F56040, #F77737, #FCAF45)" }}>
-            <FaInstagram className="w-4 h-4" /> @lifeofkeshavmeena — 44.9K+ Followers
+            <FaInstagram className="w-4 h-4" /> @lifeofkeshavmeena — 45K+ Followers
           </a>
         </motion.div>
       </div>
@@ -2318,7 +2318,7 @@ function Footer() {
           <div className="flex flex-wrap gap-3 justify-center">
             <a href="https://www.instagram.com/lifeofkeshavmeena?igsh=MXc0emJjanFrbzluOQ==" target="_blank" rel="noreferrer"
               className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/10 hover:bg-secondary hover:text-foreground transition-all border border-white/10 text-sm font-medium text-white">
-              <FaInstagram className="w-4 h-4 text-pink-400" />@lifeofkeshavmeena 44.9K+
+              <FaInstagram className="w-4 h-4 text-pink-400" />@lifeofkeshavmeena 55K+
             </a>
             <a href={FACEBOOK_LINK} target="_blank" rel="noreferrer"
               className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/10 hover:bg-[#1877F2] transition-all border border-white/10 text-sm font-medium text-white">
