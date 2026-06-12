@@ -828,12 +828,6 @@ function ProductsSection() {
       subs: ["पत्ता पीला रोग", "जड़ सड़न", "झुलसा रोग", "धब्बा रोग", "Growth Booster", "अन्य"],
     },
     {
-      icon: <Scissors className="w-7 h-7" />, nameHi: "खरपतवार नाशक", nameEn: "Weed Killers",
-      desc: "खेत को खरपतवार से साफ रखने के लिए प्री और पोस्ट-इमर्जेंट हर्बिसाइड।",
-      accent: "#F9A825", bg: "from-[#5D4037] to-[#4E342E]",
-      subs: ["प्री-इमर्जेंट", "पोस्ट-इमर्जेंट", "घास नाशक", "चौड़ी पत्ती नाशक", "धान वीड", "अन्य"],
-    },
-    {
       icon: <TreePine className="w-7 h-7" />, nameHi: "खाद", nameEn: "Fertilizers",
       desc: "फसल की ताकत और उत्पादन बढ़ाने के लिए श्रेष्ठ खाद और माइक्रोन्यूट्रिएंट्स।",
       accent: "#8D6E63", bg: "from-[#4E342E] to-[#6D4C41]",
