@@ -1363,7 +1363,7 @@ function OnlineDhanBookingSection() {
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             className="inline-flex items-center gap-2 bg-secondary text-foreground font-black px-5 py-2 rounded-full text-sm font-hindi"
             style={{ boxShadow: "0 0 20px rgba(249,168,37,0.5)" }}>
-            🔥 खरीफ सीजन SALE — घर तक FREE Delivery!
+            🔥 खरीफ सीजन SALE — घर तक Delivery!
           </motion.div>
         </div>
 
