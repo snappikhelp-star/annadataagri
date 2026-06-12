@@ -24,8 +24,8 @@ import shopImg3 from "@assets/WhatsApp_Image_2026-06-04_at_1.14.13_PM_1780559137
 import shopImg4 from "@assets/WhatsApp_Image_2026-06-04_at_1.14.39_PM_1780559137513.jpeg";
 import { generateCustomerReview, SERVICES as ENGINE_SERVICES, type Lang } from "../lib/reviewEngine";
 
-const PHONE = "916261737388";
-const PHONE_SHORT = "6261737388";
+const PHONE = "919691712455";
+const PHONE_SHORT = "9691712455";
 
 const isTouch = typeof window !== "undefined" && window.matchMedia("(hover: none)").matches;
 const hw = (props: object) => (isTouch ? {} : props);
@@ -243,7 +243,7 @@ function TickerStrip() {
     "🌱 खरीफ 2026 — हाइब्रिड और सोयाबीन बीज उपलब्ध हैं",
     "🧴 फसल दवाइयों पर विशेष सुविधा — अभी जानकारी लें",
     "🌾 गेहूं • सोयाबीन • धान • चना — सभी फसलों के बीज",
-    "📞 Keshav Bhai से बात करें: 6261737388",
+    "📞 Keshav Bhai से बात करें: 9691712455",
     "✅ प्रमाणित बीज और विश्वसनीय फसल दवाइयां",
     "⭐ Google Rating 4.9 — 200+ किसान भाइयों का भरोसा",
     "💬 WhatsApp पर सीधे पूछें — जल्द जवाब मिलेगा",
@@ -733,7 +733,7 @@ function CropDoctorSection() {
 
   const openWhatsApp = (p: typeof problems[0]) => {
     const msg = `नमस्ते Keshav Bhai! 🙏\n\nमेरी फसल में समस्या है: *${p.label}*\n\n${p.tip}\n\nकृपया सही दवाई/सलाह बताएं।\n\n📍 अन्नदाता एग्री & सीड्स`;
-    window.open(`https://wa.me/916261737388?text=${encodeURIComponent(msg)}`, "_blank");
+    window.open(`https://wa.me/919691712455?text=${encodeURIComponent(msg)}`, "_blank");
   };
 
   return (
@@ -1624,8 +1624,8 @@ function SecondTickerStrip() {
 function StatsSection() {
   const stats = [
     { val: "200+", label: "किसान ग्राहक", sub: "Happy Farmers" },
-    { val: "44K+", label: "इंस्टाग्राम", sub: "Followers" },
-    { val: "31K+", label: "फेसबुक", sub: "Followers" },
+    { val: "45K+", label: "इंस्टाग्राम", sub: "Followers" },
+    { val: "32K+", label: "फेसबुक", sub: "Followers" },
     { val: "8K+", label: "यूट्यूब", sub: "Subscribers" },
     { val: "4.9★", label: "गूगल रेटिंग", sub: "Google Rating" },
     { val: "1 Yr", label: "अनुभव", sub: "Since July 2025" },
@@ -1829,8 +1829,8 @@ function OwnerSection() {
             <div className="flex flex-wrap gap-5 justify-center md:justify-start mb-7">
               {[
                 { val: "1 Year", label: "In Business" },
-                { val: "46K+", label: "Instagram" },
-                { val: "31K+", label: "Facebook" },
+                { val: "45K+", label: "Instagram" },
+                { val: "32K+", label: "Facebook" },
                 { val: "8K+", label: "YouTube" },
                 { val: "200+", label: "Farmers" },
               ].map((s, i) => (
@@ -2178,7 +2178,7 @@ function ContactSection() {
               <div>
                 <h4 className="text-lg font-bold">WhatsApp पर पूछें</h4>
                 <p className="text-white/80 text-sm">तुरंत जवाब — हिंदी में</p>
-                <span className="font-bold text-white/90 text-sm font-hindi">wa.me/916261737388</span>
+                <span className="font-bold text-white/90 text-sm font-hindi">wa.me/919691712455</span>
               </div>
             </a>
 
@@ -2318,11 +2318,11 @@ function Footer() {
           <div className="flex flex-wrap gap-3 justify-center">
             <a href="https://www.instagram.com/lifeofkeshavmeena?igsh=MXc0emJjanFrbzluOQ==" target="_blank" rel="noreferrer"
               className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/10 hover:bg-secondary hover:text-foreground transition-all border border-white/10 text-sm font-medium text-white">
-              <FaInstagram className="w-4 h-4 text-pink-400" />@lifeofkeshavmeena 55K+
+              <FaInstagram className="w-4 h-4 text-pink-400" />@lifeofkeshavmeena 45K+
             </a>
             <a href={FACEBOOK_LINK} target="_blank" rel="noreferrer"
               className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/10 hover:bg-[#1877F2] transition-all border border-white/10 text-sm font-medium text-white">
-              <FaFacebook className="w-4 h-4 text-[#1877F2]" />Facebook 31K+
+              <FaFacebook className="w-4 h-4 text-[#1877F2]" />Facebook 32K+
             </a>
             <a href={waLink("नमस्ते Keshav Bhai!")} target="_blank" rel="noreferrer"
               className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/10 hover:bg-[#25D366] transition-all border border-white/10 text-sm font-medium text-white">
