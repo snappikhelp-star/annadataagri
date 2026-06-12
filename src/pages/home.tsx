@@ -490,23 +490,6 @@ function HeroSection() {
                   </motion.div>
                 </div>
 
-                {/* Google rating badge */}
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.7, y: -8 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  transition={{ delay: 1.0, type: "spring", stiffness: 280, damping: 18 }}
-                  className="absolute top-3 right-3 bg-white rounded-xl px-3 py-2 shadow-xl flex items-center gap-1.5"
-                >
-                  <FaGoogle className="w-3.5 h-3.5 text-[#EA4335]" />
-                  <div className="flex flex-col leading-none">
-                    <div className="flex items-center gap-0.5">
-                      <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                      <span className="text-xs font-black text-gray-800">4.9</span>
-                    </div>
-                    <span className="text-[9px] text-gray-500 font-bold">200+ Reviews</span>
-                  </div>
-                </motion.div>
-
                 {/* Live badge top-left */}
                 <motion.div
                   initial={{ opacity: 0, x: -10 }}
