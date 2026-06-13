@@ -1,9 +1,10 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import InstallAppButton from "@/components/InstallAppButton";
-import MobileApp from "@/pages/MobileApp";
 import MobileInstallNudge from "@/components/MobileInstallNudge";
+
+const MobileApp = lazy(() => import("@/pages/MobileApp"));
 import {
   Phone, MapPin, MessageCircle, Leaf, Droplets,
   Star, CheckCircle, Users, Heart, ShieldCheck, Truck, ThumbsUp, Clock,
@@ -15,9 +16,7 @@ import { FaWhatsapp, FaInstagram, FaYoutube, FaFacebook, FaGoogle } from "react-
 
 import logoPath from "@assets/f0d776c4-6a98-4584-9d3a-7186ca49bf22_1781029871797.png";
 import ownerPhotoPath from "@assets/2d15bd6ce2f040b69e7c52160dd6bba7FR_1779471098722.jpg";
-import heroImagePath from "@assets/gfjhj_1780654864294.jpg";
 import bannerWidePath from "@assets/a5fd3043-fdbf-4d76-adf5-6f0016548e78_1779476882694.png";
-import farmFieldPath from "@assets/ChatGPT_Image_May_22,_2026,_11_08_32_PM_1779471766407.png";
 import shopImg1 from "@assets/WhatsApp_Image_2026-06-04_at_1.14.14_PM_(1)2_1781114324843.jpeg";
 import shopImg2 from "@assets/WhatsApp_Image_2026-06-04_at_1.14.14_PM_1780559137513.jpeg";
 import shopImg3 from "@assets/WhatsApp_Image_2026-06-04_at_1.14.13_PM_1780559137513.jpeg";
@@ -59,7 +58,11 @@ export default function HomePage() {
   const isPWA = useIsPWA();
 
   if (isPWA) {
-    return <MobileApp />;
+    return (
+      <Suspense fallback={<div className="fixed inset-0 bg-[#0d1f0d] flex items-center justify-center"><div className="w-8 h-8 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin" /></div>}>
+        <MobileApp />
+      </Suspense>
+    );
   }
 
   return (
@@ -183,29 +186,14 @@ function Navbar() {
 
   return (
     <>
-      <div className="fixed top-0 left-0 w-full z-[60] bg-foreground/95 backdrop-blur-sm py-2.5 text-center overflow-hidden">
-        {/* Shimmer sweep line */}
-        <motion.div
-          animate={{ x: ["-100%", "200%"] }}
-          transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", repeatDelay: 2 }}
-          className="absolute inset-y-0 w-24 pointer-events-none"
-          style={{ background: "linear-gradient(90deg, transparent 0%, rgba(249,168,37,0.18) 50%, transparent 100%)" }}
-        />
-        <motion.span
-          animate={{ opacity: [0.85, 1, 0.85] }}
-          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-          className="text-secondary font-bold font-hindi tracking-widest text-base md:text-lg relative z-10"
-        >
+      <div className="fixed top-0 left-0 w-full z-[60] bg-foreground/95 backdrop-blur-sm py-2.5 text-center">
+        <span className="text-secondary font-bold font-hindi tracking-widest text-base md:text-lg relative z-10">
           🙏 श्री गणेशाय नमः 🙏
-        </motion.span>
+        </span>
         <span className="text-white/30 mx-3 relative z-10">✦</span>
-        <motion.span
-          animate={{ opacity: [0.7, 1, 0.7] }}
-          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: 1.2 }}
-          className="text-white/90 font-hindi text-sm md:text-base font-semibold relative z-10"
-        >
+        <span className="text-white/90 font-hindi text-sm md:text-base font-semibold relative z-10">
           जय जवान जय किसान 🌾
-        </motion.span>
+        </span>
       </div>
       <header className={`fixed top-[46px] left-0 w-full z-50 transition-all duration-300 ${scrolled ? "py-2 glass-dark shadow-lg" : "py-3 bg-transparent"}`}>
         <div className="container mx-auto px-4 md:px-6 flex items-center justify-between gap-3">
@@ -284,15 +272,8 @@ function HeroSection() {
     { icon: <FaGoogle className="w-4 h-4" />, label: "Google Reviews" },
   ];
 
-  const floatVariants = {
-    idle: (i: number) => ({
-      y: [0, -8, 0],
-      transition: { duration: 2.8 + i * 0.4, repeat: Infinity, ease: "easeInOut", delay: i * 0.3 },
-    }),
-  };
-
   return (
-    <section className="w-full pt-[118px] bg-white relative overflow-hidden">
+    <section className="w-full pt-[118px] bg-white relative overflow-x-hidden min-h-[100svh]">
       {/* Subtle grain texture overlay */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.025]"
         style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23166534' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")" }}
@@ -312,11 +293,7 @@ function HeroSection() {
               transition={{ duration: 0.5 }}
               className="flex items-center justify-center lg:justify-start gap-2"
             >
-              <motion.span
-                animate={{ scale: [1, 1.25, 1] }}
-                transition={{ duration: 1.2, repeat: Infinity }}
-                className="w-2 h-2 rounded-full bg-red-500 flex-shrink-0"
-              />
+              <span className="w-2 h-2 rounded-full bg-red-500 flex-shrink-0 animate-pulse" />
               <span className="text-xs font-black uppercase tracking-widest text-red-500 font-hindi">
                 खरीफ 2026 — स्टॉक उपलब्ध है
               </span>
@@ -442,26 +419,16 @@ function HeroSection() {
             className="flex-shrink-0 w-full max-w-[95%] sm:max-w-[500px] lg:max-w-[560px] order-1 lg:order-2"
           >
             <div className="relative">
-              {/* Decorative glow rings */}
-              <motion.div
-                animate={{ scale: [1, 1.06, 1], opacity: [0.4, 0.7, 0.4] }}
-                transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-6 -right-6 w-40 h-40 rounded-full pointer-events-none"
-                style={{ background: "radial-gradient(circle, rgba(21,128,61,0.18) 0%, transparent 70%)" }}
+              {/* Decorative glow rings — static for performance */}
+              <div className="absolute -top-6 -right-6 w-40 h-40 rounded-full pointer-events-none"
+                style={{ background: "radial-gradient(circle, rgba(21,128,61,0.15) 0%, transparent 70%)" }}
               />
-              <motion.div
-                animate={{ scale: [1, 1.08, 1], opacity: [0.3, 0.6, 0.3] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="absolute -bottom-6 -left-6 w-32 h-32 rounded-full pointer-events-none"
-                style={{ background: "radial-gradient(circle, rgba(249,168,37,0.2) 0%, transparent 70%)" }}
+              <div className="absolute -bottom-6 -left-6 w-32 h-32 rounded-full pointer-events-none"
+                style={{ background: "radial-gradient(circle, rgba(249,168,37,0.15) 0%, transparent 70%)" }}
               />
-
-              {/* Pulsing border ring */}
-              <motion.div
-                animate={{ opacity: [0.5, 1, 0.5], scale: [0.995, 1.005, 0.995] }}
-                transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute inset-0 rounded-3xl pointer-events-none z-10"
-                style={{ border: "2px solid rgba(21,128,61,0.35)", borderRadius: "1.5rem" }}
+              {/* Static border ring */}
+              <div className="absolute inset-0 rounded-3xl pointer-events-none z-10"
+                style={{ border: "2px solid rgba(21,128,61,0.25)", borderRadius: "1.5rem" }}
               />
 
               {/* Main shop image — full portrait, no crop */}
@@ -497,25 +464,15 @@ function HeroSection() {
                   transition={{ delay: 1.2 }}
                   className="absolute top-3 left-3 flex items-center gap-1.5 bg-green-700 text-white text-[10px] font-black px-2.5 py-1.5 rounded-full shadow-lg"
                 >
-                  <motion.span
-                    animate={{ scale: [1, 1.4, 1], opacity: [1, 0.6, 1] }}
-                    transition={{ duration: 1.2, repeat: Infinity }}
-                    className="w-1.5 h-1.5 rounded-full bg-yellow-300 flex-shrink-0"
-                  />
-            
+                  <span className="w-1.5 h-1.5 rounded-full bg-yellow-300 flex-shrink-0 animate-pulse" />
                 </motion.div>
               </div>
 
-              {/* Floating crop tag */}
-              <motion.div
-                custom={2}
-                variants={floatVariants}
-                animate="idle"
-                className="absolute -top-4 left-4 bg-green-700 text-white rounded-full px-3 py-1.5 text-xs font-black shadow-lg flex items-center gap-1.5"
-              >
+              {/* Floating crop tag — static for performance */}
+              <div className="absolute -top-4 left-4 bg-green-700 text-white rounded-full px-3 py-1.5 text-xs font-black shadow-lg flex items-center gap-1.5">
                 <Sprout className="w-3.5 h-3.5" />
                 <span className="font-hindi">धान • गेहूं • सोयाबीन</span>
-              </motion.div>
+              </div>
             </div>
           </motion.div>
         </div>
@@ -639,9 +596,6 @@ function SmartFarmerHelpSection() {
 
   return (
     <section className="py-14 md:py-20 bg-background relative overflow-hidden">
-      <div className="absolute inset-0 opacity-[0.025] pointer-events-none">
-        <img src={farmFieldPath} alt="" className="w-full h-full object-cover" />
-      </div>
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div className="text-center mb-10 md:mb-14">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
@@ -855,9 +809,7 @@ function ProductsSection() {
 
   return (
     <section className="py-16 md:py-24 bg-foreground relative overflow-hidden">
-      <div className="absolute inset-0 opacity-[0.04] pointer-events-none">
-        <img src={farmFieldPath} alt="" className="w-full h-full object-cover" />
-      </div>
+      <div className="absolute inset-0 opacity-[0.04] pointer-events-none bg-[radial-gradient(ellipse_at_center,rgba(249,168,37,0.3)_0%,transparent_70%)]" />
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div className="text-center mb-10 md:mb-14">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
@@ -1336,11 +1288,9 @@ function OnlineDhanBookingSection() {
       <div className="absolute inset-0 opacity-[0.06] pointer-events-none"
         style={{ backgroundImage: "radial-gradient(circle at 1px 1px, #F9A825 1px, transparent 0)", backgroundSize: "28px 28px" }} />
 
-      {/* Glowing top + bottom border */}
-      <motion.div animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-transparent via-secondary to-transparent" />
-      <motion.div animate={{ opacity: [0.3, 0.8, 0.3] }} transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: 1.25 }}
-        className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-secondary/60 to-transparent" />
+      {/* Top + bottom border */}
+      <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-transparent via-secondary to-transparent opacity-70" />
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-secondary/60 to-transparent opacity-50" />
 
       {/* Radial glow blobs */}
       <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full pointer-events-none"
@@ -1352,13 +1302,11 @@ function OnlineDhanBookingSection() {
 
         {/* HOT badge row */}
         <div className="flex justify-center mb-5">
-          <motion.div
-            animate={{ scale: [1, 1.05, 1], boxShadow: ["0 0 0px rgba(249,168,37,0)", "0 0 24px rgba(249,168,37,0.6)", "0 0 0px rgba(249,168,37,0)"] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          <div
             className="inline-flex items-center gap-2 bg-secondary text-foreground font-black px-5 py-2 rounded-full text-sm font-hindi"
             style={{ boxShadow: "0 0 20px rgba(249,168,37,0.5)" }}>
             🔥 खरीफ सीजन SALE — घर तक Delivery!
-          </motion.div>
+          </div>
         </div>
 
         <div className="text-center mb-6">
@@ -1446,13 +1394,11 @@ function OnlineDhanBookingSection() {
         </div>
 
         {!open && (
-          <motion.button onClick={() => setOpen(true)}
-            animate={{ scale: [1, 1.03, 1], boxShadow: ["0 6px 24px rgba(249,168,37,0.45)", "0 8px 36px rgba(249,168,37,0.75)", "0 6px 24px rgba(249,168,37,0.45)"] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-            whileTap={{ scale: 0.97 }}
-            className="md:hidden w-full py-5 bg-secondary text-foreground font-hindi font-black text-xl rounded-2xl flex items-center justify-center gap-3 mb-4">
+          <button onClick={() => setOpen(true)}
+            className="md:hidden w-full py-5 bg-secondary text-foreground font-hindi font-black text-xl rounded-2xl flex items-center justify-center gap-3 mb-4 active:scale-[0.97] transition-transform"
+            style={{ boxShadow: "0 6px 24px rgba(249,168,37,0.45)" }}>
             🏠 अभी Booking करें — घर पर मिलेगा! <ChevronRight className="w-6 h-6" />
-          </motion.button>
+          </button>
         )}
 
         <div ref={formRef} className={open ? "block" : "hidden md:block"}>
@@ -1511,15 +1457,12 @@ function WhyChooseSection() {
 
   return (
     <section className="hidden md:block py-16 md:py-24 bg-foreground relative overflow-hidden">
-      <div className="absolute inset-0 opacity-[0.06] pointer-events-none">
-        <img src={farmFieldPath} alt="" className="w-full h-full object-cover" />
-      </div>
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(249,168,37,0.06)_0%,transparent_70%)]" />
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div className="text-center mb-12 md:mb-16">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             className="inline-flex items-center gap-2 text-secondary font-bold mb-3 uppercase tracking-wider text-sm">
-            <Star className="w-4 h-4 fill-secondary" />हमें क्यों चुनें?
+            <Star className="w-4 h-4 fill-secondary" /> हमें क्यों चुनें?
           </motion.div>
           <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
             className="text-3xl md:text-5xl font-serif font-bold text-white font-hindi">
@@ -1768,9 +1711,7 @@ function ShopGallerySection() {
 function OwnerSection() {
   return (
     <section className="py-16 md:py-24 bg-foreground text-background relative overflow-hidden border-t-4 border-secondary">
-      <div className="absolute inset-0 opacity-[0.05] pointer-events-none">
-        <img src={farmFieldPath} alt="" className="w-full h-full object-cover" />
-      </div>
+      <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[radial-gradient(ellipse_at_top,rgba(249,168,37,0.15)_0%,transparent_70%)]" />
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div className="text-center mb-8">
           <p className="text-secondary font-bold uppercase tracking-widest text-sm mb-2 font-hindi">किसान भाइयों का भरोसा</p>
