@@ -1240,7 +1240,7 @@ function DhanUthwaiSection() {
           <motion.button onClick={() => setOpen(true)} whileTap={{ scale: 0.97 }}
             className="md:hidden w-full py-4 bg-orange-500 text-white font-hindi font-black text-lg rounded-2xl flex items-center justify-center gap-2 shadow-xl mb-2"
             style={{ boxShadow: "0 6px 24px rgba(249,115,22,0.4)" }}>
-            🚜 Uthwai Request Form खोलें <ChevronRight className="w-5 h-5" />
+            🚜 धान uthwai Request Form खोलें <ChevronRight className="w-5 h-5" />
           </motion.button>
         )}
 
@@ -1265,7 +1265,7 @@ function DhanUthwaiSection() {
             <motion.button type="submit" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
               className="w-full flex items-center justify-center gap-3 py-4 bg-orange-500 text-white font-hindi font-black text-lg rounded-2xl hover:bg-orange-600 transition-all shadow-xl"
               style={{ boxShadow: "0 6px 24px rgba(249,115,22,0.4)" }}>
-              {sent ? "✅ WhatsApp खुल रहा है..." : <><FaWhatsapp className="w-6 h-6" /> Uthwai Request भेजें</>}
+              {sent ? "✅ WhatsApp खुल रहा है..." : <><FaWhatsapp className="w-6 h-6" /> धान Uthwai Request भेजें</>}
             </motion.button>
           </motion.form>
         </div>
