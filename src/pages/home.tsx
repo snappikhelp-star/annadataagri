@@ -456,25 +456,21 @@ function HeroSection() {
                 style={{ background: "radial-gradient(circle, rgba(249,168,37,0.2) 0%, transparent 70%)" }}
               />
 
-              {/* Pulsing border ring */}
-              <motion.div
-                animate={{ opacity: [0.5, 1, 0.5], scale: [0.995, 1.005, 0.995] }}
-                transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute inset-0 rounded-3xl pointer-events-none z-10"
-                style={{ border: "2px solid rgba(21,128,61,0.35)", borderRadius: "1.5rem" }}
-              />
-
-              {/* Main shop image — full portrait, no crop */}
-              <div
-                className="relative rounded-3xl overflow-hidden shadow-2xl"
-                style={{ background: "linear-gradient(160deg, #e8f5e9 0%, #f1f8e9 100%)" }}
-              >
-                <img
-                  src={shopImg1}
-                  alt="Keshav Meena — Annadata Agri and Seeds"
-                  className="w-full object-contain"
-                  style={{ display: "block" }}
-                />
+        {/* Full rotating border ring */}
+<motion.div
+  animate={{ rotate: 360 }}
+  transition={{ duration: 7, repeat: Infinity, ease: "linear" }}
+  className="absolute -inset-[3px] rounded-3xl pointer-events-none z-10"
+  style={{
+    background:
+      "conic-gradient(from 0deg, #16a34a, #facc15, #22c55e, #ffffff, #16a34a)",
+    padding: "3px",
+    WebkitMask:
+      "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+    WebkitMaskComposite: "xor",
+    maskComposite: "exclude",
+  }}
+/>
 
 
                 {/* Bottom gradient with info */}
