@@ -435,27 +435,75 @@ function HeroSection() {
           </div>
 
           {/* ── RIGHT IMAGE CARD ── */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="flex-shrink-0 w-full max-w-[95%] sm:max-w-[500px] lg:max-w-[560px] order-1 lg:order-2"
-          >
-            <div className="relative">
-              {/* Decorative glow rings */}
-              <motion.div
-                animate={{ scale: [1, 1.06, 1], opacity: [0.4, 0.7, 0.4] }}
-                transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-6 -right-6 w-40 h-40 rounded-full pointer-events-none"
-                style={{ background: "radial-gradient(circle, rgba(21,128,61,0.18) 0%, transparent 70%)" }}
-              />
-              <motion.div
-                animate={{ scale: [1, 1.08, 1], opacity: [0.3, 0.6, 0.3] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="absolute -bottom-6 -left-6 w-32 h-32 rounded-full pointer-events-none"
-                style={{ background: "radial-gradient(circle, rgba(249,168,37,0.2) 0%, transparent 70%)" }}
-              />
+<motion.div
+  initial={{ opacity: 0, x: 30 }}
+  animate={{ opacity: 1, x: 0 }}
+  transition={{ duration: 0.7, delay: 0.2 }}
+  className="flex-shrink-0 w-full max-w-[95%] sm:max-w-[500px] lg:max-w-[560px] order-1 lg:order-2"
+>
+  <div className="relative p-[3px] rounded-3xl overflow-visible">
+    
+    {/* Full rotating border animation */}
+    <motion.div
+      animate={{ rotate: 360 }}
+      transition={{ duration: 7, repeat: Infinity, ease: "linear" }}
+      className="absolute inset-0 rounded-3xl pointer-events-none"
+      style={{
+        background:
+          "conic-gradient(from 0deg, #16a34a, #facc15, #22c55e, #ffffff, #16a34a)",
+      }}
+    />
 
+    {/* Main shop image */}
+    <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-white z-10">
+      <img
+        src={shopImg1}
+        alt="Keshav Meena — Annadata Agri and Seeds"
+        className="w-full object-contain"
+        style={{ display: "block" }}
+      />
+
+      {/* Bottom gradient with info */}
+      <div
+        className="absolute bottom-0 left-0 right-0 px-4 py-5"
+        style={{
+          background:
+            "linear-gradient(to top, rgba(5,46,22,0.85) 0%, rgba(5,46,22,0.4) 60%, transparent 100%)",
+        }}
+      >
+        <div>
+          <div className="font-black text-white text-sm tracking-wide uppercase drop-shadow">
+            Annadata Agri & Seeds
+          </div>
+          <div className="font-hindi text-white/80 text-xs mt-0.5">
+            रायसेन रोड, सलामतपुर, जि. रायसेन
+          </div>
+        </div>
+      </div>
+
+      {/* Live badge top-left */}
+      <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-green-700 text-white text-[10px] font-black px-2.5 py-1.5 rounded-full shadow-lg">
+        <motion.span
+          animate={{ scale: [1, 1.4, 1], opacity: [1, 0.6, 1] }}
+          transition={{ duration: 1.2, repeat: Infinity }}
+          className="w-1.5 h-1.5 rounded-full bg-yellow-300 flex-shrink-0"
+        />
+        <span className="font-hindi">LIVE</span>
+      </div>
+    </div>
+
+    {/* Floating crop tag */}
+    <motion.div
+      custom={2}
+      variants={floatVariants}
+      animate="idle"
+      className="absolute -top-4 left-4 bg-green-700 text-white rounded-full px-3 py-1.5 text-xs font-black shadow-lg flex items-center gap-1.5 z-20"
+    >
+      <Sprout className="w-3.5 h-3.5" />
+      <span className="font-hindi">धान • गेहूं • सोयाबीन</span>
+    </motion.div>
+  </div>
+</motion.div>
         {/* Full rotating border ring */}
 <motion.div
   animate={{ rotate: 360 }}
