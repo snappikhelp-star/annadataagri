@@ -541,14 +541,14 @@ function HeroSection() {
                   transition={{ delay: 1.2 }}
                   className="absolute top-3 left-3 flex items-center gap-1.5 bg-green-700 text-white text-[10px] font-black px-2.5 py-1.5 rounded-full shadow-lg"
                 >
-                  <motion.span
-                    animate={{ scale: [1, 1.4, 1], opacity: [1, 0.6, 1] }}
-                    transition={{ duration: 1.2, repeat: Infinity }}
-                    className="w-1.5 h-1.5 rounded-full bg-yellow-300 flex-shrink-0"
-                  />
-            
-                </motion.div>
-              </div>
+              <motion.span
+  animate={{ scale: [1, 1.4, 1], opacity: [1, 0.6, 1] }}
+  transition={{ duration: 1.2, repeat: Infinity }}
+  className="w-1.5 h-1.5 rounded-full bg-yellow-300 flex-shrink-0"
+/>
+
+<span className="font-hindi">LIVE</span>
+</motion.div>
 
               {/* Floating crop tag */}
               <motion.div
