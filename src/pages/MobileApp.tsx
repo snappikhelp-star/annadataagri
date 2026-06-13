@@ -148,22 +148,8 @@ function HomeTab({ onTabChange }: { onTabChange: (t: Tab) => void }) {
     return "🌙 शुभ संध्या, किसान भाई!";
   });
 
-  const floatingItems = ["🌾", "🌿", "🌱", "🍃", "🌾", "🌿"];
-
   return (
     <div className="min-h-full bg-[#0a1a0a] relative overflow-hidden">
-      {/* Floating crop particles bg */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        {floatingItems.map((item, i) => (
-          <motion.div
-            key={i}
-            className="absolute text-lg select-none"
-            style={{ left: `${10 + i * 16}%`, top: `${15 + (i % 3) * 25}%`, opacity: 0.07 }}
-            animate={{ y: [0, -18, 0], rotate: [0, i % 2 === 0 ? 12 : -12, 0], opacity: [0.07, 0.12, 0.07] }}
-            transition={{ duration: 3 + i * 0.5, repeat: Infinity, delay: i * 0.4, ease: "easeInOut" }}
-          >{item}</motion.div>
-        ))}
-      </div>
 
       {/* ── STICKY HEADER ── */}
       <div className="sticky top-0 z-20 px-4 pt-3 pb-2.5"
@@ -174,31 +160,22 @@ function HomeTab({ onTabChange }: { onTabChange: (t: Tab) => void }) {
           backdropFilter: "blur(16px)",
         }}>
         {/* Greeting strip */}
-        <motion.div
-          initial={{ opacity: 0, y: -6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="flex items-center justify-between mb-2">
+        <div className="flex items-center justify-between mb-2">
           <span className="text-white/55 text-[10px] font-bold tracking-wide">{greeting}</span>
-          <motion.div
-            animate={{ opacity: [0.7, 1, 0.7] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="flex items-center gap-1 text-[10px] font-black text-red-400">
-            <span className="w-1.5 h-1.5 bg-red-400 rounded-full" />
+          <div className="flex items-center gap-1 text-[10px] font-black text-red-400">
+            <span className="w-1.5 h-1.5 bg-red-400 rounded-full animate-pulse" />
             खरीफ 2026 LIVE
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
         {/* Brand Row */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <motion.div
-              animate={{ boxShadow: ["0 0 0px rgba(249,168,37,0.3)", "0 0 16px rgba(249,168,37,0.7)", "0 0 0px rgba(249,168,37,0.3)"] }}
-              transition={{ duration: 2.5, repeat: Infinity }}
+            <div
               className="rounded-2xl overflow-hidden flex-shrink-0"
-              style={{ border: "2px solid rgba(249,168,37,0.6)" }}>
+              style={{ border: "2px solid rgba(249,168,37,0.6)", boxShadow: "0 0 12px rgba(249,168,37,0.4)" }}>
               <img src={logoPath} alt="Logo" className="w-11 h-11 object-cover" />
-            </motion.div>
+            </div>
             <div>
               <motion.div
                 initial={{ opacity: 0, x: -8 }}
@@ -218,9 +195,8 @@ function HomeTab({ onTabChange }: { onTabChange: (t: Tab) => void }) {
             href={waLink("नमस्ते Keshav Bhai! 🙏")}
             target="_blank" rel="noreferrer"
             whileTap={{ scale: 0.9 }}
-            animate={{ boxShadow: ["0 0 0px rgba(37,211,102,0.4)", "0 0 18px rgba(37,211,102,0.8)", "0 0 0px rgba(37,211,102,0.4)"] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="w-10 h-10 bg-[#25D366] rounded-full flex items-center justify-center shadow-xl flex-shrink-0">
+            className="w-10 h-10 bg-[#25D366] rounded-full flex items-center justify-center flex-shrink-0"
+            style={{ boxShadow: "0 0 14px rgba(37,211,102,0.6)" }}>
             <FaWhatsapp className="w-5 h-5 text-white" />
           </motion.a>
         </div>
@@ -263,13 +239,6 @@ function HomeTab({ onTabChange }: { onTabChange: (t: Tab) => void }) {
               style={{ objectFit: "contain", objectPosition: "center bottom" }}
             />
 
-            {/* Shimmer sweep */}
-            <motion.div
-              animate={{ x: ["-120%", "220%"] }}
-              transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 4, ease: "easeInOut" }}
-              className="absolute inset-y-0 w-12 pointer-events-none z-10"
-              style={{ background: "linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent)" }}
-            />
 
             {/* Top-left: crop tag */}
             <motion.div
