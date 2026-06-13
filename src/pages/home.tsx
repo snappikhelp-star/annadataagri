@@ -504,66 +504,7 @@ function HeroSection() {
     </motion.div>
   </div>
 </motion.div>
-        {/* Full rotating border ring */}
-<motion.div
-  animate={{ rotate: 360 }}
-  transition={{ duration: 7, repeat: Infinity, ease: "linear" }}
-  className="absolute -inset-[3px] rounded-3xl pointer-events-none z-10"
-  style={{
-    background:
-      "conic-gradient(from 0deg, #16a34a, #facc15, #22c55e, #ffffff, #16a34a)",
-    padding: "3px",
-    WebkitMask:
-      "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-    WebkitMaskComposite: "xor",
-    maskComposite: "exclude",
-  }}
-/>
-
-
-                {/* Bottom gradient with info */}
-                <div className="absolute bottom-0 left-0 right-0 px-4 py-5"
-                  style={{ background: "linear-gradient(to top, rgba(5,46,22,0.85) 0%, rgba(5,46,22,0.4) 60%, transparent 100%)" }}>
-                  <motion.div
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.8 }}
-                  >
-                    <div className="font-black text-white text-sm tracking-wide uppercase drop-shadow">Annadata Agri & Seeds</div>
-                    <div className="font-hindi text-white/80 text-xs mt-0.5">रायसेन रोड, सलामतपुर, जि. रायसेन</div>
-                  </motion.div>
-                </div>
-
-                {/* Live badge top-left */}
-                <motion.div
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 1.2 }}
-                  className="absolute top-3 left-3 flex items-center gap-1.5 bg-green-700 text-white text-[10px] font-black px-2.5 py-1.5 rounded-full shadow-lg"
-                >
-              <motion.span
-  animate={{ scale: [1, 1.4, 1], opacity: [1, 0.6, 1] }}
-  transition={{ duration: 1.2, repeat: Infinity }}
-  className="w-1.5 h-1.5 rounded-full bg-yellow-300 flex-shrink-0"
-/>
-
-<span className="font-hindi">LIVE</span>
-</motion.div>
-
-              {/* Floating crop tag */}
-              <motion.div
-                custom={2}
-                variants={floatVariants}
-                animate="idle"
-                className="absolute -top-4 left-4 bg-green-700 text-white rounded-full px-3 py-1.5 text-xs font-black shadow-lg flex items-center gap-1.5"
-              >
-                <Sprout className="w-3.5 h-3.5" />
-                <span className="font-hindi">धान • गेहूं • सोयाबीन</span>
-              </motion.div>
-            </div>
-          </motion.div>
-        </div>
-      </div>
+        {/* 
 
       {/* Bottom strip — stats */}
       <motion.div
