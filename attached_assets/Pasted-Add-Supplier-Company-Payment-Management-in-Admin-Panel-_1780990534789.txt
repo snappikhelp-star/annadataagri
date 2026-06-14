@@ -1,0 +1,91 @@
+Add Supplier / Company Payment Management in Admin Panel.
+
+Purpose:
+Keshav bhai should easily track how much money he has to pay to seed, pesticide and fertilizer companies/suppliers.
+
+Add new admin page:
+“Company Payments”
+Hindi: “Company ko Dena Hai”
+
+Features:
+1. Supplier/Company Management
+- Add company/supplier name
+- Mobile number
+- Address
+- Contact person
+- Notes
+
+2. Purchase Entry
+- Select supplier/company
+- Purchase bill number
+- Purchase date
+- Products purchased
+- Total amount
+- Paid amount
+- Remaining amount
+- Payment status: Paid / Partial / Pending
+- Upload purchase bill photo
+- Notes
+
+3. Payment Tracking
+- Add payment paid to company
+- Payment mode: Cash / UPI / Bank / Cheque
+- Payment date
+- Remaining balance auto update
+
+4. Dashboard Cards
+Add to admin dashboard:
+- Total company payment pending
+- Companies with pending amount
+- Today payment paid
+- This month purchase amount
+
+5. Company-wise Report
+- Show each company:
+  total purchase
+  total paid
+  remaining amount
+  last payment date
+  pending status
+
+6. WhatsApp Reminder/Note
+- Add button to copy message:
+“Namaste [Company Name], Annadata Agri & Seeds ki taraf se ₹[amount] payment [date] ko kiya gaya hai. Kripya confirm karein.”
+
+7. Database Changes
+Create tables:
+- suppliers
+- purchase_bills
+- purchase_bill_items
+- supplier_payments
+
+Fields:
+suppliers:
+id, name, mobile, address, contact_person, notes, created_at
+
+purchase_bills:
+id, supplier_id, bill_number, bill_date, total_amount, paid_amount, remaining_amount, payment_status, bill_image_url, notes, created_at
+
+purchase_bill_items:
+id, purchase_bill_id, product_id, product_name, quantity, rate, total
+
+supplier_payments:
+id, supplier_id, purchase_bill_id, amount, payment_mode, payment_date, notes, created_at
+
+8. Stock Connection
+When purchase bill is saved:
+- Increase product stock automatically
+- Add stock movement type: purchase
+- Show stock updated message
+
+Design:
+- Hindi + English language support
+- Big buttons
+- Simple layout
+- Mobile friendly
+- Easy for shop owner
+
+Important:
+Do not break existing admin panel.
+Do not remove billing/customer/stock pages.
+Use existing Supabase connection.

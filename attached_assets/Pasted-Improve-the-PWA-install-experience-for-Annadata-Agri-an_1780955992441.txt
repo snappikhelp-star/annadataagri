@@ -1,0 +1,90 @@
+Improve the PWA install experience for Annadata Agri and Seeds.
+
+Goals:
+
+* Android users should get a one-click install experience whenever supported.
+* iPhone users should get the best possible installation experience allowed by Apple.
+* Remove all ugly technical messages from the homepage.
+
+Requirements:
+
+1. Android Installation
+
+* Use beforeinstallprompt event.
+* Show a large green button:
+  "ऐप इंस्टॉल करें"
+  "Install App"
+* On click, trigger the native install prompt.
+* After successful installation, hide the install button.
+* Detect standalone mode correctly.
+
+2. iPhone Installation Experience
+
+* Detect iPhone and iPad devices.
+* Show a premium popup when user clicks Install App.
+* Do NOT show technical text on homepage.
+* Show a beautiful visual guide with icons:
+
+Step 1:
+Tap Safari Share button
+
+Step 2:
+Tap "Add to Home Screen"
+
+Step 3:
+Tap "Add"
+
+* Add animation and screenshots style illustrations.
+* Make it look like a real app installation wizard.
+
+3. Smart Detection
+
+* Android → Direct install prompt
+* iPhone → Premium install guide popup
+* Already installed → Hide install button completely
+
+4. PWA Improvements
+
+* Update manifest.json
+* Full app name:
+  "Annadata Agri and Seeds"
+* Short name:
+  "Annadata Seeds"
+* Theme color:
+  #16a34a
+* Display:
+  standalone
+* Start URL:
+  /
+* Offline support enabled
+* Apple touch icons configured
+
+5. Premium Farmer-Friendly UI
+
+* Add floating install button.
+* Add subtle pulse animation.
+* Hindi + English support.
+* Mobile-first design.
+* Large buttons for farmers.
+
+6. Installation Success Screen
+   After installation:
+   Show:
+   "अन्नदाता ऐप सफलतापूर्वक इंस्टॉल हो गया"
+   "Annadata App Installed Successfully"
+
+7. Future Ready
+   Prepare code structure for:
+
+* Play Store release
+* App Store release
+* Push notifications
+* Offline product catalog
+
+Important:
+Do not show any message like:
+"Click 3 dots"
+or
+"Open browser menu"
+
+Show only a clean Install App button and a premium guided installation experience.

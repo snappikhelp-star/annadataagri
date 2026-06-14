@@ -1,0 +1,65 @@
+UPDATE THE EXISTING GOOGLE REVIEW SYSTEM FOR ANNADATA AGRI & SEEDS.
+
+GOAL:
+Create a highly SEO-optimized review management system that generates natural, human-like review replies. Replies must never look AI-generated. Every reply should be unique, location-aware, and written in simple Hindi/Hinglish suitable for farmers.
+
+REQUIREMENTS:
+
+1. Generate a different reply for every review.
+2. Never repeat the same sentence structure.
+3. Use natural human language instead of robotic wording.
+4. Include local SEO keywords naturally.
+5. Mention nearby locations when relevant:
+
+   * Salamatpur
+   * Sanchi
+   * Raisen
+   * Vidisha
+   * Gyaraspur
+   * Bhopal
+   * Begumganj
+   * Bareli
+   * Obedullaganj
+   * Udaipura
+   * Silwani
+   * Mandideep
+6. Randomly rotate location mentions to improve local SEO coverage.
+7. Focus on ranking for:
+
+   * Seeds Shop Near Me
+   * Beej Bhandar Salamatpur
+   * Agriculture Store Raisen
+   * Seeds and Pesticides Vidisha
+   * Krishi Kendra Sanchi
+   * Agri Input Shop Bhopal
+   * Fertilizer Shop MP
+   * Best Seeds Shop Madhya Pradesh
+8. Replies must sound thankful, professional and farmer-friendly.
+9. Generate different responses for:
+
+   * 5-star reviews
+   * 4-star reviews
+   * Reviews with comments
+   * Reviews without comments
+   * Product-specific reviews
+   * Service-related reviews
+10. Add structured SEO metadata support.
+11. Create FAQ schema, Local Business schema and Review schema.
+12. Optimize for Google Business Profile SEO.
+13. Avoid keyword stuffing.
+14. Generate review replies in Hindi, Hinglish and English.
+15. Store 500+ unique response templates and dynamically combine them.
+16. Include sentiment analysis before generating replies.
+17. Every response should be under 250 characters for better Google visibility.
+18. Build a future-ready system that continuously creates fresh and unique responses.
+
+EXAMPLE STYLE:
+
+"बहुत धन्यवाद! Annadata Agri & Seeds, Salamatpur पर आपके विश्वास के लिए आभारी हैं। किसानों को गुणवत्तापूर्ण बीज और कृषि सलाह देना हमारा उद्देश्य है।"
+
+"Thank you for visiting Annadata Agri & Seeds. Farmers from Raisen, Sanchi and Vidisha trust us for quality seeds and agricultural solutions."
+
+"आपकी प्रतिक्रिया हमारे लिए महत्वपूर्ण है। Salamatpur और आसपास के किसानों को बेहतर सेवा देने के लिए हम लगातार प्रयासरत हैं।"
+
+OBJECTIVE:
+Make Annadata Agri & Seeds rank strongly across Madhya Pradesh for agriculture, seeds, fertilizer and pesticide-related searches while maintaining completely natural and human-looking review responses.

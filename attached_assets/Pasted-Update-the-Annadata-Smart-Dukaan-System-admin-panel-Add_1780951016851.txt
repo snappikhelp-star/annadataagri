@@ -1,0 +1,119 @@
+Update the Annadata Smart Dukaan System admin panel.
+
+Add Hindi + English language support in the admin panel.
+
+Create a language toggle:
+- Hindi
+- English
+
+Default language should be Hindi.
+All admin labels, buttons, table headers and messages should support both Hindi and English.
+
+Make admin panel very easy for Keshav bhai and his brother.
+
+Add these easy pages:
+
+1. Quick Sale Page
+- Big search box
+- Search product by name/category/crop
+- Add quantity
+- Create bill in 30 seconds
+- Paid or Udhaar option
+- Print bill
+- WhatsApp bill share
+
+2. Quick Stock Page
+- Add stock in 2 clicks
+- Reduce stock in 2 clicks
+- Low stock products on top
+- Big buttons
+
+3. Khata Page
+- Customer name, mobile, village
+- Total udhaar
+- Payment received
+- Remaining balance
+- WhatsApp reminder button
+
+4. Today Page
+- Today sales
+- Today udhaar
+- Today cash received
+- Today stock sold
+- Simple summary cards
+
+5. Bill Photo Upload / Auto Entry Page
+- Add a page called “Bill Photo Entry”
+- User can upload a bill photo
+- Store bill photo in Supabase Storage bucket named bill-images
+- Create a draft bill entry from the uploaded image
+- For now, do not use real OCR API.
+- Show uploaded image on left side and manual entry form on right side.
+- Add fields:
+  customer name
+  mobile
+  village
+  product
+  quantity
+  price
+  paid/udhaar
+  notes
+- Save bill photo URL with invoice record.
+- Later we can connect OCR/AI auto reading.
+
+6. Supplier Purchase Bill Page
+- Upload supplier bill photo
+- Add products purchased
+- Auto increase stock
+- Store purchase record
+- Show purchase history
+
+7. Farmer Follow-up Page
+- Show customers needing follow-up
+- Based on last purchase date and crop
+- WhatsApp message button
+- Status:
+  Recent
+  Follow-up Soon
+  Follow-up Due
+
+8. Simple Mode
+- Add a “Simple Mode” toggle in admin.
+- When Simple Mode is ON, show only:
+  Quick Sale
+  Stock
+  Khata
+  Today
+- Hide advanced reports/settings.
+
+Design:
+- Use big readable buttons.
+- Hindi farmer-friendly words.
+- Green, yellow and white agri theme.
+- Mobile responsive.
+- Very simple for non-technical shop owners.
+
+Database update:
+Add columns if needed:
+- invoices.bill_image_url
+- invoices.notes
+- invoices.payment_status
+- products.image_url
+- customers.crop_type
+- customers.last_purchase_date
+
+Create new tables:
+- purchase_bills
+- purchase_bill_items
+
+Create Supabase Storage buckets:
+- bill-images
+- product-images
+- purchase-bills
+
+Important:
+- Do not break existing website.
+- Public farmer website should remain same.
+- Admin panel should stay protected.
+- Use Supabase Auth.
+- Use Hindi and English translations in a clean i18n object.
