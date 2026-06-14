@@ -8,12 +8,12 @@ import {
   AlertCircle
 } from "lucide-react";
 import { FaWhatsapp, FaGoogle, FaInstagram, FaFacebook, FaYoutube } from "react-icons/fa";
-import logoPath from "@assets/f0d776c4-6a98-4584-9d3a-7186ca49bf22_1781029871797.png";
-import bannerPath from "@assets/gfjhj_1780987573210.jpg";
-import shopImg1 from "@assets/WhatsApp_Image_2026-06-04_at_1.14.14_PM_(1)2_1781114324843.jpeg";
-import shopImg2 from "@assets/WhatsApp_Image_2026-06-04_at_1.14.14_PM_1780559137513.jpeg";
-import shopImg3 from "@assets/WhatsApp_Image_2026-06-04_at_1.14.13_PM_1780559137513.jpeg";
-import shopImg4 from "@assets/WhatsApp_Image_2026-06-04_at_1.14.39_PM_1780559137513.jpeg";
+import logoPath from "@assets/logo.webp";
+import bannerPath from "@assets/banner-mobile.webp";
+import shopImg1 from "@assets/shop1.webp";
+import shopImg2 from "@assets/shop2.webp";
+import shopImg3 from "@assets/shop3.webp";
+import shopImg4 from "@assets/shop4.webp";
 
 const PHONE = "916261737388";
 const PHONE_SHORT = "6261737388";
@@ -262,11 +262,7 @@ function HomeTab({ onTabChange }: { onTabChange: (t: Tab) => void }) {
           <div className="px-4 pt-4 pb-4 space-y-3 bg-white rounded-b-2xl">
             {/* Live season badge */}
             <div className="flex items-center gap-1.5">
-              <motion.span
-                animate={{ scale: [1, 1.3, 1] }}
-                transition={{ duration: 1.1, repeat: Infinity }}
-                className="w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0"
-              />
+              <span className="w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0 animate-pulse" />
               <span className="text-red-500 text-[9px] font-black uppercase tracking-widest">खरीफ 2026 LIVE</span>
             </div>
 
@@ -311,19 +307,14 @@ function HomeTab({ onTabChange }: { onTabChange: (t: Tab) => void }) {
           transition={{ duration: 0.4, delay: 0.15 }}
           className="relative rounded-2xl overflow-hidden px-4 py-4"
           style={{ background: "linear-gradient(135deg, #0d3320 0%, #155a2e 50%, #0a2518 100%)" }}>
-          <motion.div
-            animate={{ opacity: [0.4, 1, 0.4] }}
-            transition={{ duration: 1.8, repeat: Infinity }}
-            className="absolute inset-0 rounded-2xl"
+          <div
+            className="absolute inset-0 rounded-2xl animate-pulse"
             style={{ border: "1.5px solid rgba(249,168,37,0.5)", pointerEvents: "none" }}
           />
           <div className="flex items-start justify-between gap-3">
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
-                <motion.span
-                  animate={{ scale: [1, 1.3, 1] }}
-                  transition={{ duration: 0.8, repeat: Infinity }}
-                  className="w-2 h-2 bg-red-400 rounded-full flex-shrink-0" />
+                <span className="w-2 h-2 bg-red-400 rounded-full flex-shrink-0 animate-pulse" />
                 <span className="text-red-400 text-[10px] font-black uppercase tracking-wider">LIVE STOCK IN</span>
               </div>
               <div className="text-white font-black text-base leading-snug mb-1">
@@ -342,10 +333,7 @@ function HomeTab({ onTabChange }: { onTabChange: (t: Tab) => void }) {
                 <FaWhatsapp className="w-3.5 h-3.5" /> अभी Order करें
               </a>
             </div>
-            <motion.div
-              animate={{ rotate: [0, -5, 5, 0], y: [0, -4, 0] }}
-              transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
-              className="text-4xl flex-shrink-0 mt-1">🌾</motion.div>
+            <div className="text-4xl flex-shrink-0 mt-1">🌾</div>
           </div>
         </motion.div>
 
@@ -417,10 +405,8 @@ function HomeTab({ onTabChange }: { onTabChange: (t: Tab) => void }) {
                   boxShadow: crop.hot ? `0 4px 20px ${crop.color}20` : "none",
                 }}>
                 {crop.hot && (
-                  <motion.div
-                    animate={{ opacity: [0.5, 1, 0.5] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="absolute inset-0 rounded-2xl pointer-events-none"
+                  <div
+                    className="absolute inset-0 rounded-2xl pointer-events-none animate-pulse"
                     style={{ border: `1px solid ${crop.color}50` }}
                   />
                 )}
@@ -458,10 +444,7 @@ function HomeTab({ onTabChange }: { onTabChange: (t: Tab) => void }) {
                 onClick={() => onTabChange("products")}
                 className="flex flex-col items-center gap-1.5 py-3.5 rounded-2xl"
                 style={{ background: `${cat.color}14`, border: `1.5px solid ${cat.color}30` }}>
-                <motion.span
-                  animate={{ y: [0, -3, 0] }}
-                  transition={{ duration: 1.8, repeat: Infinity, delay: i * 0.3 }}
-                  className="text-2xl">{cat.emoji}</motion.span>
+                <span className="text-2xl">{cat.emoji}</span>
                 <span className="text-[9px] font-black text-white/80 leading-tight text-center">{cat.label}</span>
               </motion.button>
             ))}
@@ -477,21 +460,15 @@ function HomeTab({ onTabChange }: { onTabChange: (t: Tab) => void }) {
           style={{ background: "linear-gradient(135deg, #071a0e 0%, #0c2b17 100%)", border: "2px solid rgba(249,168,37,0.4)" }}>
           <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: "1px solid rgba(249,168,37,0.12)" }}>
             <div className="flex items-center gap-2.5">
-              <motion.span
-                animate={{ rotate: [0, -15, 15, 0], y: [0, -4, 0] }}
-                transition={{ duration: 2, repeat: Infinity, repeatDelay: 1.5 }}
-                className="text-2xl">🏠</motion.span>
+              <span className="text-2xl">🏠</span>
               <div>
                 <div className="text-[#F9A825] font-black text-sm leading-tight">घर तक मँगाएं!</div>
                 <div className="text-white/45 text-[10px]">FREE Delivery — WhatsApp Order</div>
               </div>
             </div>
-            <motion.div
-              animate={{ scale: [1, 1.12, 1], boxShadow: ["0 0 0 rgba(249,168,37,0)", "0 0 16px rgba(249,168,37,0.8)", "0 0 0 rgba(249,168,37,0)"] }}
-              transition={{ duration: 1.6, repeat: Infinity }}
-              className="bg-[#F9A825] text-black text-[9px] font-black px-2.5 py-1 rounded-full">
+            <div className="bg-[#F9A825] text-black text-[9px] font-black px-2.5 py-1 rounded-full">
               🚚 FREE
-            </motion.div>
+            </div>
           </div>
           <div className="grid grid-cols-3 px-3 py-3" style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
             {[
@@ -530,23 +507,17 @@ function HomeTab({ onTabChange }: { onTabChange: (t: Tab) => void }) {
           className="w-full py-4 rounded-2xl flex items-center justify-between px-4"
           style={{ background: "linear-gradient(135deg, #112211 0%, #1a3a1a 50%, #0f2a0f 100%)", border: "1.5px solid rgba(249,168,37,0.35)" }}>
           <div className="flex items-center gap-3">
-            <motion.div
-              animate={{ rotate: [0, 10, -10, 0] }}
-              transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 1 }}
+            <div
               className="w-11 h-11 rounded-full flex items-center justify-center"
               style={{ background: "rgba(249,168,37,0.18)", border: "1.5px solid rgba(249,168,37,0.4)" }}>
               <Lightbulb className="w-5 h-5 text-[#F9A825]" />
-            </motion.div>
+            </div>
             <div className="text-left">
               <div className="text-white font-black text-sm">Keshav Bhai से सलाह लो 🙏</div>
               <div className="text-white/45 text-[10px] mt-0.5">फसल • दवाई • बीज — Free Expert Guidance</div>
             </div>
           </div>
-          <motion.div
-            animate={{ x: [0, 4, 0] }}
-            transition={{ duration: 1.2, repeat: Infinity }}>
-            <ChevronRight className="w-5 h-5 text-[#F9A825]" />
-          </motion.div>
+          <ChevronRight className="w-5 h-5 text-[#F9A825]" />
         </motion.button>
 
         {/* ── STATS ROW ── */}
@@ -1009,9 +980,7 @@ function GalleryTab() {
         </div>
 
         {/* Live Offer Banner */}
-        <motion.div
-          animate={{ borderColor: ["rgba(249,168,37,0.2)", "rgba(249,168,37,0.6)", "rgba(249,168,37,0.2)"] }}
-          transition={{ duration: 2.5, repeat: Infinity }}
+        <div
           className="rounded-2xl p-4"
           style={{ background: "linear-gradient(135deg, #16532d, #0f3d1f)", border: "1px solid rgba(249,168,37,0.3)" }}>
           <div className="flex items-center gap-2 mb-2">
@@ -1024,7 +993,7 @@ function GalleryTab() {
             className="inline-flex items-center gap-1.5 bg-[#25D366] text-white text-xs font-bold px-4 py-2.5 rounded-xl">
             <FaWhatsapp className="w-3.5 h-3.5" /> ऑफर के बारे में पूछें
           </a>
-        </motion.div>
+        </div>
 
         {/* Offer Cards */}
         {offers.map((offer, i) => (
