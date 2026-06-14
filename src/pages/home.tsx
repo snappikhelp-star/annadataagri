@@ -14,13 +14,13 @@ import {
 } from "lucide-react";
 import { FaWhatsapp, FaInstagram, FaYoutube, FaFacebook, FaGoogle } from "react-icons/fa";
 
-import logoPath from "@assets/f0d776c4-6a98-4584-9d3a-7186ca49bf22_1781029871797.png";
+import logoPath from "@assets/logo.webp";
 import ownerPhotoPath from "@assets/2d15bd6ce2f040b69e7c52160dd6bba7FR_1779471098722.jpg";
-import bannerWidePath from "@assets/a5fd3043-fdbf-4d76-adf5-6f0016548e78_1779476882694.png";
-import shopImg1 from "@assets/WhatsApp_Image_2026-06-04_at_1.14.14_PM_(1)2_1781114324843.jpeg";
-import shopImg2 from "@assets/WhatsApp_Image_2026-06-04_at_1.14.14_PM_1780559137513.jpeg";
-import shopImg3 from "@assets/WhatsApp_Image_2026-06-04_at_1.14.13_PM_1780559137513.jpeg";
-import shopImg4 from "@assets/WhatsApp_Image_2026-06-04_at_1.14.39_PM_1780559137513.jpeg";
+import bannerWidePath from "@assets/banner-wide.webp";
+import shopImg1 from "@assets/shop1.webp";
+import shopImg2 from "@assets/shop2.webp";
+import shopImg3 from "@assets/shop3.webp";
+import shopImg4 from "@assets/shop4.webp";
 import { generateCustomerReview, SERVICES as ENGINE_SERVICES, type Lang } from "../lib/reviewEngine";
 
 const PHONE = "919691712455";
@@ -441,6 +441,11 @@ function HeroSection() {
                   alt="Keshav Meena — Annadata Agri and Seeds"
                   className="w-full object-contain"
                   style={{ display: "block" }}
+                  fetchPriority="high"
+                  loading="eager"
+                  decoding="async"
+                  width={900}
+                  height={1200}
                 />
 
 
@@ -1723,11 +1728,11 @@ function OwnerSection() {
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-10 md:gap-20">
           <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
             className="relative flex-shrink-0">
-            <div className="absolute inset-0 bg-secondary rounded-full blur-3xl opacity-20 animate-pulse scale-110" />
+            <div className="absolute inset-0 bg-secondary rounded-full opacity-15 scale-110" />
             <div className="w-60 h-60 md:w-80 md:h-80 rounded-full p-1.5 relative z-10"
               style={{ background: "conic-gradient(from 0deg, #F9A825, #1B5E20, #F9A825, #1B5E20, #F9A825)", boxShadow: "0 0 60px 10px rgba(249,168,37,0.3)" }}>
               <div className="w-full h-full rounded-full overflow-hidden border-4 border-foreground">
-                <img src={ownerPhotoPath} alt="Keshav Meena" className="w-full h-full object-cover object-top" />
+                <img src={ownerPhotoPath} alt="Keshav Meena" className="w-full h-full object-cover object-top" loading="lazy" decoding="async" />
               </div>
             </div>
             <div className="absolute -bottom-3 -right-3 bg-secondary text-secondary-foreground px-3 py-1.5 rounded-xl font-bold text-sm z-20 shadow-xl border-2 border-foreground">
