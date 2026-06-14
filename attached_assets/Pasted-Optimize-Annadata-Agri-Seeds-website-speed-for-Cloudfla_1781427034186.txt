@@ -1,0 +1,91 @@
+Optimize Annadata Agri & Seeds website speed for Cloudflare Pages.
+
+Main issue:
+Website page size increased and Cloudflare LCP is poor. Improve real mobile loading speed.
+
+Do not modify:
+- Admin panel logic
+- Supabase auth
+- Database code
+- Billing system
+- Saved data
+- Admin routes
+
+Only optimize public website, mobile PWA UI, images, hero, gallery, fonts, and animations.
+
+Tasks:
+
+1. Find heavy files
+- Check attached_assets and public/assets folders.
+- Find large PNG/JPG images over 300 KB.
+- Identify images imported on homepage, hero, gallery, mobile app, and login page.
+
+2. Optimize images
+- Convert large PNG/JPG images to WebP.
+- Compress hero image, owner photo, logo, banner, and gallery images.
+- Create smaller mobile versions for hero/owner images.
+- Target:
+  - Hero image under 250 KB
+  - Owner photo under 150 KB
+  - Logo under 80 KB
+  - Gallery thumbnails under 120 KB each
+
+3. Update image imports
+- Replace old heavy image imports with optimized WebP versions.
+- Remove unused image imports.
+- Do not delete images if unsure; just stop importing unused heavy images.
+
+4. Improve LCP
+- Preload only the main hero image.
+- Add fetchpriority="high" only to hero image.
+- Add width, height, and decoding="async".
+- Use loading="eager" only for hero image.
+- Use loading="lazy" for all below-the-fold images.
+
+5. Gallery performance
+- Do not load all gallery photos on first screen.
+- Lazy load gallery section/images.
+- Use thumbnails first, full image only when opened.
+- Keep gallery design same.
+
+6. Mobile PWA performance
+- Lazy load MobileApp.tsx if not already.
+- Reduce heavy animations in PWA HomeTab.
+- Keep app-like design, but make it smooth on low-end Android phones.
+
+7. Hero mobile fix
+- Use min-h-[100svh].
+- Make hero fully visible on mobile.
+- Do not cut owner photo, text, buttons, or animation.
+- Avoid horizontal scroll.
+
+8. Animation optimization
+- Remove infinite framer-motion loops from first screen.
+- Avoid animated blur, glow, and box-shadow on mobile.
+- Use lightweight CSS animations only where needed.
+
+9. Fonts
+- Remove render-blocking font imports.
+- Use font-display: swap.
+- Keep typography same.
+
+10. Login page
+- Optimize /login LCP separately.
+- Remove heavy background images or animations if present.
+- Keep login functionality unchanged.
+
+11. Build check
+- Run npm build.
+- Fix TypeScript/React/Vite errors if any.
+- Make sure routes work:
+  /
+  /app
+  /login
+  /admin
+  /reviews
+
+After completing:
+- Give changed files list.
+- Tell which images were optimized.
+- Confirm admin panel was not modified.
+- Tell expected speed improvements.
