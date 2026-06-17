@@ -363,11 +363,11 @@ function HomeTab({ onTabChange }: { onTabChange: (t: Tab) => void }) {
                 धान First Spray<br />
                 <span className="text-[#F9A825]">सलाह उपलब्ध है!!</span>
               </div>
-              <div className="text-white/55 text-xs mb-3 flex flex-wrap gap-1">
-                ["First Spray", "खरपतवार नियंत्रण", "कीट नियंत्रण", "फोटो भेजकर सलाह"].map(t => (
-                  <span key={t} className="bg-white/8 px-2 py-0.5 rounded-full text-[10px] font-bold">{t}</span>
-                ))}
-              </div>
+             <div className="text-white/55 text-xs mb-3 flex flex-wrap gap-1">
+              {["First Spray", "खरपतवार नियंत्रण", "कीट नियंत्रण", "फोटो भेजकर सलाह"].map(t => (
+                <span key={t} className="bg-white/8 px-2 py-0.5 rounded-full text-[10px] font-bold">{t}</span>
+               ))}
+             </div>
               <a href={waLink("नमस्ते Keshav Bhai! 🌾 खरीफ सीजन 2026 का stock देखना है। बीज और दवाई की जानकारी दें।")}
                 target="_blank" rel="noreferrer"
                 className="inline-flex items-center gap-1.5 text-white text-xs font-black px-4 py-2.5 rounded-xl"
