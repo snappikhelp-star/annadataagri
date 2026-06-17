@@ -33,8 +33,59 @@ const TABS: { id: Tab; label: string; labelHi: string; icon: React.ReactNode }[]
   { id: "contact",  label: "Contact",  labelHi: "संपर्क",   icon: <Phone className="w-5 h-5" /> },
 ];
 
-const CATEGORIES = ["All", "Seeds"];
-const CROPS = ["All", "Dhan", "Soyabean", "Gehu", "Chana"];
+
+cconst PRODUCTS = [
+{
+id:1,
+name:"धान First Spray",
+nameEn:"Dhan First Spray",
+category:"Spray",
+crop:"Dhan",
+emoji:"💦",
+badge:"NOW",
+badgeColor:"#16a34a",
+desc:"धान में पहला स्प्रे कब और कैसे करें",
+price:"सलाह लें"
+},
+{
+id:2,
+name:"खरपतवार नियंत्रण",
+nameEn:"Weed Control",
+category:"Dawai",
+crop:"Dhan",
+emoji:"🌱",
+badge:"HOT",
+badgeColor:"#f59e0b",
+desc:"धान में घास नियंत्रण सलाह",
+price:"सलाह लें"
+},
+{
+id:3,
+name:"कीट नियंत्रण",
+nameEn:"Pest Control",
+category:"Dawai",
+crop:"Dhan",
+emoji:"🐛",
+badge:"IMPORTANT",
+badgeColor:"#ef4444",
+desc:"धान के कीटों से बचाव",
+price:"सलाह लें"
+},
+{
+id:4,
+name:"फोटो भेजकर सलाह",
+nameEn:"Photo Guidance",
+category:"Guidance",
+crop:"Dhan",
+emoji:"📸",
+badge:"FREE",
+badgeColor:"#22c55e",
+desc:"खेत की फोटो भेजें और सलाह लें",
+price:"Free"
+}
+];
+const CATEGORIES = ["All", "Spray", "Dawai", "Guidance"];
+const CROPS = ["All", "Dhan"];
 
 const slideVariants = {
   enter: (dir: number) => ({ x: dir > 0 ? "30%" : "-30%", opacity: 0 }),
@@ -198,7 +249,7 @@ function HomeTab({ onTabChange }: { onTabChange: (t: Tab) => void }) {
           <input
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            placeholder="🌾 बीज खोजें — धान, सोया, चना, गेहूं..."
+            placeholder="💦 First Spray, दवाई, रोग और कीट सलाह खोजें..."
             className="w-full rounded-2xl pl-9 pr-4 py-2.5 text-white text-sm placeholder-white/30 outline-none transition-colors"
             style={{ background: "rgba(249,168,37,0.07)", border: "1.5px solid rgba(249,168,37,0.2)" }}
             onFocus={e => (e.target.style.borderColor = "rgba(249,168,37,0.6)")}
@@ -238,7 +289,7 @@ function HomeTab({ onTabChange }: { onTabChange: (t: Tab) => void }) {
               transition={{ delay: 0.5 }}
               className="absolute top-3 left-3 bg-green-700 text-white rounded-full px-3 py-1.5 text-[10px] font-black flex items-center gap-1.5 shadow-lg z-20">
               <Sprout className="w-3 h-3" />
-              <span className="font-hindi">धान • गेहूं • सोयाबीन</span>
+              <span className="font-hindi">धान रोपाई • First Spray</span>
             </motion.div>
 
             {/* Bottom gradient with shop name */}
@@ -260,11 +311,11 @@ function HomeTab({ onTabChange }: { onTabChange: (t: Tab) => void }) {
             {/* Heading */}
             <div>
               <div className="text-gray-800 font-black text-[17px] leading-tight font-hindi">
-                किसानों के लिए<br />
-                <span className="text-green-700">भरोसेमंद बीज</span>
+                धान रोपाई और<br />
+                <span className="text-green-700">First Spray की सही सलाह</span>
               </div>
               <div className="text-gray-500 text-[11px] font-hindi mt-1 leading-snug">
-                धान • गेहूं • सोयाबीन • फसल दवाई
+                धान रोपाई • First Spray • रोग नियंत्रण • कीट नियंत्रण
               </div>
             </div>
 
@@ -276,7 +327,7 @@ function HomeTab({ onTabChange }: { onTabChange: (t: Tab) => void }) {
                 <Phone className="w-3.5 h-3.5" /> Call Now — {PHONE_SHORT}
               </a>
               <div className="grid grid-cols-2 gap-1.5">
-                <a href={waLink("नमस्ते Keshav Bhai! मुझे बीज/दवाई की जानकारी चाहिए।")}
+                <a href={waLink("नमस्ते Keshav Bhai! धान में First Spray और दवाई की सलाह चाहिए।")}
                   target="_blank" rel="noreferrer"
                   className="flex items-center justify-center gap-1 py-2 rounded-xl font-hindi font-black text-[10px] text-white"
                   style={{ background: "#25D366", boxShadow: "0 3px 10px rgba(37,211,102,0.35)" }}>
@@ -306,14 +357,14 @@ function HomeTab({ onTabChange }: { onTabChange: (t: Tab) => void }) {
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
                 <span className="w-2 h-2 bg-red-400 rounded-full flex-shrink-0 animate-pulse" />
-                <span className="text-red-400 text-[10px] font-black uppercase tracking-wider">LIVE STOCK IN</span>
+                <span className="text-red-400 text-[10px] font-black uppercase tracking-wider">FIRST SPRAY GUIDANCE</span>
               </div>
               <div className="text-white font-black text-base leading-snug mb-1">
-                खरीफ 2026 — बीज<br />
-                <span className="text-[#F9A825]">अभी उपलब्ध है!</span>
+                धान First Spray<br />
+                <span className="text-[#F9A825]">सलाह उपलब्ध है!!</span>
               </div>
               <div className="text-white/55 text-xs mb-3 flex flex-wrap gap-1">
-                {["1886 धान", "PB1 धान", "JS-335 सोया", "JS-9305 सोया"].map(t => (
+                ["First Spray", "खरपतवार नियंत्रण", "कीट नियंत्रण", "फोटो भेजकर सलाह"].map(t => (
                   <span key={t} className="bg-white/8 px-2 py-0.5 rounded-full text-[10px] font-bold">{t}</span>
                 ))}
               </div>
@@ -321,7 +372,7 @@ function HomeTab({ onTabChange }: { onTabChange: (t: Tab) => void }) {
                 target="_blank" rel="noreferrer"
                 className="inline-flex items-center gap-1.5 text-white text-xs font-black px-4 py-2.5 rounded-xl"
                 style={{ background: "#25D366", boxShadow: "0 4px 16px rgba(37,211,102,0.5)" }}>
-                <FaWhatsapp className="w-3.5 h-3.5" /> अभी Order करें
+                <FaWhatsapp className="w-3.5 h-3.5" /> सलाह लें
               </a>
             </div>
             <div className="text-4xl flex-shrink-0 mt-1">🌾</div>
@@ -377,11 +428,10 @@ function HomeTab({ onTabChange }: { onTabChange: (t: Tab) => void }) {
             </motion.button>
           </div>
           <div className="grid grid-cols-2 gap-2.5">
-            {[
-              { name: "धान", nameEn: "Dhan", emoji: "🌾", desc: "1886 • PB1 • बासमती • हाइब्रिड", color: "#22c55e", badge: "खरीफ 2026", hot: true },
-              { name: "सोयाबीन", nameEn: "Soyabean", emoji: "🌿", desc: "JS-335 • JS-9305 • NRC-86", color: "#84cc16", badge: "खरीफ HOT", hot: true },
-              { name: "गेहूं", nameEn: "Gehu", emoji: "🌾", desc: "सभी प्रमाणित किस्में उपलब्ध", color: "#f59e0b", badge: "रबी सीजन", hot: false },
-              { name: "चना", nameEn: "Chana", emoji: "🫘", desc: "JG-14 • Vikas — देसी व काबुली चना", color: "#fb923c", badge: "रबी सीजन", hot: false },
+            {[{ name: "धान रोपाई", emoji: "🌾", desc: "रोपाई की सही जानकारी", color: "#22c55e", badge: "LIVE", hot: true },
+             { name: "First Spray", emoji: "💦", desc: "15-20 दिन बाद सही स्प्रे", color: "#38bdf8", badge: "NOW", hot: true },
+             { name: "खरपतवार", emoji: "🌱", desc: "घास नियंत्रण सलाह", color: "#84cc16", badge: "GUIDE", hot: true },
+             { name: "रोग/कीट", emoji: "🐛", desc: "फोटो भेजकर सलाह", color: "#f97316", badge: "HELP", hot: true },
             ].map((crop, i) => (
               <motion.button key={crop.name}
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -419,13 +469,13 @@ function HomeTab({ onTabChange }: { onTabChange: (t: Tab) => void }) {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.45 }}>
-          <div className="text-white font-black text-sm mb-3">🌾 फसल बीज चुनें</div>
+          <div className="text-white font-black text-sm mb-3">💦 अपनी समस्या चुनें</div>
           <div className="grid grid-cols-4 gap-2">
             {[
-              { label: "धान", emoji: "🌾", color: "#22c55e" },
-              { label: "सोयाबीन", emoji: "🌿", color: "#84cc16" },
-              { label: "चना", emoji: "🫘", color: "#fb923c" },
-              { label: "गेहूं", emoji: "🌾", color: "#f59e0b" },
+              { label: "First Spray", emoji: "💦", color: "#22c55e" },
+              { label: "खरपतवार", emoji: "🌿", color: "#84cc16" },
+              { label: "कीट रोग", emoji: "⸙", color: "#fb923c" },
+              { label: "ग्रोथ", emoji: "🌾", color: "#f59e0b" },
             ].map((cat, i) => (
               <motion.button key={cat.label}
                 initial={{ opacity: 0, y: 8 }}
