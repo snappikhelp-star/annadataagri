@@ -1246,45 +1246,40 @@ function OnlineDhanBookingSection() {
     setForm(f => ({ ...f, [e.target.name]: e.target.value }));
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const msg = `🌾 *Online Booking — अन्नदाता*\n\n👤 नाम: ${form.name}\n📱 मोबाइल: ${form.mobile}\n🏡 गांव: ${form.village}\n🌱 Variety / Product: ${form.variety}\n📦 मात्रा: ${form.qty}\n🚜 डिलीवरी: ${form.delivery}\n\nकृपया सामान घर तक पहुँचाने की व्यवस्था करें। धन्यवाद!`;
+    const msg = `🌾 *Online Booking — अन्नदाता*\n\n👤 नाम: ${form.name}\n📱 मोबाइल: ${form.mobile}\n🏡 गांव: ${form.village}\n💊 जरूरत / समस्या: ${form.variety}\n📦 मात्रा: ${form.qty}\n🚜 डिलीवरी: ${form.delivery}\n\nकृपया सामान घर तक पहुँचाने की व्यवस्था करें। धन्यवाद!`;
     window.open(waLink(msg), "_blank");
     setSent(true);
     setTimeout(() => setSent(false), 4000);
   };
 
   const features = [
-    { emoji: "🏠", text: "घर तक डिलीवरी" },
-    { emoji: "✅", text: "असली बीज गारंटी" },
-    { emoji: "💊", text: "दवाई भी उपलब्ध" },
-    { emoji: "🌱", text: "सोयाबीन / धान" },
-    { emoji: "💬", text: "WhatsApp Confirm" },
-    { emoji: "🌾", text: "सभी Variety" },
-  ];
+  { emoji: "💦", text: "First Spray सलाह" },
+  { emoji: "🌱", text: "खरपतवार नियंत्रण" },
+  { emoji: "🐛", text: "कीट रोग समाधान" },
+  { emoji: "💊", text: "फसल दवाई" },
+  { emoji: "📸", text: "फोटो भेजकर सलाह" },
+  { emoji: "💬", text: "WhatsApp Confirm" },
+];
 
-  const kharifVarieties = [
-    "── 🌾 खरीफ — धान (Kharif Dhan) ──",
-    "1886 हाइब्रिड धान",
-    "PB1 धान",
-    "अन्य हाइब्रिड धान",
-    "बासमती धान",
-    "── 🌿 खरीफ — सोयाबीन ──",
-    "JS-335 सोयाबीन",
-    "JS-9305 सोयाबीन",
-    "NRC-86 सोयाबीन",
-    "RKS-45 सोयाबीन",
-    "अन्य हाइब्रिड सोयाबीन",
-    "── 💊 खरीफ — दवाइयां / Spray ──",
-    "धान की दवाई (Fungicide)",
-    "धान की दवाई (Insecticide)",
-    "धान खरपतवार नाशक",
-    "सोयाबीन Fungicide",
-    "सोयाबीन Insecticide",
-    "सोयाबीन खरपतवार नाशक",
-    "── 🌾 रबी सीजन ──",
-    "गेहूं बीज",
-    "चना बीज",
-    "मसूर / सरसों बीज",
-  ];
+const kharifVarieties = [
+  "── 💦 धान First Spray / Guidance ──",
+  "धान First Spray",
+  "धान खरपतवार नियंत्रण",
+  "धान की दवाई",
+  "धान Growth Spray",
+  "धान रोग/कीट सलाह",
+  "── 💊 फसल दवाई ──",
+  "Fungicide",
+  "Insecticide",
+  "खरपतवार नाशक",
+  "Growth Booster",
+  "Micronutrient",
+  "── 📸 फोटो से सलाह ──",
+  "खेत की फोटो भेजकर सलाह",
+  "पत्ते पीले पड़ रहे हैं",
+  "कीड़े लग रहे हैं",
+  "ग्रोथ रुक गई है",
+];
 
   return (
     <section className="py-14 md:py-20 bg-foreground relative overflow-hidden"
@@ -1310,7 +1305,7 @@ function OnlineDhanBookingSection() {
           <div
             className="inline-flex items-center gap-2 bg-secondary text-foreground font-black px-5 py-2 rounded-full text-sm font-hindi"
             style={{ boxShadow: "0 0 20px rgba(249,168,37,0.5)" }}>
-            🔥 खरीफ सीजन SALE — घर तक Delivery!
+            💦 धान First Spray • फसल दवाई • घर तक सुविधा
           </div>
         </div>
 
@@ -1325,42 +1320,42 @@ function OnlineDhanBookingSection() {
               🏠 Online Order
             </button>
             <button onClick={() => scrollToForm("1886 हाइब्रिड धान")} className="inline-flex items-center gap-1.5 bg-green-500/20 text-green-300 font-bold px-3 py-1 rounded-full text-xs font-hindi border border-green-500/30 cursor-pointer hover:bg-green-500/30 active:scale-95 transition-all">
-              🌾 धान खरीफ 2026
+              💦 धान First Spray
             </button>
             <button onClick={() => scrollToForm("JS-335 सोयाबीन")} className="inline-flex items-center gap-1.5 bg-yellow-500/20 text-yellow-300 font-bold px-3 py-1 rounded-full text-xs font-hindi border border-yellow-500/30 cursor-pointer hover:bg-yellow-500/30 active:scale-95 transition-all">
-              🌿 सोयाबीन खरीफ 2026
+              🌱 खरपतवार नियंत्रण
             </button>
             <button onClick={() => scrollToForm()} className="inline-flex items-center gap-1.5 bg-blue-500/20 text-blue-300 font-bold px-3 py-1 rounded-full text-xs font-hindi border border-blue-500/30 cursor-pointer hover:bg-blue-500/30 active:scale-95 transition-all">
-              🏠 घर तक Deliver
+              🏠 घर तक सुविधा
             </button>
           </div>
 
           <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
             className="text-3xl md:text-5xl font-hindi font-black leading-snug"
             style={{ background: "linear-gradient(135deg, #fff 0%, #F9A825 50%, #FFD54F 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-            धान • सोयाबीन • दवाई<br />घर तक मँगाएं!
+            धान First Spray • फसल दवाई<br />सही सलाह पाएं!
           </motion.h2>
           <p className="text-white/60 font-hindi mt-2 max-w-xl mx-auto text-sm md:text-base">
-            अब दुकान आने की जरूरत नहीं — Online Booking करें और असली बीज व दवाई सीधे आपके घर पहुँचेगी
+            खेत की समस्या बताएं — Keshav Bhai से सही दवाई, सही मात्रा और Spray Guidance पाएं
           </p>
 
           {/* Urgency strip */}
           <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
             className="mt-4 inline-flex items-center gap-2 bg-red-500/15 border border-red-500/30 text-red-300 font-bold px-4 py-2 rounded-xl text-sm font-hindi">
-            ⚡ सीमित स्टॉक उपलब्ध — आज ही Booking करें, कल की गारंटी नहीं!
+            ⚡ धान में First Spray और खरपतवार नियंत्रण का सही समय — अभी सलाह लें!
           </motion.div>
         </div>
 
         {/* Seasonal crop cards */}
         <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
           className="grid grid-cols-2 gap-3 mb-5">
-          <button onClick={() => scrollToForm("1886 हाइब्रिड धान")}
+          <button onClick={() => scrollToForm("धान First Spray")
             className="bg-white/5 border border-green-400/40 rounded-2xl p-4 text-center relative overflow-hidden cursor-pointer hover:bg-white/10 active:scale-95 transition-all w-full"
             style={{ boxShadow: "0 0 20px rgba(34,197,94,0.1), inset 0 0 20px rgba(34,197,94,0.04)" }}>
             <div className="absolute top-2 right-2 text-[9px] bg-green-500 text-white font-black px-1.5 py-0.5 rounded-full">HOT</div>
             <div className="text-3xl mb-1">🌾</div>
-            <p className="text-white font-hindi font-bold text-sm">धान — खरीफ 2026</p>
-            <p className="text-white/50 font-hindi text-xs mt-0.5">1886 • PB1 • बासमती • हाइब्रिड</p>
+            <p className="text-white font-hindi font-bold text-sm">धान First Spray</p>
+            <p className="text-white/50 font-hindi text-xs mt-0.5">रोपाई के बाद सही Spray Guidance</p>
             <div className="mt-2 flex flex-wrap gap-1 justify-center">
               {["Fungicide", "Insecticide", "खरपतवार नाशक"].map(t => (
                 <span key={t} className="text-[10px] bg-green-500/20 text-green-300 px-2 py-0.5 rounded-full font-bold">{t}</span>
@@ -1368,13 +1363,13 @@ function OnlineDhanBookingSection() {
             </div>
             <p className="mt-2 text-green-300 font-hindi text-[10px] font-bold">👆 टैप करके Order करें</p>
           </button>
-          <button onClick={() => scrollToForm("JS-335 सोयाबीन")}
+          <button onClick={() => scrollToForm("खरपतवार नियंत्रण")
             className="bg-white/5 border border-yellow-400/40 rounded-2xl p-4 text-center relative overflow-hidden cursor-pointer hover:bg-white/10 active:scale-95 transition-all w-full"
             style={{ boxShadow: "0 0 20px rgba(234,179,8,0.1), inset 0 0 20px rgba(234,179,8,0.04)" }}>
             <div className="absolute top-2 right-2 text-[9px] bg-yellow-500 text-white font-black px-1.5 py-0.5 rounded-full">NEW</div>
             <div className="text-3xl mb-1">🌿</div>
-            <p className="text-white font-hindi font-bold text-sm">सोयाबीन — खरीफ 2026</p>
-            <p className="text-white/50 font-hindi text-xs mt-0.5">JS-335 • JS-9305 • NRC-86 • RKS-45</p>
+            <p className="text-white font-hindi font-bold text-sm">खरपतवार नियंत्रण</p>
+            <p className="text-white/50 font-hindi text-xs mt-0.5">घास रोकथाम और सही दवाई सलाह</p>
             <div className="mt-2 flex flex-wrap gap-1 justify-center">
               {["Fungicide", "Insecticide", "खरपतवार नाशक"].map(t => (
                 <span key={t} className="text-[10px] bg-yellow-500/20 text-yellow-300 px-2 py-0.5 rounded-full font-bold">{t}</span>
@@ -1426,10 +1421,10 @@ function OnlineDhanBookingSection() {
               </div>
             ))}
             <div className="sm:col-span-2">
-              <label className="block text-white/70 font-hindi text-sm mb-1.5">Product / Variety चुनें *</label>
+              <label className="block text-white/70 font-hindi text-sm mb-1.5">दवाई / समस्या चुनें *</label>
               <select name="variety" value={form.variety} onChange={handleChange} required
                 className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white font-hindi focus:outline-none focus:border-secondary transition-colors">
-                <option value="" className="bg-gray-800">— Variety / Product चुनें —</option>
+                <option value="" className="bg-gray-800">— दवाई / समस्या चुनें —</option>
                 {kharifVarieties.map(v => (
                   <option key={v} value={v} disabled={v.startsWith("──")} className="bg-gray-800 disabled:text-white/30">{v}</option>
                 ))}
@@ -1439,7 +1434,7 @@ function OnlineDhanBookingSection() {
           <motion.button type="submit" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
             className="w-full flex items-center justify-center gap-3 py-4 bg-secondary text-foreground font-hindi font-black text-lg rounded-2xl hover:bg-secondary/90 transition-all shadow-xl"
             style={{ boxShadow: "0 6px 24px rgba(249,168,37,0.45)" }}>
-            {sent ? "✅ Booking WhatsApp पर भेजी गई!" : <><FaWhatsapp className="w-6 h-6" /> अभी Booking करें — घर पर मिलेगा</>}
+            {sent ? "✅ Booking WhatsApp पर भेजी गई!" : <><FaWhatsapp className="w-6 h-6" /> WhatsApp पर सलाह लें</>}
           </motion.button>
           <p className="text-center text-white/30 text-xs font-hindi">📞 Keshav Bhai Booking Confirm करने के बाद WhatsApp करेंगे</p>
         </motion.form>
