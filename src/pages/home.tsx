@@ -1349,7 +1349,7 @@ const kharifVarieties = [
         {/* Seasonal crop cards */}
         <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
           className="grid grid-cols-2 gap-3 mb-5">
-          <button onClick={() => scrollToForm("धान First Spray")
+          <button onClick={() => scrollToForm("धान First Spray")}
             className="bg-white/5 border border-green-400/40 rounded-2xl p-4 text-center relative overflow-hidden cursor-pointer hover:bg-white/10 active:scale-95 transition-all w-full"
             style={{ boxShadow: "0 0 20px rgba(34,197,94,0.1), inset 0 0 20px rgba(34,197,94,0.04)" }}>
             <div className="absolute top-2 right-2 text-[9px] bg-green-500 text-white font-black px-1.5 py-0.5 rounded-full">HOT</div>
@@ -1363,7 +1363,7 @@ const kharifVarieties = [
             </div>
             <p className="mt-2 text-green-300 font-hindi text-[10px] font-bold">👆 टैप करके Order करें</p>
           </button>
-          <button onClick={() => scrollToForm("खरपतवार नियंत्रण")
+          <button onClick={() => scrollToForm("खरपतवार नियंत्रण")}
             className="bg-white/5 border border-yellow-400/40 rounded-2xl p-4 text-center relative overflow-hidden cursor-pointer hover:bg-white/10 active:scale-95 transition-all w-full"
             style={{ boxShadow: "0 0 20px rgba(234,179,8,0.1), inset 0 0 20px rgba(234,179,8,0.04)" }}>
             <div className="absolute top-2 right-2 text-[9px] bg-yellow-500 text-white font-black px-1.5 py-0.5 rounded-full">NEW</div>
