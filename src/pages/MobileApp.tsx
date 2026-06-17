@@ -34,7 +34,7 @@ const TABS: { id: Tab; label: string; labelHi: string; icon: React.ReactNode }[]
 ];
 
 
-cconst PRODUCTS = [
+const PRODUCTS = [
 {
 id:1,
 name:"धान First Spray",
