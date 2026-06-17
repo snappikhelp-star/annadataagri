@@ -228,11 +228,11 @@ function Navbar() {
 /* ─── Ticker Strip ─── */
 function TickerStrip() {
   const items = [
-    "🌱 खरीफ 2026 — हाइब्रिड और सोयाबीन बीज उपलब्ध हैं",
+    "💦 धान First Spray और दवाई सलाह उपलब्ध है",
     "🧴 फसल दवाइयों पर विशेष सुविधा — अभी जानकारी लें",
-    "🌾 गेहूं • सोयाबीन • धान • चना — सभी फसलों के बीज",
+    "🌾 धान रोपाई • First Spray • खरपतवार नियंत्रण • कीट रोग सलाह",
     "📞 Keshav Bhai से बात करें: 9691712455",
-    "✅ प्रमाणित बीज और विश्वसनीय फसल दवाइयां",
+    "✅ सही दवाई, सही मात्रा और भरोसेमंद सलाह",
     "⭐ Google Rating 4.9 — 200+ किसान भाइयों का भरोसा",
     "💬 WhatsApp पर सीधे पूछें — जल्द जवाब मिलेगा",
     "🌿 फसल की समस्या हो तो बेझिझक संपर्क करें",
@@ -266,7 +266,7 @@ function TickerStrip() {
 /* ─── Hero ─── */
 function HeroSection() {
   const trustBadges = [
-    { icon: <Sprout className="w-4 h-4" />, label: "बीज" },
+    { icon: <Sprout className="w-4 h-4" />, label: "धान सलाह" },
     { icon: <FlaskConical className="w-4 h-4" />, label: "फसल दवाई" },
     { icon: <Users className="w-4 h-4" />, label: "किसान सहायता" },
     { icon: <FaGoogle className="w-4 h-4" />, label: "Google Reviews" },
@@ -295,7 +295,7 @@ function HeroSection() {
             >
               <span className="w-2 h-2 rounded-full bg-red-500 flex-shrink-0 animate-pulse" />
               <span className="text-xs font-black uppercase tracking-widest text-red-500 font-hindi">
-                खरीफ 2026 — स्टॉक उपलब्ध है
+                धान First Spray Guidance LIVE
               </span>
             </motion.div>
 
@@ -306,9 +306,9 @@ function HeroSection() {
               transition={{ duration: 0.65, delay: 0.1 }}
               className="font-hindi font-black text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.2rem] leading-[1.25] text-gray-900"
             >
-              किसानों के लिए{" "}
+              धान रोपाई और{" "}
               <span className="relative inline-block text-green-700">
-                भरोसेमंद
+                First Spray
                 <motion.span
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
@@ -316,7 +316,7 @@ function HeroSection() {
                   className="absolute -bottom-1 left-0 right-0 h-[3px] rounded-full bg-yellow-400 origin-left"
                 />
               </span>{" "}
-             दवाई फसल और बीज 
+             की सही सलाह
             </motion.h1>
 
             {/* Subheading */}
@@ -326,7 +326,7 @@ function HeroSection() {
               transition={{ duration: 0.6, delay: 0.25 }}
               className="font-hindi text-gray-600 text-base md:text-lg leading-relaxed max-w-xl mx-auto lg:mx-0"
             >
-              Annadata Agri and Seeds में धान, गेहूं, सोयाबीन और अन्य फसलों के लिए सही सलाह और सही प्रोडक्ट मिलते हैं।
+              Annadata Agri and Seeds में धान रोपाई, First Spray, खरपतवार नियंत्रण, कीट/रोग और फसल दवाई की सही सलाह मिलती है।
             </motion.p>
 
             {/* Owner message card */}
@@ -367,7 +367,7 @@ function HeroSection() {
                 <Phone className="w-5 h-5" /> Call Now
               </motion.a>
               <motion.a
-                href={waLink("नमस्ते Keshav Bhai! मुझे बीज/दवाई की जानकारी चाहिए।")}
+                href={waLink("नमस्ते Keshav Bhai! मुझे धान First Spray और दवाई की सलाह चाहिए। खेत की फोटो भेज रहा हूँ।")}
                 target="_blank" rel="noreferrer"
                 data-testid="button-whatsapp-hero"
                 whileHover={{ scale: 1.04, y: -2 }}
@@ -476,7 +476,7 @@ function HeroSection() {
               {/* Floating crop tag — static for performance */}
               <div className="absolute -top-4 left-4 bg-green-700 text-white rounded-full px-3 py-1.5 text-xs font-black shadow-lg flex items-center gap-1.5">
                 <Sprout className="w-3.5 h-3.5" />
-                <span className="font-hindi">धान • गेहूं • सोयाबीन</span>
+                <span className="font-hindi">धान रोपाई • First Spray</span>
               </div>
             </div>
           </motion.div>
@@ -496,7 +496,7 @@ function HeroSection() {
             { icon: <ShieldCheck className="w-4 h-4 text-green-700" />, val: "100%", label: "असली माल" },
             { icon: <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />, val: "4.9★", label: "Google Rating" },
             { icon: <Clock className="w-4 h-4 text-green-700" />, val: "1 वर्ष", label: "अनुभव (Since July 2025)" },
-            { icon: <Leaf className="w-4 h-4 text-green-700" />, val: "50+", label: "Seed Varieties" },
+            { icon: <Leaf className="w-4 h-4 text-green-700" />, val: "24/7", label: "फसल सलाह" },
           ].map((s, i) => (
             <motion.div
               key={s.label}
@@ -587,14 +587,14 @@ function SmartFarmerHelpSection() {
   const [selected, setSelected] = useState<string | null>(null);
 
   const problems = [
-    { emoji: "🌾", label: "धान बीज चाहिए", color: "#22c55e" },
+    { emoji: "💦", label: "धान First Spray सलाह", color: "#22c55e" },
     { emoji: "🗒️", label: "धान का प्रोजेक्ट कराना है", color: "#F9A825" },
     { emoji: "🌿", label: "धान की दवाई चाहिए", color: "#00897B" },
     { emoji: "💦", label: "First Spray Guidance", color: "#26A69A" },
     { emoji: "🍂", label: "फसल में रोग लग गया", color: "#ef4444" },
     { emoji: "🌱", label: "खरपतवार नाशक चाहिए", color: "#84cc16" },
     { emoji: "🚜", label: "घर से धान उठवाई", color: "#f97316" },
-    { emoji: "🌾", label: "गेहूं बीज चाहिए", color: "#eab308" },
+    { emoji: "📸", label: "खेत की फोटो भेजकर सलाह", color: "#eab308" },
     { emoji: "🧑‍🌾", label: "किसान सलाह चाहिए", color: "#8b5cf6" },
     { emoji: "🌻", label: "अन्य समस्या", color: "#6b7280" },
   ];
@@ -769,10 +769,10 @@ function ProductsSection() {
 
   const products = [
     {
-      icon: <Leaf className="w-7 h-7" />, nameHi: "बीज", nameEn: "Seeds",
-      desc: "धान, गेहूं, सोयाबीन, चना सहित सभी प्रमुख फसलों के प्रमाणित हाइब्रिड बीज।",
+      icon: <Leaf className="w-7 h-7" />, nameHi: "धान First Spray", nameEn: "First Spray",
+      desc: "धान रोपाई के बाद First Spray, खरपतवार नियंत्रण और शुरुआती रोग से बचाव की सही सलाह।",
       accent: "#4CAF50", bg: "from-[#1B5E20] to-[#2E7D32]",
-      subs: ["धान बीज", "गेहूं बीज", "चना बीज", "1886 Variety", "PB1 धान", "सोयाबीन बीज"],
+      subs: ["First Spray", "खरपतवार नियंत्रण", "धान की दवाई", "कीट नियंत्रण", "Growth Spray", "फोटो भेजकर सलाह"],
     },
     {
       icon: <Bug className="w-7 h-7" />, nameHi: "कीटनाशक", nameEn: "Pesticides",
@@ -799,10 +799,10 @@ function ProductsSection() {
       subs: ["Humic Acid", "Seaweed Extract", "Amino Acid", "फूल झड़ना रोकें", "पकाव सुधारें", "अन्य"],
     },
     {
-      icon: <Sprout className="w-7 h-7" />, nameHi: "धान Varieties", nameEn: "Dhan Varieties",
-      desc: "1886 और PB1 सहित सभी प्रमुख हाइब्रिड धान varieties की जानकारी और बुकिंग।",
+      icon: <Sprout className="w-7 h-7" />, nameHi: "धान रोग/कीट सलाह", nameEn: "Crop Doctor",
+      desc: "धान में पीलापन, कीट, ब्लास्ट, जड़ सड़न और ग्रोथ रुकने पर सही दवाई की सलाह।",
       accent: "#43A047", bg: "from-[#1B5E20] to-[#388E3C]",
-      subs: ["1886 Variety", "PB1 धान", "अन्य हाइब्रिड", "बासमती", "शॉर्ट ड्यूरेशन", "लोकल Variety"],
+      subs: ["पत्ते पीले", "कीट लगना", "ब्लास्ट रोग", "जड़ सड़न", "ग्रोथ रुकना", "फोटो भेजकर सलाह"],
     },
     {
       icon: <Users className="w-7 h-7" />, nameHi: "किसान सहायता", nameEn: "Farmer Support",
