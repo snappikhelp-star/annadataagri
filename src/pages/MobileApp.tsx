@@ -33,15 +33,6 @@ const TABS: { id: Tab; label: string; labelHi: string; icon: React.ReactNode }[]
   { id: "contact",  label: "Contact",  labelHi: "संपर्क",   icon: <Phone className="w-5 h-5" /> },
 ];
 
-const PRODUCTS = [
-  { id: 1, name: "1886 हाइब्रिड धान", nameEn: "1886 Hybrid Dhan", category: "Seeds", crop: "Dhan", emoji: "🌾", badge: "BESTSELLER", badgeColor: "#16a34a", desc: "उच्च उत्पादन • कम समय • रोग प्रतिरोधी", price: "₹ On Request" },
-  { id: 2, name: "PB1 धान बीज", nameEn: "PB1 Dhan Seed", category: "Seeds", crop: "Dhan", emoji: "🌾", badge: "HOT", badgeColor: "#ef4444", desc: "लोकप्रिय किस्म • अधिक उपज", price: "₹ On Request" },
-  { id: 3, name: "JS-335 सोयाबीन", nameEn: "JS-335 Soyabean", category: "Seeds", crop: "Soyabean", emoji: "🌿", badge: "HOT", badgeColor: "#f59e0b", desc: "प्रमाणित बीज • जल्दी अंकुरण", price: "₹ On Request" },
-  { id: 4, name: "JS-9305 सोयाबीन", nameEn: "JS-9305 Soyabean", category: "Seeds", crop: "Soyabean", emoji: "🌿", badge: null, badgeColor: "", desc: "NRC-86 • RKS-45 भी उपलब्ध", price: "₹ On Request" },
-  { id: 5, name: "गेहूं बीज (रबी)", nameEn: "Wheat Seed (Rabi)", category: "Seeds", crop: "Gehu", emoji: "🌾", badge: null, badgeColor: "", desc: "प्रमाणित किस्म • सभी वेराइटी", price: "₹ On Request" },
-  { id: 6, name: "चना बीज", nameEn: "Chana Seed", category: "Seeds", crop: "Chana", emoji: "🫘", badge: null, badgeColor: "", desc: "JG-14 • Vikas — देसी व काबुली चना", price: "₹ On Request" },
-];
-
 const CATEGORIES = ["All", "Seeds"];
 const CROPS = ["All", "Dhan", "Soyabean", "Gehu", "Chana"];
 
