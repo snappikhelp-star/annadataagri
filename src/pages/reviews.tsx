@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
+import { Star, ArrowLeft, Copy } from "lucide-react";
 import { FaWhatsapp, FaGoogle } from "react-icons/fa";
 
 import logoPath from "@assets/f0d776c4-6a98-4584-9d3a-7186ca49bf22_1781029871797.png";
