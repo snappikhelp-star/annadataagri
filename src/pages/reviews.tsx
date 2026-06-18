@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { Star, ArrowLeft, MessageCircle, Copy } from "lucide-react";
 import { FaWhatsapp, FaGoogle } from "react-icons/fa";
 
 import logoPath from "@assets/f0d776c4-6a98-4584-9d3a-7186ca49bf22_1781029871797.png";
@@ -14,15 +13,6 @@ import {
 } from "../lib/reviewEngine";
 
 const GOOGLE_REVIEW_LINK = "https://g.page/r/Cc8Vg4qNog9QEBM/review";
-
-const testimonials = [
-  { name: "रामप्रशाद मीणा", text: "बहुत अच्छी दुकान है। बीज की गुणवत्ता शानदार है, दाम भी सही हैं। दिल से धन्यवाद केशव भाई।", rating: 5 },
-  { name: "Suresh Yadav", text: "Keshav bhai ka saman hamesha asli hota hai. Crop ka result bahut achha aaya is baar. Highly recommended!", rating: 5 },
-  { name: "महेश कुमार वर्मा", text: "कीटनाशक दवाई से फसल पूरी तरह ठीक हो गई। नई दुकान है पर सेवा पुरानों से बेहतर है।", rating: 5 },
-  { name: "गोविंद सिंह राजपूत", text: "पूरे रायसेन जिले में इतनी अच्छी कृषि दुकान नहीं मिलेगी। असली माल, सही दाम, और बढ़िया सलाह।", rating: 5 },
-  { name: "Mohan Lal Meena", text: "Weed killer bahut effective tha. Ek hi spray mein khet saaf ho gaya. Aage bhi yahi aaunga.", rating: 5 },
-  { name: "विजय कुमार पटेल", text: "हाइब्रिड बीज की क्वालिटी लाजवाब है। अंकुरण 95% से ऊपर था। अन्नदाता दुकान पर पूरा भरोसा है।", rating: 5 },
-];
 
 export default function ReviewsPage() {
   const [rating, setRating] = useState(0);
@@ -244,29 +234,7 @@ export default function ReviewsPage() {
           </div>
         </motion.div>
 
-        {/* Testimonials */}
-        <div className="mb-10">
-          <h3 className="font-hindi font-black text-2xl text-foreground mb-5">किसान भाइयों के अनुभव</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {testimonials.map((t, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.06 }}
-                className="bg-card rounded-2xl p-5 border border-border relative"
-                style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.05)" }}>
-                <MessageCircle className="absolute top-4 right-4 w-7 h-7 text-primary/8" />
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
-                    {t.name.charAt(0)}
-                  </div>
-                  <p className="font-bold text-foreground text-sm font-hindi">{t.name}</p>
-                </div>
-                <div className="flex gap-0.5 mb-2">
-                  {[...Array(t.rating)].map((_, j) => <Star key={j} className="w-3.5 h-3.5 text-secondary fill-current" />)}
-                </div>
-                <p className="text-foreground/75 text-xs font-hindi leading-relaxed">"{t.text}"</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+        
 
         {/* CTA bottom */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
