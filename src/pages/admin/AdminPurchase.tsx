@@ -1,3 +1,4 @@
+// AUTO-BILINGUAL UPDATE: Hardcoded Hindi UI labels converted to English where possible.
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useLang } from "@/hooks/useLang";
@@ -103,7 +104,7 @@ export default function AdminPurchase() {
           await supabase.from("stock_movements").insert([{
             product_id: i.product_id, movement_type: "in",
             quantity: i.quantity, previous_stock: prod.current_stock,
-            new_stock: newStock, notes: `खरीदारी ${pbNum}`, created_by: user?.email || "admin"
+            new_stock: newStock, notes: `Purchase ${pbNum}`, created_by: user?.email || "admin"
           }]);
         }
       }));
@@ -125,7 +126,7 @@ export default function AdminPurchase() {
         {(["new","history"] as const).map(tab => (
           <button key={tab} onClick={() => setActiveTab(tab)}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-hindi font-bold text-sm transition-all ${activeTab === tab ? "bg-green-600 text-white shadow-md" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>
-            {tab === "new" ? <><Plus className="w-4 h-4" /> नई खरीदारी</> : <><History className="w-4 h-4" /> {t("purchaseHistory")}</>}
+            {tab === "new" ? <><Plus className="w-4 h-4" /> नई Purchase</> : <><History className="w-4 h-4" /> {t("purchaseHistory")}</>}
           </button>
         ))}
       </div>
@@ -149,7 +150,7 @@ export default function AdminPurchase() {
                 placeholder={`${t("supplierName")} *`}
                 className="border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-3 font-hindi outline-none text-base" />
               <input value={supplierMobile} onChange={e => setSupplierMobile(e.target.value)}
-                placeholder="मोबाइल" type="tel"
+                placeholder="Mobile" type="tel"
                 className="border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-3 font-hindi outline-none text-base" />
               <input value={purchaseDate} onChange={e => setPurchaseDate(e.target.value)}
                 type="date" className="border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-3 font-hindi outline-none text-base" />
@@ -158,16 +159,16 @@ export default function AdminPurchase() {
               <label className="block font-hindi text-sm font-semibold text-gray-700 mb-1.5">सप्लायर बिल फोटो (वैकल्पिक)</label>
               <label className="flex items-center gap-3 cursor-pointer border-2 border-dashed border-green-200 rounded-xl px-4 py-3 hover:bg-green-50 transition-colors">
                 <Upload className="w-5 h-5 text-green-500" />
-                <span className="font-hindi text-green-700 text-sm">{uploading ? t("uploading") : "फोटो अपलोड करें"}</span>
+                <span className="font-hindi text-green-700 text-sm">{uploading ? t("uploading") : "फोटो Uploaded करें"}</span>
                 <input type="file" accept="image/*" className="hidden"
                   onChange={e => { if (e.target.files?.[0]) uploadBillPhoto(e.target.files[0]); }} />
-                {billPhoto && <span className="ml-auto text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-hindi">✅ अपलोड हो गया</span>}
+                {billPhoto && <span className="ml-auto text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-hindi">✅ Uploaded</span>}
               </label>
             </div>
           </div>
 
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-4">
-            <h3 className="font-bold text-gray-700 font-hindi">प्रोडक्ट जोड़ें</h3>
+            <h3 className="font-bold text-gray-700 font-hindi">Add Product</h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div className="col-span-2 sm:col-span-2">
                 <select value={selectedProduct} onChange={e => {
@@ -183,7 +184,7 @@ export default function AdminPurchase() {
                 placeholder={t("quantity")}
                 className="border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-3 font-hindi outline-none text-base" />
               <input type="number" min="0" value={selPrice || ""} onChange={e => setSelPrice(Number(e.target.value))}
-                placeholder="खरीद दाम ₹"
+                placeholder="खरीद Price ₹"
                 className="border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-3 font-hindi outline-none text-base" />
             </div>
             <button onClick={addItem} disabled={!selectedProduct || selQty <= 0 || selPrice <= 0}
@@ -221,7 +222,7 @@ export default function AdminPurchase() {
           <button onClick={savePurchase} disabled={saving}
             className="w-full bg-green-600 hover:bg-green-700 text-white py-4 rounded-xl font-hindi font-bold text-lg flex items-center justify-center gap-2 shadow-lg transition-all disabled:opacity-60">
             {saving ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <CheckCircle className="w-5 h-5" />}
-            {saving ? "सेव हो रहा है..." : t("savePurchase")}
+            {saving ? "Saving..." : t("savePurchase")}
           </button>
         </div>
       )}
@@ -232,7 +233,7 @@ export default function AdminPurchase() {
             <div className="flex justify-center py-12"><div className="w-10 h-10 border-4 border-green-500 border-t-transparent rounded-full animate-spin" /></div>
           ) : history.length === 0 ? (
             <div className="bg-gray-50 rounded-2xl p-10 text-center">
-              <p className="text-gray-400 font-hindi text-lg">कोई खरीदारी रिकॉर्ड नहीं</p>
+              <p className="text-gray-400 font-hindi text-lg">कोई Purchase रिकॉर्ड नहीं</p>
             </div>
           ) : history.map(pb => (
             <div key={pb.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
