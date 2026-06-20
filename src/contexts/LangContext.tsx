@@ -9,12 +9,12 @@ interface LangContextType {
 }
 
 export const LangContext = createContext<LangContextType>({
-  lang: "hi", setLang: () => {}, simpleMode: false, setSimpleMode: () => {},
+  lang: "en", setLang: () => {}, simpleMode: false, setSimpleMode: () => {},
 });
 
 export function LangProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>(() =>
-    (localStorage.getItem("annadata_lang") as Lang) || "hi"
+    (localStorage.getItem("annadata_lang") as Lang) || "en"
   );
   const [simpleMode, setSimpleModeState] = useState<boolean>(() =>
     localStorage.getItem("annadata_simple") === "true"
