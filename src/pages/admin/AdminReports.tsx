@@ -1,3 +1,4 @@
+// AUTO-BILINGUAL UPDATE: Hardcoded Hindi UI labels converted to English where possible.
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
@@ -99,7 +100,7 @@ export default function AdminReports() {
   function exportReport() {
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(topProducts.map(p => ({
-      प्रोडक्ट: p.name, मात्रा: p.qty, राजस्व: p.revenue
+      Product: p.name, Quantity: p.qty, राजस्व: p.revenue
     }))), "Best Sellers");
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(monthlyData.map(m => ({
       महीना: m.month, बिक्री: m.sales
@@ -110,17 +111,17 @@ export default function AdminReports() {
   const tabs = [
     { id: "daily" as const, label: "दैनिक" },
     { id: "monthly" as const, label: "मासिक" },
-    { id: "products" as const, label: "बेस्ट प्रोडक्ट" },
-    { id: "profit" as const, label: "लाभ / स्टॉक" },
+    { id: "products" as const, label: "बेस्ट Product" },
+    { id: "profit" as const, label: "लाभ / Stock" },
   ];
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold text-gray-800 font-hindi">रिपोर्ट्स</h2>
+        <h2 className="text-xl font-bold text-gray-800 font-hindi">Reports्स</h2>
         <button onClick={exportReport}
           className="flex items-center gap-2 bg-gray-100 text-gray-700 px-3 py-2 rounded-xl text-sm font-hindi hover:bg-gray-200">
-          <Download className="w-4 h-4" /> एक्सपोर्ट
+          <Download className="w-4 h-4" /> Export
         </button>
       </div>
 
@@ -129,8 +130,8 @@ export default function AdminReports() {
         {[
           { label: "कुल राजस्व", value: `₹${profitData.revenue.toLocaleString("en-IN")}`, color: "text-green-700 bg-green-50 border-green-100", icon: TrendingUp },
           { label: "अनुमानित लाभ", value: `₹${profitData.profit.toLocaleString("en-IN")}`, color: "text-blue-700 bg-blue-50 border-blue-100", icon: TrendingUp },
-          { label: "स्टॉक मूल्य", value: `₹${profitData.stockValue.toLocaleString("en-IN")}`, color: "text-purple-700 bg-purple-50 border-purple-100", icon: Package },
-          { label: "बेस्ट सेलर्स", value: topProducts.length.toString(), color: "text-orange-700 bg-orange-50 border-orange-100", icon: BookOpen },
+          { label: "Stock मूल्य", value: `₹${profitData.stockValue.toLocaleString("en-IN")}`, color: "text-purple-700 bg-purple-50 border-purple-100", icon: Package },
+          { label: "बेस्ट toलर्स", value: topProducts.length.toString(), color: "text-orange-700 bg-orange-50 border-orange-100", icon: BookOpen },
         ].map(c => (
           <div key={c.label} className={`${c.color} border rounded-2xl p-4 text-center`}>
             <p className="font-bold text-xl">{c.value}</p>
@@ -187,7 +188,7 @@ export default function AdminReports() {
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
               <h3 className="font-bold text-gray-700 font-hindi mb-4">मासिक बिक्री (पिछले 6 महीने)</h3>
               {monthlyData.length === 0 ? (
-                <p className="text-center text-gray-400 font-hindi py-8">अभी कोई डेटा नहीं</p>
+                <p className="text-center text-gray-400 font-hindi py-8">No data yet</p>
               ) : (
                 <ResponsiveContainer width="100%" height={220}>
                   <BarChart data={monthlyData} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
@@ -213,7 +214,7 @@ export default function AdminReports() {
           {activeTab === "products" && (
             <div className="space-y-4">
               <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-                <h3 className="font-bold text-gray-700 font-hindi mb-4">सर्वाधिक बिकने वाले प्रोडक्ट</h3>
+                <h3 className="font-bold text-gray-700 font-hindi mb-4">सर्वाधिक बिकने वाले Product</h3>
                 {topProducts.length === 0 ? (
                   <p className="text-center text-gray-400 font-hindi py-8">अभी कोई बिक्री डेटा नहीं</p>
                 ) : (
@@ -266,10 +267,10 @@ export default function AdminReports() {
           {activeTab === "profit" && (
             <div className="space-y-3">
               {[
-                { label: "कुल राजस्व", value: profitData.revenue, color: "from-green-50 to-green-100 border-green-200 text-green-800", note: "सभी बिल की कुल राशि" },
-                { label: "अनुमानित लागत", value: profitData.cost, color: "from-red-50 to-red-100 border-red-200 text-red-800", note: "खरीद मूल्य × बेची मात्रा" },
+                { label: "कुल राजस्व", value: profitData.revenue, color: "from-green-50 to-green-100 border-green-200 text-green-800", note: "All Bills की Total Amount" },
+                { label: "अनुमानित लागत", value: profitData.cost, color: "from-red-50 to-red-100 border-red-200 text-red-800", note: "खरीद मूल्य × बेची Quantity" },
                 { label: "अनुमानित लाभ", value: profitData.profit, color: "from-blue-50 to-blue-100 border-blue-200 text-blue-800", note: "राजस्व − लागत" },
-                { label: "मौजूदा स्टॉक मूल्य", value: profitData.stockValue, color: "from-purple-50 to-purple-100 border-purple-200 text-purple-800", note: "स्टॉक × खरीद मूल्य" },
+                { label: "मौजूदा Stock मूल्य", value: profitData.stockValue, color: "from-purple-50 to-purple-100 border-purple-200 text-purple-800", note: "Stock × खरीद मूल्य" },
               ].map(item => (
                 <div key={item.label} className={`bg-gradient-to-r ${item.color} border rounded-2xl p-5`}>
                   <div className="flex items-center justify-between">
