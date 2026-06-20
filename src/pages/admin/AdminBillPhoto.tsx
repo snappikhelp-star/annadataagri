@@ -1,3 +1,4 @@
+// AUTO-BILINGUAL UPDATE: Hardcoded Hindi UI labels converted to English where possible.
 import { useState, useRef } from "react";
 import { supabase } from "@/lib/supabase";
 import { useLang } from "@/hooks/useLang";
@@ -9,64 +10,8 @@ function makeInvNum() {
   return `BP-${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}-${Math.floor(Math.random()*9000)+1000}`;
 }
 
-
-const UI = {
-  hi: {
-    pageDesc: "बिल की फोटो अपलोड करें और मैनुअल एंट्री भरें। बाद में OCR/AI से ऑटो-एंट्री जोड़ी जाएगी।",
-    photoUploadFailedPrefix: "फोटो अपलोड नहीं हुई: ",
-    photoUploadFailedSuffix: " (Supabase में bill-images bucket बनाएं)",
-    customerNameRequired: "ग्राहक का नाम जरूरी है",
-    productNameRequired: "प्रोडक्ट का नाम जरूरी है",
-    qtyPriceRequired: "मात्रा और दाम भरें",
-    saveFailedPrefix: "सेव नहीं हुआ: ",
-    billSaved: "बिल सेव हो गया!",
-    dropPhoto: "फोटो खींचकर यहाँ छोड़ें या क्लिक करें",
-    supported: "JPG, PNG, WEBP सपोर्ट",
-    uploaded: "{L("uploaded")}",
-    uploadNote: "नोट: फोटो बिना अपलोड के भी एंट्री सेव हो सकती है।",
-    ocrTitle: "OCR / AI ऑटो-एंट्री",
-    ocrDesc: "भविष्य में बिल फोटो से ऑटोमैटिक डेटा भरा जाएगा। अभी मैनुअल एंट्री भरें।",
-    customerNamePh: "ग्राहक का नाम...",
-    mobilePh: "मोबाइल",
-    villagePh: "गांव",
-    productNamePh: "प्रोडक्ट का नाम...",
-    quantityPh: "मात्रा",
-    pricePh: "दाम",
-    total: "कुल",
-    notesPh: "नोट (वैकल्पिक)...",
-    saving: "सेव हो रहा है...",
-  },
-  en: {
-    pageDesc: "Upload a bill photo and fill manual entry. OCR/AI auto-entry will be added later.",
-    photoUploadFailedPrefix: "Photo upload failed: ",
-    photoUploadFailedSuffix: " (Create the bill-images bucket in Supabase)",
-    customerNameRequired: "Customer name is required",
-    productNameRequired: "Product name is required",
-    qtyPriceRequired: "Enter quantity and price",
-    saveFailedPrefix: "Save failed: ",
-    billSaved: "Bill saved!",
-    dropPhoto: "Drop a photo here or click to upload",
-    supported: "JPG, PNG, WEBP supported",
-    uploaded: "✅ Uploaded",
-    uploadNote: "Note: Entry can still be saved without photo upload.",
-    ocrTitle: "OCR / AI Auto Entry",
-    ocrDesc: "In future, data will be filled automatically from bill photos. For now, fill manual entry.",
-    customerNamePh: "Customer name...",
-    mobilePh: "Mobile",
-    villagePh: "Village",
-    productNamePh: "Product name...",
-    quantityPh: "Quantity",
-    pricePh: "Price",
-    total: "Total",
-    notesPh: "Notes (optional)...",
-    saving: "Saving...",
-  },
-} as const;
-
-
 export default function AdminBillPhoto() {
-  const { t, lang } = useLang();
-  const L = (key: keyof typeof UI.hi) => UI[lang]?.[key] ?? UI.hi[key];
+  const { t } = useLang();
   const { user } = useAuth();
   const fileRef = useRef<HTMLInputElement>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -106,7 +51,7 @@ export default function AdminBillPhoto() {
 
     const { data, error } = await supabase.storage.from("bill-images").upload(path, file, { upsert: true });
     if (error) {
-      setUploadError(L("photoUploadFailedPrefix") + error.message + L("photoUploadFailedSuffix"));
+      setUploadError("Photo upload failed: " + error.message + " (Supabase में bill-images bucket बनाएं)");
       setUploading(false);
       return;
     }
@@ -122,9 +67,9 @@ export default function AdminBillPhoto() {
   }
 
   async function saveBill() {
-    if (!customerName.trim()) { setSaveError(L("customerNameRequired")); return; }
-    if (!productName.trim()) { setSaveError(L("productNameRequired")); return; }
-    if (!quantity || !price) { setSaveError(L("qtyPriceRequired")); return; }
+    if (!customerName.trim()) { setSaveError("Customer name is required"); return; }
+    if (!productName.trim()) { setSaveError("Product name is required"); return; }
+    if (!quantity || !price) { setSaveError("Enter quantity and price"); return; }
     setSaving(true); setSaveError("");
 
     const invNum = makeInvNum();
@@ -141,7 +86,7 @@ export default function AdminBillPhoto() {
       created_by: user?.email || "admin"
     }]);
 
-    if (error) { setSaveError(L("saveFailedPrefix") + error.message); setSaving(false); return; }
+    if (error) { setSaveError("Not saved: " + error.message); setSaving(false); return; }
     setSaved(true); setSaving(false);
     setCustomerName(""); setCustomerMobile(""); setCustomerVillage("");
     setProductName(""); setQuantity(""); setPrice(""); setNotes("");
@@ -151,12 +96,12 @@ export default function AdminBillPhoto() {
   return (
     <div className="space-y-4">
       <h1 className="text-2xl font-bold text-gray-800 font-hindi">{t("billPhotoTitle")} 📸</h1>
-      <p className="text-gray-500 font-hindi text-sm">{L("pageDesc")}</p>
+      <p className="text-gray-500 font-hindi text-sm">Upload bill photo and fill manual entry. OCR/AI auto-entry can be added later.</p>
 
       {saved && (
         <div className="bg-green-50 border-2 border-green-400 rounded-2xl p-4 flex items-center gap-3">
           <CheckCircle className="w-6 h-6 text-green-600" />
-          <p className="text-green-800 font-hindi font-bold">{t("billCreated")} {L("billSaved")}</p>
+          <p className="text-green-800 font-hindi font-bold">{t("billCreated")} Bill saved!</p>
           <button onClick={() => setSaved(false)} className="ml-auto"><X className="w-5 h-5 text-green-600" /></button>
         </div>
       )}
@@ -178,8 +123,8 @@ export default function AdminBillPhoto() {
               <div className="space-y-3">
                 <Upload className="w-12 h-12 text-green-400 mx-auto" />
                 <p className="font-hindi text-green-700 font-bold text-lg">{t("uploadBill")}</p>
-                <p className="font-hindi text-gray-400 text-sm">{L("dropPhoto")}</p>
-                <p className="font-hindi text-gray-300 text-xs">{L("supported")}</p>
+                <p className="font-hindi text-gray-400 text-sm">Drop a photo here or click</p>
+                <p className="font-hindi text-gray-300 text-xs">JPG, PNG, WEBP supported</p>
               </div>
             )}
           </div>
@@ -193,7 +138,7 @@ export default function AdminBillPhoto() {
               </button>
               {imageUrl && (
                 <div className="absolute bottom-2 left-2 bg-green-600 text-white text-xs px-3 py-1 rounded-full font-hindi">
-                  {L("uploaded")}
+                  ✅ Uploaded
                 </div>
               )}
             </div>
@@ -202,7 +147,7 @@ export default function AdminBillPhoto() {
           {uploadError && (
             <div className="bg-red-50 border border-red-200 rounded-xl p-3">
               <p className="text-red-600 text-sm font-hindi">{uploadError}</p>
-              <p className="text-red-400 text-xs font-hindi mt-1">{L("uploadNote")}</p>
+              <p className="text-red-400 text-xs font-hindi mt-1">Note: entry can still be saved without photo upload.</p>
             </div>
           )}
 
@@ -210,9 +155,9 @@ export default function AdminBillPhoto() {
             <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Image className="w-5 h-5 text-yellow-600" />
-                <p className="font-hindi font-bold text-yellow-800">{L("ocrTitle")}</p>
+                <p className="font-hindi font-bold text-yellow-800">OCR / AI Auto-entry</p>
               </div>
-              <p className="font-hindi text-yellow-700 text-sm">{L("ocrDesc")}</p>
+              <p className="font-hindi text-yellow-700 text-sm">In future, bill photo data can be filled automatically. For now, fill manual entry.</p>
             </div>
           )}
         </div>
@@ -224,46 +169,46 @@ export default function AdminBillPhoto() {
             <div>
               <label className="block font-hindi text-sm font-semibold text-gray-700 mb-1.5">{t("customerName")} *</label>
               <input value={customerName} onChange={e => setCustomerName(e.target.value)}
-                placeholder={L("customerNamePh")}
+                placeholder="Customer Name..."
                 className="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-3 font-hindi outline-none text-base" />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block font-hindi text-sm font-semibold text-gray-700 mb-1.5">{t("mobile")}</label>
                 <input value={customerMobile} onChange={e => setCustomerMobile(e.target.value)}
-                  placeholder={L("mobilePh")} type="tel"
+                  placeholder="Mobile" type="tel"
                   className="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-3 font-hindi outline-none text-base" />
               </div>
               <div>
                 <label className="block font-hindi text-sm font-semibold text-gray-700 mb-1.5">{t("village")}</label>
                 <input value={customerVillage} onChange={e => setCustomerVillage(e.target.value)}
-                  placeholder={L("villagePh")}
+                  placeholder="Village"
                   className="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-3 font-hindi outline-none text-base" />
               </div>
             </div>
             <div>
               <label className="block font-hindi text-sm font-semibold text-gray-700 mb-1.5">{t("product")} *</label>
               <input value={productName} onChange={e => setProductName(e.target.value)}
-                placeholder={L("productNamePh")}
+                placeholder="Product Name..."
                 className="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-3 font-hindi outline-none text-base" />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block font-hindi text-sm font-semibold text-gray-700 mb-1.5">{t("quantity")} *</label>
                 <input value={quantity} onChange={e => setQuantity(e.target.value)}
-                  placeholder={L("quantityPh")} type="number" min="0"
+                  placeholder="Quantity" type="number" min="0"
                   className="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-3 font-hindi outline-none text-base" />
               </div>
               <div>
                 <label className="block font-hindi text-sm font-semibold text-gray-700 mb-1.5">{t("price")} (₹) *</label>
                 <input value={price} onChange={e => setPrice(e.target.value)}
-                  placeholder={L("pricePh")} type="number" min="0"
+                  placeholder="Price" type="number" min="0"
                   className="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-3 font-hindi outline-none text-base" />
               </div>
             </div>
             {totalAmount > 0 && (
               <div className="bg-green-50 rounded-xl px-4 py-3 text-center">
-                <p className="text-green-800 font-hindi font-bold text-xl">{L("total")}: ₹{totalAmount.toLocaleString("en-IN")}</p>
+                <p className="text-green-800 font-hindi font-bold text-xl">कुल: ₹{totalAmount.toLocaleString("en-IN")}</p>
               </div>
             )}
             <div className="grid grid-cols-2 gap-2">
@@ -279,7 +224,7 @@ export default function AdminBillPhoto() {
             <div>
               <label className="block font-hindi text-sm font-semibold text-gray-700 mb-1.5">{t("notes")}</label>
               <textarea value={notes} onChange={e => setNotes(e.target.value)}
-                placeholder={L("notesPh")} rows={2}
+                placeholder="Notes (optional)..." rows={2}
                 className="w-full border-2 border-gray-200 focus:border-green-500 rounded-xl px-4 py-3 font-hindi outline-none text-base resize-none" />
             </div>
           </div>
@@ -289,7 +234,7 @@ export default function AdminBillPhoto() {
           <button onClick={saveBill} disabled={saving}
             className="w-full bg-green-600 hover:bg-green-700 text-white py-4 rounded-xl font-hindi font-bold text-lg flex items-center justify-center gap-2 shadow-lg transition-all disabled:opacity-60">
             {saving ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <CheckCircle className="w-5 h-5" />}
-            {saving ? L("saving") : t("saveBill")}
+            {saving ? "Saving..." : t("saveBill")}
           </button>
         </div>
       </div>
