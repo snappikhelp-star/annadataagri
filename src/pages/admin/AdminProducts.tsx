@@ -1,3 +1,4 @@
+// AUTO-BILINGUAL UPDATE: Hardcoded Hindi UI labels converted to English where possible.
 import { useEffect, useState, useRef } from "react";
 import { useLocation, useRoute } from "wouter";
 import { supabase } from "@/lib/supabase";
@@ -151,7 +152,7 @@ export default function AdminProducts() {
       नाम: p.name, श्रेणी: CATEGORY_HI[p.category] || p.category,
       फसल: CROP_HI[p.crop_type] || p.crop_type, कंपनी: p.company,
       खरीद_मूल्य: p.purchase_price, बिक्री_मूल्य: p.selling_price,
-      स्टॉक: p.current_stock, इकाई: p.unit,
+      Stock: p.current_stock, इकाई: p.unit,
       स्थिति: p.is_active ? "एक्टिव" : "बंद"
     })));
     const wb = XLSX.utils.book_new();
@@ -172,7 +173,7 @@ export default function AdminProducts() {
       company: String(r["कंपनी"] || r["company"] || "").trim(),
       purchase_price: Number(r["खरीद_मूल्य"] || r["purchase_price"] || 0),
       selling_price: Number(r["बिक्री_मूल्य"] || r["selling_price"] || 0),
-      current_stock: Number(r["स्टॉक"] || r["current_stock"] || 0),
+      current_stock: Number(r["Stock"] || r["current_stock"] || 0),
       unit: r["unit"] || r["इकाई"] || "kg",
       low_stock_limit: Number(r["low_stock_limit"] || 5),
       is_active: true, is_offer: false
@@ -181,27 +182,27 @@ export default function AdminProducts() {
     if (!toInsert.length) return alert("कोई valid data नहीं मिला।");
     const { error } = await supabase.from("products").insert(toInsert);
     if (error) alert("Import error: " + error.message);
-    else { fetchProducts(); alert(`✅ ${toInsert.length} प्रोडक्ट इम्पोर्ट हुए!`); }
+    else { fetchProducts(); alert(`✅ ${toInsert.length} Product इम्पोर्ट हुए!`); }
     if (importRef.current) importRef.current.value = "";
   }
 
   return (
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-        <h2 className="text-xl font-bold text-gray-800 font-hindi">प्रोडक्ट मैनेजमेंट</h2>
+        <h2 className="text-xl font-bold text-gray-800 font-hindi">Product मैनेजमेंट</h2>
         <div className="flex gap-2 flex-wrap">
           <label className="flex items-center gap-2 bg-gray-100 text-gray-700 px-3 py-2 rounded-xl text-sm font-hindi cursor-pointer hover:bg-gray-200">
             <Upload className="w-4 h-4" /> इम्पोर्ट
             <input type="file" accept=".xlsx,.xls" onChange={handleImport} className="hidden" ref={importRef} />
           </label>
           <button onClick={handleExport} className="flex items-center gap-2 bg-gray-100 text-gray-700 px-3 py-2 rounded-xl text-sm font-hindi hover:bg-gray-200">
-            <Download className="w-4 h-4" /> एक्सपोर्ट
+            <Download className="w-4 h-4" /> Export
           </button>
           <button
             onClick={() => { setForm({ ...emptyForm }); setEditId(null); setImageFile(null); setImagePreview(""); setShowForm(true); }}
             className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-xl text-sm font-hindi hover:bg-green-700 shadow-md"
           >
-            <Plus className="w-4 h-4" /> नया प्रोडक्ट
+            <Plus className="w-4 h-4" /> नया Product
           </button>
         </div>
       </div>
@@ -212,7 +213,7 @@ export default function AdminProducts() {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <input
             value={search} onChange={e => setSearch(e.target.value)}
-            placeholder="प्रोडक्ट खोजें..."
+            placeholder="Product खोजें..."
             className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-green-500 font-hindi"
           />
         </div>
@@ -220,7 +221,7 @@ export default function AdminProducts() {
           value={catFilter} onChange={e => setCatFilter(e.target.value)}
           className="border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-green-500 font-hindi"
         >
-          <option value="all">सभी श्रेणी</option>
+          <option value="all">All श्रेणी</option>
           {CATEGORIES.map(c => <option key={c} value={c}>{CATEGORY_HI[c]}</option>)}
         </select>
       </div>
@@ -231,16 +232,16 @@ export default function AdminProducts() {
           <div className="bg-white rounded-2xl w-full max-w-2xl my-4 shadow-2xl">
             <div className="flex items-center justify-between px-6 py-4 border-b sticky top-0 bg-white rounded-t-2xl z-10">
               <h3 className="font-bold text-gray-800 font-hindi text-lg">
-                {editId ? "प्रोडक्ट एडिट करें" : "नया प्रोडक्ट जोड़ें"}
+                {editId ? "Product एडिट करें" : "नया Add Product"}
               </h3>
               <button onClick={closeForm} className="p-2 hover:bg-gray-100 rounded-lg"><X className="w-5 h-5" /></button>
             </div>
             <form onSubmit={handleSubmit} className="p-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="sm:col-span-2">
-                <label className="block text-sm font-semibold text-gray-700 font-hindi mb-1">प्रोडक्ट का नाम *</label>
+                <label className="block text-sm font-semibold text-gray-700 font-hindi mb-1">Product Name *</label>
                 <input required value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
                   className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-green-500"
-                  placeholder="जैसे: पूसा-1886 धान बीज" />
+                  placeholder="जैto: पूसा-1886 धान बीज" />
               </div>
               <div>
                 <label className="block text-sm font-semibold text-gray-700 font-hindi mb-1">श्रेणी *</label>
@@ -260,7 +261,7 @@ export default function AdminProducts() {
                 <label className="block text-sm font-semibold text-gray-700 font-hindi mb-1">कंपनी</label>
                 <input value={form.company} onChange={e => setForm(f => ({ ...f, company: e.target.value }))}
                   className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-green-500"
-                  placeholder="जैसे: Bayer, Syngenta" />
+                  placeholder="जैto: Bayer, Syngenta" />
               </div>
               <div>
                 <label className="block text-sm font-semibold text-gray-700 font-hindi mb-1">इकाई</label>
@@ -282,19 +283,19 @@ export default function AdminProducts() {
                   className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-green-500" />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-700 font-hindi mb-1">मौजूदा स्टॉक *</label>
+                <label className="block text-sm font-semibold text-gray-700 font-hindi mb-1">मौजूदा Stock *</label>
                 <input type="number" min="0" required value={form.current_stock}
                   onChange={e => setForm(f => ({ ...f, current_stock: Number(e.target.value) }))}
                   className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-green-500" />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-700 font-hindi mb-1">कम स्टॉक लिमिट</label>
+                <label className="block text-sm font-semibold text-gray-700 font-hindi mb-1">Low Stock लिमिट</label>
                 <input type="number" min="0" value={form.low_stock_limit}
                   onChange={e => setForm(f => ({ ...f, low_stock_limit: Number(e.target.value) }))}
                   className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-green-500" />
               </div>
               <div className="sm:col-span-2">
-                <label className="block text-sm font-semibold text-gray-700 font-hindi mb-1">प्रोडक्ट फोटो</label>
+                <label className="block text-sm font-semibold text-gray-700 font-hindi mb-1">Product फोटो</label>
                 <div className="flex gap-3 items-center">
                   <label className="flex items-center gap-2 border-2 border-dashed border-gray-300 rounded-xl px-4 py-3 cursor-pointer hover:border-green-400 text-sm text-gray-500">
                     <ImageIcon className="w-5 h-5" />
@@ -308,7 +309,7 @@ export default function AdminProducts() {
                 </div>
               </div>
               <div className="sm:col-span-2">
-                <label className="block text-sm font-semibold text-gray-700 font-hindi mb-1">नोट्स</label>
+                <label className="block text-sm font-semibold text-gray-700 font-hindi mb-1">Notes्स</label>
                 <textarea value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
                   rows={2} className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-green-500 font-hindi resize-none"
                   placeholder="कोई खास जानकारी..." />
@@ -328,11 +329,11 @@ export default function AdminProducts() {
               <div className="sm:col-span-2 flex gap-3 pt-2">
                 <button type="submit" disabled={saving}
                   className="flex-1 bg-green-600 text-white py-3 rounded-xl font-hindi font-bold hover:bg-green-700 disabled:opacity-60 transition-colors">
-                  {saving ? "सेव हो रहा है..." : editId ? "अपडेट करें" : "जोड़ें"}
+                  {saving ? "Saving..." : editId ? "Update करें" : "जोड़ें"}
                 </button>
                 <button type="button" onClick={closeForm}
                   className="px-6 bg-gray-100 text-gray-700 py-3 rounded-xl font-hindi hover:bg-gray-200 transition-colors">
-                  रद्द करें
+                  Cancel करें
                 </button>
               </div>
             </form>
@@ -348,7 +349,7 @@ export default function AdminProducts() {
       ) : (
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="px-4 py-3 border-b border-gray-100 text-sm text-gray-500 font-hindi">
-            कुल {filtered.length} प्रोडक्ट
+            कुल {filtered.length} Product
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -357,7 +358,7 @@ export default function AdminProducts() {
                   <th className="text-left px-4 py-3 font-hindi text-gray-600 font-semibold">नाम</th>
                   <th className="text-left px-4 py-3 font-hindi text-gray-600 font-semibold hidden md:table-cell">श्रेणी</th>
                   <th className="text-right px-4 py-3 font-hindi text-gray-600 font-semibold">मूल्य</th>
-                  <th className="text-right px-4 py-3 font-hindi text-gray-600 font-semibold">स्टॉक</th>
+                  <th className="text-right px-4 py-3 font-hindi text-gray-600 font-semibold">Stock</th>
                   <th className="text-center px-4 py-3 font-hindi text-gray-600 font-semibold hidden sm:table-cell">स्थिति</th>
                   <th className="text-right px-4 py-3 font-hindi text-gray-600 font-semibold">क्रिया</th>
                 </tr>
@@ -394,7 +395,7 @@ export default function AdminProducts() {
                         {p.current_stock} {p.unit}
                       </span>
                       {Number(p.current_stock) <= Number(p.low_stock_limit) && (
-                        <p className="text-red-500 text-xs font-hindi">कम स्टॉक!</p>
+                        <p className="text-red-500 text-xs font-hindi">Low Stock!</p>
                       )}
                     </td>
                     <td className="px-4 py-3 text-center hidden sm:table-cell">
@@ -418,7 +419,7 @@ export default function AdminProducts() {
                 {filtered.length === 0 && (
                   <tr>
                     <td colSpan={6} className="text-center py-12 text-gray-400 font-hindi">
-                      {search || catFilter !== "all" ? "कोई प्रोडक्ट नहीं मिला" : "अभी कोई प्रोडक्ट नहीं — ऊपर से जोड़ें"}
+                      {search || catFilter !== "all" ? "No product found" : "अभी कोई Product नहीं — ऊपर to जोड़ें"}
                     </td>
                   </tr>
                 )}
