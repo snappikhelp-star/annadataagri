@@ -1,3 +1,4 @@
+// AUTO-BILINGUAL UPDATE: Hardcoded Hindi UI labels converted to English where possible.
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import {
@@ -86,7 +87,7 @@ export default function AdminDashboard() {
 
   const cards = [
     {
-      label: "आज की बिक्री", value: `₹${stats.todaySales.toLocaleString("en-IN")}`,
+      label: "Today Sales", value: `₹${stats.todaySales.toLocaleString("en-IN")}`,
       sub: `${stats.todayInvoices} बिल`, icon: ShoppingCart,
       color: "from-green-500 to-green-600", link: "/admin/billing"
     },
@@ -96,28 +97,28 @@ export default function AdminDashboard() {
       color: "from-blue-500 to-blue-600", link: "/admin/reports"
     },
     {
-      label: "कुल उधार", value: `₹${stats.totalUdhaar.toLocaleString("en-IN")}`,
-      sub: "बकाया राशि", icon: BookOpen,
+      label: "Total Credit", value: `₹${stats.totalUdhaar.toLocaleString("en-IN")}`,
+      sub: "बकाया Amount", icon: BookOpen,
       color: "from-orange-500 to-orange-600", link: "/admin/khata"
     },
     {
-      label: "कम स्टॉक", value: stats.lowStockCount.toString(),
-      sub: "प्रोडक्ट", icon: AlertTriangle,
+      label: "Low Stock", value: stats.lowStockCount.toString(),
+      sub: "Product", icon: AlertTriangle,
       color: "from-red-500 to-red-600", link: "/admin/stock"
     },
     {
-      label: "कुल प्रोडक्ट", value: stats.totalProducts.toString(),
+      label: "कुल Product", value: stats.totalProducts.toString(),
       sub: "एक्टिव", icon: Package,
       color: "from-purple-500 to-purple-600", link: "/admin/products"
     },
     {
-      label: "कुल ग्राहक", value: stats.totalCustomers.toString(),
+      label: "Total Customers", value: stats.totalCustomers.toString(),
       sub: "रजिस्टर्ड", icon: Users,
       color: "from-teal-500 to-teal-600", link: "/admin/customers"
     },
     {
-      label: "Company को देना है", value: `₹${stats.companyPending.toLocaleString("en-IN")}`,
-      sub: `${stats.pendingSuppliers} कंपनियाँ बाकी`, icon: Building2,
+      label: "Company Payables", value: `₹${stats.companyPending.toLocaleString("en-IN")}`,
+      sub: `${stats.pendingSuppliers} Companies Due`, icon: Building2,
       color: "from-rose-500 to-rose-600", link: "/admin/company-payments"
     },
   ];
@@ -167,7 +168,7 @@ export default function AdminDashboard() {
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-bold text-gray-800 font-hindi flex items-center gap-2">
                 <AlertTriangle className="w-5 h-5 text-red-500" />
-                कम स्टॉक अलर्ट
+                Low Stock Alerts
               </h3>
               <Link href="/admin/stock" className="text-green-600 text-sm font-hindi hover:underline">सब देखें →</Link>
             </div>
@@ -189,7 +190,7 @@ export default function AdminDashboard() {
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-bold text-gray-800 font-hindi flex items-center gap-2">
                 <ShoppingCart className="w-5 h-5 text-green-600" />
-                हाल के बिल
+                Recent Bills
               </h3>
               <Link href="/admin/billing" className="text-green-600 text-sm font-hindi hover:underline">सब देखें →</Link>
             </div>
@@ -207,7 +208,7 @@ export default function AdminDashboard() {
                       inv.payment_status === "udhaar" ? "bg-orange-100 text-orange-700" :
                       "bg-yellow-100 text-yellow-700"
                     }`}>
-                      {inv.payment_status === "paid" ? "पेड" : inv.payment_status === "udhaar" ? "उधार" : "आंशिक"}
+                      {inv.payment_status === "paid" ? "Paid" : inv.payment_status === "udhaar" ? "Credit" : "Partial"}
                     </span>
                   </div>
                 </div>
@@ -220,10 +221,10 @@ export default function AdminDashboard() {
       {/* Quick actions */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          { label: "नया बिल", icon: ShoppingCart, link: "/admin/billing/new", color: "bg-green-600" },
-          { label: "प्रोडक्ट जोड़ें", icon: Package, link: "/admin/products/add", color: "bg-blue-600" },
-          { label: "स्टॉक इन", icon: Package, link: "/admin/stock", color: "bg-purple-600" },
-          { label: "रिपोर्ट", icon: TrendingUp, link: "/admin/reports", color: "bg-orange-600" },
+          { label: "New Bill", icon: ShoppingCart, link: "/admin/billing/new", color: "bg-green-600" },
+          { label: "Add Product", icon: Package, link: "/admin/products/add", color: "bg-blue-600" },
+          { label: "Stock In", icon: Package, link: "/admin/stock", color: "bg-purple-600" },
+          { label: "Reports", icon: TrendingUp, link: "/admin/reports", color: "bg-orange-600" },
         ].map(btn => (
           <Link key={btn.label} href={btn.link}>
             <button className={`${btn.color} text-white rounded-2xl px-4 py-4 w-full flex flex-col items-center gap-2 hover:opacity-90 transition-opacity shadow-md`}>
