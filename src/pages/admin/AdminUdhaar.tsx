@@ -1,3 +1,4 @@
+// AUTO-BILINGUAL UPDATE: Hardcoded Hindi UI labels converted to English where possible.
 import { useEffect, useState, useMemo } from "react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/hooks/useAuth";
@@ -103,7 +104,7 @@ export default function AdminUdhaar() {
       supabase.from("payments").insert([{
         customer_id: selected.id,
         amount: amt,
-        notes: payNotes || `₹${amt} उधार वसूली — ${selected.name}`,
+        notes: payNotes || `₹${amt} Credit Collection — ${selected.name}`,
         created_by: user?.email || "admin",
       }]),
       supabase.from("customers").update({
@@ -113,7 +114,7 @@ export default function AdminUdhaar() {
     ]);
     setSaving(false);
     if (e1 || e2) { setToast("❌ कुछ गड़बड़ हुई, फिर कोशिश करें"); return; }
-    setToast(`✅ ₹${amt.toLocaleString("en-IN")} प्राप्त — ${selected.name}`);
+    setToast(`✅ ₹${amt.toLocaleString("en-IN")} Received — ${selected.name}`);
     setSelected(null);
     setPayAmount("");
     setPayNotes("");
@@ -125,17 +126,17 @@ export default function AdminUdhaar() {
     const msg =
       `नमस्ते *${c.name}* जी 🙏\n\n` +
       `*अन्नदाता एग्री & सीड्स*\n` +
-      `सलामतपुर, रायसेन रोड | 📞 6261737388\n\n` +
-      `आपका उधार बकाया है:\n` +
+      `सलामतपुर, रायtoन रोड | 📞 6261737388\n\n` +
+      `आपका Credit बकाया है:\n` +
       `💰 *₹${Number(c.total_udhaar).toLocaleString("en-IN")}*\n` +
-      `📅 ${days} दिन से बकाया\n\n` +
-      `कृपया जल्द भुगतान करें।\n\n` +
+      `📅 ${days} दिन to बकाया\n\n` +
+      `कृपया जल्द Payment करें।\n\n` +
       `_धन्यवाद — केशव मीणा 🌾_`;
     window.open(`https://wa.me/91${c.mobile}?text=${encodeURIComponent(msg)}`, "_blank");
   }
 
   const bucketConfig = {
-    all: { label: "सभी", color: "bg-gray-100 text-gray-700 border-gray-200", count: totals.count },
+    all: { label: "All", color: "bg-gray-100 text-gray-700 border-gray-200", count: totals.count },
     fresh: { label: "0–30 दिन", color: "bg-green-50 text-green-700 border-green-200", count: totals.fresh },
     medium: { label: "31–60 दिन", color: "bg-yellow-50 text-yellow-700 border-yellow-200", count: totals.medium },
     overdue: { label: "60+ दिन ⚠️", color: "bg-red-50 text-red-700 border-red-200", count: totals.overdue },
@@ -154,8 +155,8 @@ export default function AdminUdhaar() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-bold text-gray-800 font-hindi">उधार वसूली</h2>
-          <p className="text-gray-500 text-xs font-hindi mt-0.5">बकाया राशि ट्रैक करें और वसूल करें</p>
+          <h2 className="text-xl font-bold text-gray-800 font-hindi">Credit Collection</h2>
+          <p className="text-gray-500 text-xs font-hindi mt-0.5">बकाया Amount ट्रैक करें और वसूल करें</p>
         </div>
       </div>
 
@@ -164,10 +165,10 @@ export default function AdminUdhaar() {
         <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl p-4 text-white shadow-lg md:col-span-2">
           <div className="flex items-center gap-2 mb-1">
             <IndianRupee className="w-5 h-5 opacity-80" />
-            <span className="text-orange-100 text-sm font-hindi">कुल बकाया उधार</span>
+            <span className="text-orange-100 text-sm font-hindi">Total Due Credit</span>
           </div>
           <p className="text-3xl font-black">₹{totals.total.toLocaleString("en-IN")}</p>
-          <p className="text-orange-200 text-xs mt-1 font-hindi">{totals.count} ग्राहकों से वसूलना है</p>
+          <p className="text-orange-200 text-xs mt-1 font-hindi">{totals.count} ग्राहकों to वसूलना है</p>
         </div>
 
         <div className="bg-white border border-yellow-200 rounded-2xl p-4 shadow-sm">
@@ -196,7 +197,7 @@ export default function AdminUdhaar() {
           <input
             value={search}
             onChange={e => setSearch(e.target.value)}
-            placeholder="नाम, मोबाइल नंबर या गांव खोजें..."
+            placeholder="नाम, Mobile Number या Village खोजें..."
             className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-green-500 font-hindi"
           />
         </div>
@@ -223,7 +224,7 @@ export default function AdminUdhaar() {
                 onChange={e => setVillageFilter(e.target.value)}
                 className="appearance-none border border-gray-200 rounded-xl px-3 py-1.5 pr-8 text-xs font-hindi focus:outline-none focus:border-green-500 bg-white"
               >
-                <option value="all">सभी गांव</option>
+                <option value="all">All Villages</option>
                 {villages.map(v => <option key={v} value={v}>{v}</option>)}
               </select>
               <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-400 pointer-events-none" />
@@ -234,11 +235,11 @@ export default function AdminUdhaar() {
 
       {/* Customer List */}
       {loading ? (
-        <div className="text-center py-16 text-gray-400 font-hindi">लोड हो रहा है...</div>
+        <div className="text-center py-16 text-gray-400 font-hindi">Loading...</div>
       ) : filtered.length === 0 ? (
         <div className="text-center py-16 text-gray-400 font-hindi">
           <Wallet className="w-12 h-12 mx-auto mb-3 opacity-30" />
-          <p className="font-bold">कोई बकाया उधार नहीं मिला</p>
+          <p className="font-bold">कोई बकाया Credit नहीं मिला</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -301,7 +302,7 @@ export default function AdminUdhaar() {
                     onClick={() => { setSelected(c); setPayAmount(""); setPayNotes(""); }}
                     className="flex-1 flex items-center justify-center gap-1.5 bg-green-600 hover:bg-green-700 text-white rounded-xl py-2 text-xs font-hindi font-bold transition-colors shadow-sm"
                   >
-                    <CheckCircle className="w-4 h-4" /> भुगतान मिला
+                    <CheckCircle className="w-4 h-4" /> Payment मिला
                   </button>
                   {c.mobile && (
                     <button
@@ -348,13 +349,13 @@ export default function AdminUdhaar() {
                 <p className="text-4xl font-black text-orange-600">
                   ₹{Number(selected.total_udhaar).toLocaleString("en-IN")}
                 </p>
-                <p className="text-gray-500 font-hindi text-sm mt-1">बकाया उधार</p>
+                <p className="text-gray-500 font-hindi text-sm mt-1">बकाया Credit</p>
               </div>
 
               {/* Amount Input */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 font-hindi mb-2">
-                  प्राप्त राशि (₹)
+                  Received Amount (₹)
                 </label>
                 <div className="flex gap-2">
                   <input
@@ -363,7 +364,7 @@ export default function AdminUdhaar() {
                     max={Number(selected.total_udhaar)}
                     value={payAmount}
                     onChange={e => setPayAmount(e.target.value === "" ? "" : Number(e.target.value))}
-                    placeholder="₹ राशि दर्ज करें"
+                    placeholder="₹ Amount दर्ज करें"
                     className="flex-1 border-2 border-gray-200 rounded-xl px-4 py-3 text-xl font-black text-center focus:outline-none focus:border-green-500"
                   />
                   <button
@@ -391,7 +392,7 @@ export default function AdminUdhaar() {
               {/* New balance preview */}
               {payAmount !== "" && Number(payAmount) > 0 && (
                 <div className="bg-green-50 border border-green-200 rounded-xl p-3 flex items-center justify-between">
-                  <span className="text-green-700 font-hindi text-sm font-bold">भुगतान के बाद बकाया:</span>
+                  <span className="text-green-700 font-hindi text-sm font-bold">Payment के बाद बकाया:</span>
                   <span className="text-green-800 font-black text-lg">
                     ₹{Math.max(0, Number(selected.total_udhaar) - Number(payAmount)).toLocaleString("en-IN")}
                   </span>
@@ -402,7 +403,7 @@ export default function AdminUdhaar() {
               <input
                 value={payNotes}
                 onChange={e => setPayNotes(e.target.value)}
-                placeholder="नोट (वैकल्पिक)..."
+                placeholder="Notes (optional)..."
                 className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-green-500 font-hindi"
               />
 
@@ -412,7 +413,7 @@ export default function AdminUdhaar() {
                   onClick={() => setSelected(null)}
                   className="flex-1 py-3 rounded-xl border-2 border-gray-200 text-gray-600 font-hindi font-bold hover:bg-gray-50 transition-colors"
                 >
-                  रद्द करें
+                  Cancel करें
                 </button>
                 <button
                   onClick={handleMarkPaid}
@@ -420,7 +421,7 @@ export default function AdminUdhaar() {
                   className="flex-1 py-3 rounded-xl bg-green-600 hover:bg-green-700 text-white font-hindi font-bold disabled:opacity-50 transition-colors flex items-center justify-center gap-2"
                 >
                   <CheckCircle className="w-5 h-5" />
-                  {saving ? "सेव हो रहा है..." : "भुगतान दर्ज करें"}
+                  {saving ? "Saving..." : "Payment दर्ज करें"}
                 </button>
               </div>
 
