@@ -4,10 +4,13 @@ import { supabase } from "@/lib/supabase";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import { TrendingUp, Download, Package, BookOpen } from "lucide-react";
 import * as XLSX from "xlsx";
+import { useLang } from "@/hooks/useLang";
 
 const COLORS = ["#16a34a", "#ca8a04", "#dc2626", "#2563eb", "#7c3aed", "#db2777", "#0891b2"];
 
 export default function AdminReports() {
+  const { lang } = useLang();
+  const L = (en: string, hi: string) => (lang === "en" ? en : hi);
   const [activeTab, setActiveTab] = useState<"daily" | "monthly" | "products" | "profit">("daily");
   const [dailyData, setDailyData] = useState<any[]>([]);
   const [monthlyData, setMonthlyData] = useState<any[]>([]);
@@ -100,25 +103,25 @@ export default function AdminReports() {
   function exportReport() {
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(topProducts.map(p => ({
-      Product: p.name, Quantity: p.qty, राजस्व: p.revenue
+      "Product": p.name, "Quantity": p.qty, "Revenue": p.revenue
     }))), "Best Sellers");
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(monthlyData.map(m => ({
-      महीना: m.month, बिक्री: m.sales
+      "Month": m.month, "Sales": m.sales
     }))), "Monthly");
     XLSX.writeFile(wb, "annadata_reports.xlsx");
   }
 
   const tabs = [
-    { id: "daily" as const, label: "दैनिक" },
-    { id: "monthly" as const, label: "मासिक" },
-    { id: "products" as const, label: "बेस्ट Product" },
-    { id: "profit" as const, label: "लाभ / Stock" },
+    { id: "daily" as const, label: L("Daily", "दैनिक") },
+    { id: "monthly" as const, label: L("Monthly", "मासिक") },
+    { id: "products" as const, label: L("Best Products", "बेस्ट प्रोडक्ट्स") },
+    { id: "profit" as const, label: L("Profit / Stock", "लाभ / स्टॉक") },
   ];
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold text-gray-800 font-hindi">Reports्स</h2>
+        <h2 className="text-xl font-bold text-gray-800 font-hindi">{L("Reports", "रिपोर्ट्स")}</h2>
         <button onClick={exportReport}
           className="flex items-center gap-2 bg-gray-100 text-gray-700 px-3 py-2 rounded-xl text-sm font-hindi hover:bg-gray-200">
           <Download className="w-4 h-4" /> Export
@@ -128,10 +131,10 @@ export default function AdminReports() {
       {/* Summary cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          { label: "कुल राजस्व", value: `₹${profitData.revenue.toLocaleString("en-IN")}`, color: "text-green-700 bg-green-50 border-green-100", icon: TrendingUp },
-          { label: "अनुमानित लाभ", value: `₹${profitData.profit.toLocaleString("en-IN")}`, color: "text-blue-700 bg-blue-50 border-blue-100", icon: TrendingUp },
-          { label: "Stock मूल्य", value: `₹${profitData.stockValue.toLocaleString("en-IN")}`, color: "text-purple-700 bg-purple-50 border-purple-100", icon: Package },
-          { label: "बेस्ट toलर्स", value: topProducts.length.toString(), color: "text-orange-700 bg-orange-50 border-orange-100", icon: BookOpen },
+          { label: L("Total Revenue", "कुल राजस्व"), value: `₹${profitData.revenue.toLocaleString("en-IN")}`, color: "text-green-700 bg-green-50 border-green-100", icon: TrendingUp },
+          { label: L("Estimated Profit", "अनुमानित लाभ"), value: `₹${profitData.profit.toLocaleString("en-IN")}`, color: "text-blue-700 bg-blue-50 border-blue-100", icon: TrendingUp },
+          { label: L("Stock Value", "स्टॉक मूल्य"), value: `₹${profitData.stockValue.toLocaleString("en-IN")}`, color: "text-purple-700 bg-purple-50 border-purple-100", icon: Package },
+          { label: L("Best Sellers", "बेस्ट सेलर्स"), value: topProducts.length.toString(), color: "text-orange-700 bg-orange-50 border-orange-100", icon: BookOpen },
         ].map(c => (
           <div key={c.label} className={`${c.color} border rounded-2xl p-4 text-center`}>
             <p className="font-bold text-xl">{c.value}</p>
@@ -159,15 +162,15 @@ export default function AdminReports() {
           {/* Daily */}
           {activeTab === "daily" && (
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-              <h3 className="font-bold text-gray-700 font-hindi mb-4">पिछले 7 दिन की बिक्री</h3>
+              <h3 className="font-bold text-gray-700 font-hindi mb-4">{L("Last 7 Days Sales", "पिछले 7 दिन की बिक्री")}</h3>
               {dailyData.every(d => d.sales === 0) ? (
-                <p className="text-center text-gray-400 font-hindi py-8">अभी कोई बिक्री डेटा नहीं</p>
+                <p className="text-center text-gray-400 font-hindi py-8">{L("No sales data yet", "अभी कोई बिक्री डेटा नहीं")}</p>
               ) : (
                 <ResponsiveContainer width="100%" height={220}>
                   <BarChart data={dailyData} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
                     <XAxis dataKey="date" tick={{ fontSize: 11, fill: "#6b7280" }} />
                     <YAxis tick={{ fontSize: 11, fill: "#6b7280" }} />
-                    <Tooltip formatter={(v: any) => [`₹${v.toLocaleString("en-IN")}`, "बिक्री"]} />
+                    <Tooltip formatter={(v: any) => [`₹${v.toLocaleString("en-IN")}`, L("Sales", "बिक्री")]} />
                     <Bar dataKey="sales" fill="#16a34a" radius={[6, 6, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
@@ -186,15 +189,15 @@ export default function AdminReports() {
           {/* Monthly */}
           {activeTab === "monthly" && (
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-              <h3 className="font-bold text-gray-700 font-hindi mb-4">मासिक बिक्री (पिछले 6 महीने)</h3>
+              <h3 className="font-bold text-gray-700 font-hindi mb-4">{L("Monthly Sales (Last 6 Months)", "मासिक बिक्री (पिछले 6 महीने)")}</h3>
               {monthlyData.length === 0 ? (
-                <p className="text-center text-gray-400 font-hindi py-8">No data yet</p>
+                <p className="text-center text-gray-400 font-hindi py-8">{L("No data yet", "अभी कोई डेटा नहीं")}</p>
               ) : (
                 <ResponsiveContainer width="100%" height={220}>
                   <BarChart data={monthlyData} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
                     <XAxis dataKey="month" tick={{ fontSize: 11, fill: "#6b7280" }} />
                     <YAxis tick={{ fontSize: 11, fill: "#6b7280" }} />
-                    <Tooltip formatter={(v: any) => [`₹${v.toLocaleString("en-IN")}`, "बिक्री"]} />
+                    <Tooltip formatter={(v: any) => [`₹${v.toLocaleString("en-IN")}`, L("Sales", "बिक्री")]} />
                     <Bar dataKey="sales" fill="#ca8a04" radius={[6, 6, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
@@ -214,9 +217,9 @@ export default function AdminReports() {
           {activeTab === "products" && (
             <div className="space-y-4">
               <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-                <h3 className="font-bold text-gray-700 font-hindi mb-4">सर्वाधिक बिकने वाले Product</h3>
+                <h3 className="font-bold text-gray-700 font-hindi mb-4">{L("Top Selling Products", "सर्वाधिक बिकने वाले प्रोडक्ट्स")}</h3>
                 {topProducts.length === 0 ? (
-                  <p className="text-center text-gray-400 font-hindi py-8">अभी कोई बिक्री डेटा नहीं</p>
+                  <p className="text-center text-gray-400 font-hindi py-8">{L("No sales data yet", "अभी कोई बिक्री डेटा नहीं")}</p>
                 ) : (
                   <div className="space-y-3">
                     {topProducts.map((p, i) => (
@@ -237,7 +240,7 @@ export default function AdminReports() {
                         </div>
                         <div className="text-right flex-shrink-0">
                           <p className="font-bold text-sm text-green-700">₹{p.revenue.toLocaleString("en-IN")}</p>
-                          <p className="text-gray-400 text-xs font-hindi">{p.qty} बिके</p>
+                          <p className="text-gray-400 text-xs font-hindi">{p.qty} {L("sold", "बिके")}</p>
                         </div>
                       </div>
                     ))}
@@ -247,7 +250,7 @@ export default function AdminReports() {
 
               {categoryData.length > 0 && (
                 <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-                  <h3 className="font-bold text-gray-700 font-hindi mb-4">श्रेणी अनुसार बिक्री</h3>
+                  <h3 className="font-bold text-gray-700 font-hindi mb-4">{L("Sales by Category", "श्रेणी अनुसार बिक्री")}</h3>
                   <ResponsiveContainer width="100%" height={200}>
                     <PieChart>
                       <Pie data={categoryData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={75}
@@ -255,7 +258,7 @@ export default function AdminReports() {
                         labelLine={false}>
                         {categoryData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
                       </Pie>
-                      <Tooltip formatter={(v: any) => [`₹${v.toLocaleString("en-IN")}`, "बिक्री"]} />
+                      <Tooltip formatter={(v: any) => [`₹${v.toLocaleString("en-IN")}`, L("Sales", "बिक्री")]} />
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
@@ -267,10 +270,10 @@ export default function AdminReports() {
           {activeTab === "profit" && (
             <div className="space-y-3">
               {[
-                { label: "कुल राजस्व", value: profitData.revenue, color: "from-green-50 to-green-100 border-green-200 text-green-800", note: "All Bills की Total Amount" },
-                { label: "अनुमानित लागत", value: profitData.cost, color: "from-red-50 to-red-100 border-red-200 text-red-800", note: "खरीद मूल्य × बेची Quantity" },
-                { label: "अनुमानित लाभ", value: profitData.profit, color: "from-blue-50 to-blue-100 border-blue-200 text-blue-800", note: "राजस्व − लागत" },
-                { label: "मौजूदा Stock मूल्य", value: profitData.stockValue, color: "from-purple-50 to-purple-100 border-purple-200 text-purple-800", note: "Stock × खरीद मूल्य" },
+                { label: L("Total Revenue", "कुल राजस्व"), value: profitData.revenue, color: "from-green-50 to-green-100 border-green-200 text-green-800", note: L("Total amount of all bills", "सभी बिलों की कुल राशि") },
+                { label: L("Estimated Cost", "अनुमानित लागत"), value: profitData.cost, color: "from-red-50 to-red-100 border-red-200 text-red-800", note: L("Purchase price × sold quantity", "खरीद मूल्य × बेची मात्रा") },
+                { label: L("Estimated Profit", "अनुमानित लाभ"), value: profitData.profit, color: "from-blue-50 to-blue-100 border-blue-200 text-blue-800", note: L("Revenue − cost", "राजस्व − लागत") },
+                { label: L("Current Stock Value", "मौजूदा स्टॉक मूल्य"), value: profitData.stockValue, color: "from-purple-50 to-purple-100 border-purple-200 text-purple-800", note: L("Stock × purchase price", "स्टॉक × खरीद मूल्य") },
               ].map(item => (
                 <div key={item.label} className={`bg-gradient-to-r ${item.color} border rounded-2xl p-5`}>
                   <div className="flex items-center justify-between">
@@ -283,7 +286,7 @@ export default function AdminReports() {
                 </div>
               ))}
               <p className="text-xs text-gray-400 font-hindi text-center pt-2">
-                * लाभ का अनुमान खरीद मूल्य के आधार पर है। वास्तविक लागत अलग हो सकती है।
+                {L("* Profit is estimated based on purchase price. Actual cost may vary.", "* लाभ का अनुमान खरीद मूल्य के आधार पर है। वास्तविक लागत अलग हो सकती है।")}
               </p>
             </div>
           )}
