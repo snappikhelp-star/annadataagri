@@ -1,3 +1,4 @@
+// AUTO-BILINGUAL UPDATE: Hardcoded Hindi UI labels converted to English where possible.
 import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/lib/supabase";
 import { useLang } from "@/hooks/useLang";
@@ -70,7 +71,7 @@ export default function AdminQuickSale() {
 
   async function saveBill() {
     if (cart.length === 0) { setError("कार्ट में कुछ जोड़ें"); return; }
-    if (!customerName.trim()) { setError("ग्राहक का नाम जरूरी है"); return; }
+    if (!customerName.trim()) { setError("Customer name is required"); return; }
     setSaving(true); setError("");
     const invNum = makeInvNum();
     const udhaarAmt = payStatus === "udhaar" ? totalAmount : 0;
@@ -148,19 +149,19 @@ export default function AdminQuickSale() {
       .right{text-align:right}.bold{font-weight:bold}.center{text-align:center}</style></head>
       <body>
       <h2>🌿 अन्नदाता एग्री & सीड्स</h2>
-      <p class="center">सलामतपुर, रायसेन | 📞 6261737388 / 9691712455</p>
+      <p class="center">सलामतपुर, रायtoन | 📞 6261737388 / 9691712455</p>
       <div class="line"></div>
       <p><b>बिल नं:</b> ${savedInv.invoice_number}</p>
       <p><b>ग्राहक:</b> ${savedInv.customer_name}</p>
-      ${savedInv.customer_village ? `<p><b>गांव:</b> ${savedInv.customer_village}</p>` : ""}
+      ${savedInv.customer_village ? `<p><b>Village:</b> ${savedInv.customer_village}</p>` : ""}
       <p><b>तारीख:</b> ${new Date().toLocaleDateString("hi-IN")}</p>
       <div class="line"></div>
-      <table><tr><td class="bold">प्रोडक्ट</td><td class="bold right">मात्रा</td><td class="bold right">दाम</td><td class="bold right">कुल</td></tr>
+      <table><tr><td class="bold">Product</td><td class="bold right">Quantity</td><td class="bold right">Price</td><td class="bold right">कुल</td></tr>
       ${savedInv.items.map((i: CartItem) => `<tr><td>${i.name}</td><td class="right">${i.quantity} ${i.unit}</td><td class="right">₹${i.selling_price}</td><td class="right">₹${i.total}</td></tr>`).join("")}
       </table>
       <div class="line"></div>
       <p class="bold right">कुल: ₹${totalAmount.toLocaleString("en-IN")}</p>
-      <p class="bold right">${savedInv.payment_status === "paid" ? "✅ पेड" : "🔴 उधार"}</p>
+      <p class="bold right">${savedInv.payment_status === "paid" ? "✅ Paid" : "🔴 Credit"}</p>
       <div class="line"></div>
       <p class="center">धन्यवाद! 🙏 — केशव भाई</p>
       </body></html>`);
@@ -170,7 +171,7 @@ export default function AdminQuickSale() {
   function whatsappBill() {
     if (!savedInv) return;
     const items = savedInv.items.map((i: CartItem) => `• ${i.name}: ${i.quantity} ${i.unit} × ₹${i.selling_price} = ₹${i.total}`).join("\n");
-    const msg = `🌿 *अन्नदाता एग्री & सीड्स*\nसलामतपुर, रायसेन | 📞 6261737388\n\n*बिल: ${savedInv.invoice_number}*\nग्राहक: ${savedInv.customer_name}\n\n${items}\n\n*कुल: ₹${totalAmount.toLocaleString("en-IN")}*\n${savedInv.payment_status === "paid" ? "✅ पूरा पेड" : "🔴 उधार"}\n\nधन्यवाद! 🙏`;
+    const msg = `🌿 *अन्नदाता एग्री & सीड्स*\nसलामतपुर, रायtoन | 📞 6261737388\n\n*बिल: ${savedInv.invoice_number}*\nग्राहक: ${savedInv.customer_name}\n\n${items}\n\n*कुल: ₹${totalAmount.toLocaleString("en-IN")}*\n${savedInv.payment_status === "paid" ? "✅ Fully Paid" : "🔴 Credit"}\n\nधन्यवाद! 🙏`;
     const phone = savedInv.customer_mobile ? `91${savedInv.customer_mobile}` : "";
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, "_blank");
   }
@@ -209,13 +210,13 @@ export default function AdminQuickSale() {
             {search && (
               <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-72 overflow-y-auto">
                 {filtered.length === 0 ? (
-                  <p className="text-gray-400 font-hindi py-4 text-center col-span-2">कोई प्रोडक्ट नहीं मिला</p>
+                  <p className="text-gray-400 font-hindi py-4 text-center col-span-2">No product found</p>
                 ) : filtered.map(p => (
                   <button key={p.id} onClick={() => addToCart(p)}
                     className="flex items-center justify-between bg-green-50 hover:bg-green-100 border border-green-200 rounded-xl px-4 py-3 text-left transition-colors">
                     <div>
                       <p className="font-hindi font-bold text-gray-800 text-sm">{p.name}</p>
-                      <p className="text-gray-500 text-xs font-hindi">{p.category} | {p.unit} | स्टॉक: {p.current_stock}</p>
+                      <p className="text-gray-500 text-xs font-hindi">{p.category} | {p.unit} | Stock: {p.current_stock}</p>
                     </div>
                     <div className="text-right ml-2">
                       <p className="font-bold text-green-700">₹{p.selling_price}</p>
@@ -260,7 +261,7 @@ export default function AdminQuickSale() {
           </h3>
           {cart.length === 0 ? (
             <div className="flex-1 flex items-center justify-center">
-              <p className="text-gray-300 font-hindi text-center text-lg">{t("emptyCart")}<br/>👆 ऊपर से प्रोडक्ट जोड़ें</p>
+              <p className="text-gray-300 font-hindi text-center text-lg">{t("emptyCart")}<br/>👆 ऊपर to Add Product</p>
             </div>
           ) : (
             <div className="flex-1 space-y-2 overflow-y-auto max-h-80">
