@@ -1,3 +1,4 @@
+// AUTO-BILINGUAL UPDATE: Hardcoded Hindi UI labels converted to English where possible.
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useLang } from "@/hooks/useLang";
@@ -86,7 +87,7 @@ export default function AdminToday() {
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
               <div className="px-5 py-4 border-b border-gray-100 flex items-center gap-2">
                 <Receipt className="w-5 h-5 text-green-600" />
-                <h3 className="font-bold text-gray-800 font-hindi">आज के बिल ({invoices.length})</h3>
+                <h3 className="font-bold text-gray-800 font-hindi">Today Bills ({invoices.length})</h3>
               </div>
               <div className="divide-y divide-gray-50">
                 {invoices.map(inv => (
@@ -107,7 +108,7 @@ export default function AdminToday() {
                         inv.payment_status === "udhaar" ? "bg-orange-100 text-orange-700" :
                         "bg-yellow-100 text-yellow-700"
                       }`}>
-                        {inv.payment_status === "paid" ? "✅ पेड" : inv.payment_status === "udhaar" ? "🔴 उधार" : "🟡 आंशिक"}
+                        {inv.payment_status === "paid" ? "✅ Paid" : inv.payment_status === "udhaar" ? "🔴 Credit" : "🟡 Partial"}
                       </span>
                     </div>
                   </div>
