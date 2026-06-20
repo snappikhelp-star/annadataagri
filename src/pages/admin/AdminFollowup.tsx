@@ -1,3 +1,4 @@
+// AUTO-BILINGUAL UPDATE: Hardcoded Hindi UI labels converted to English where possible.
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useLang } from "@/hooks/useLang";
@@ -19,15 +20,15 @@ const MESSAGE_TEMPLATES = [
     labelEn: "Season Reminder",
     generate: (c: CustomerFollowup) => {
       const crop = c.crop_type && c.crop_type !== "Other" ? c.crop_type : "फसल";
-      return `नमस्ते *${c.name}* जी 🙏\n\n*अन्नदाता एग्री & सीड्स*\nसलामतपुर, रायसेन | 📞 6261737388\n\n${crop} की सीजन आ रही है! हमारे पास उच्च गुणवत्ता के बीज और दवाइयां उपलब्ध हैं।\n\n${c.total_udhaar > 0 ? `💰 आपका उधार: *₹${Number(c.total_udhaar).toLocaleString("en-IN")}*\n\n` : ""}कभी भी आएं — *केशव भाई* आपकी सेवा में हमेशा तैयार हैं 🌾`;
+      return `नमस्ते *${c.name}* जी 🙏\n\n*अन्नदाता एग्री & सीड्स*\nसलामतपुर, रायtoन | 📞 6261737388\n\n${crop} की सीजन आ रही है! हमारे पास उच्च गुणवत्ता के बीज और दवाइयां उपलब्ध हैं।\n\n${c.total_udhaar > 0 ? `💰 आपका Credit: *₹${Number(c.total_udhaar).toLocaleString("en-IN")}*\n\n` : ""}कभी भी आएं — *केशव भाई* आपकी toवा में हमेशा तैयार हैं 🌾`;
     },
   },
   {
     id: "udhaar",
-    label: "💰 उधार याद दिलाएं",
+    label: "💰 Credit याद दिलाएं",
     labelEn: "Payment Reminder",
     generate: (c: CustomerFollowup) => {
-      return `नमस्ते *${c.name}* जी 🙏\n\n*अन्नदाता एग्री & सीड्स* से केशव भाई बोल रहे हैं।\n\nआपका *₹${Number(c.total_udhaar).toLocaleString("en-IN")}* का उधार बकाया है।\n\nकृपया जल्द से जल्द दुकान पर आकर भुगतान करें।\n\nधन्यवाद 🙏\n📞 6261737388`;
+      return `नमस्ते *${c.name}* जी 🙏\n\n*अन्नदाता एग्री & सीड्स* to केशव भाई बोल रहे हैं।\n\nआपका *₹${Number(c.total_udhaar).toLocaleString("en-IN")}* का Credit बकाया है।\n\nकृपया जल्द to जल्द Shop पर आकर Payment करें।\n\nधन्यवाद 🙏\n📞 6261737388`;
     },
   },
   {
@@ -36,7 +37,7 @@ const MESSAGE_TEMPLATES = [
     labelEn: "Spray Reminder",
     generate: (c: CustomerFollowup) => {
       const crop = c.crop_type && c.crop_type !== "Other" ? c.crop_type : "फसल";
-      return `नमस्ते *${c.name}* जी 🙏\n\n*अन्नदाता एग्री & सीड्स* — केशव भाई\n\n${crop} की अगली Spray का समय आ गया है! 🌿\n\nसही दवाई लेने के लिए आज ही आएं या WhatsApp करें।\n\n📞 6261737388 | सलामतपुर, रायसेन`;
+      return `नमस्ते *${c.name}* जी 🙏\n\n*अन्नदाता एग्री & सीड्स* — केशव भाई\n\n${crop} की अगली Spray का समय आ गया है! 🌿\n\nसही दवाई लेने के लिए आज ही आएं या WhatsApp करें।\n\n📞 6261737388 | सलामतपुर, रायtoन`;
     },
   },
   {
@@ -44,7 +45,7 @@ const MESSAGE_TEMPLATES = [
     label: "🎁 Special Offer",
     labelEn: "Special Offer",
     generate: (c: CustomerFollowup) => {
-      return `नमस्ते *${c.name}* जी 🙏\n\n*अन्नदाता एग्री & सीड्स* की तरफ से Special Offer!\n\nइस सीजन में खरीदी पर *विशेष छूट* मिल रही है।\n\nआज ही आएं! — केशव भाई\n📞 6261737388 | सलामतपुर, रायसेन 🌾`;
+      return `नमस्ते *${c.name}* जी 🙏\n\n*अन्नदाता एग्री & सीड्स* की तरफ to Special Offer!\n\nइस सीजन में खरीदी पर *विशेष Discount* मिल रही है।\n\nआज ही आएं! — केशव भाई\n📞 6261737388 | सलामतपुर, रायtoन 🌾`;
     },
   },
 ];
@@ -124,7 +125,7 @@ export default function AdminFollowup() {
             <div className={`w-3 h-3 rounded-full ${statusConfig[s].dot} mx-auto mb-2`} />
             <p className={`text-2xl font-bold ${filter === s ? "" : "text-gray-800"}`}>{counts[s]}</p>
             <p className={`text-xs font-hindi mt-0.5 ${filter === s ? "" : "text-gray-500"}`}>
-              {s === "recent" ? "हाल में" : s === "soon" ? "जल्द करें" : "जरूरी"}
+              {s === "recent" ? "हाल में" : s === "soon" ? "जल्द करें" : "Important"}
             </p>
           </button>
         ))}
@@ -176,7 +177,7 @@ export default function AdminFollowup() {
               className="w-full flex items-center justify-center gap-2 bg-red-500 text-white font-hindi font-bold py-3 rounded-xl hover:bg-red-600 transition-colors text-sm shadow-sm"
             >
               <Send className="w-4 h-4" />
-              सभी जरूरी {counts.due} ग्राहकों को संदेश भेजें
+              All Important {counts.due} ग्राहकों को संदेश भेजें
             </button>
             <p className="text-center text-xs text-red-400 font-hindi mt-1">एक-एक करके WhatsApp खुलेगा</p>
           </div>
@@ -187,7 +188,7 @@ export default function AdminFollowup() {
         <div className="flex justify-center py-20"><div className="w-12 h-12 border-4 border-green-500 border-t-transparent rounded-full animate-spin" /></div>
       ) : filtered.length === 0 ? (
         <div className="bg-gray-50 rounded-2xl p-10 text-center">
-          <p className="text-gray-400 font-hindi text-lg">इस श्रेणी में कोई ग्राहक नहीं</p>
+          <p className="text-gray-400 font-hindi text-lg">No customers in this category</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -222,7 +223,7 @@ export default function AdminFollowup() {
                       {c.daysSince >= 999 ? "पुराना" : `${c.daysSince} ${t("days")} पहले`}
                     </span>
                     {c.total_udhaar > 0 && (
-                      <p className="text-orange-600 font-bold text-sm mt-1 font-hindi">₹{Number(c.total_udhaar).toLocaleString("en-IN")} उधार</p>
+                      <p className="text-orange-600 font-bold text-sm mt-1 font-hindi">₹{Number(c.total_udhaar).toLocaleString("en-IN")} Credit</p>
                     )}
                   </div>
                 </div>
