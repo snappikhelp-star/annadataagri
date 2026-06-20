@@ -1,3 +1,4 @@
+// AUTO-BILINGUAL UPDATE: Hardcoded Hindi UI labels converted to English where possible.
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useLocation } from "wouter";
@@ -25,11 +26,11 @@ export default function AdminLogin() {
     const { error } = await signIn(email, password);
     if (error) {
       if (error.toLowerCase().includes("invalid login") || error.toLowerCase().includes("invalid credentials")) {
-        setError("गलत Email या Password है। Supabase Auth में user बनाएं और दोबारा कोशिश करें।");
+        setError("Wrong email or password. Create user in Supabase Auth and try again.");
       } else if (error.toLowerCase().includes("email not confirmed")) {
-        setError("Email confirm नहीं है। Supabase → Authentication → Users में email confirm करें।");
+        setError("Email is not confirmed. Confirm it in Supabase → Authentication → Users.");
       } else if (error.toLowerCase().includes("network") || error.toLowerCase().includes("fetch")) {
-        setError("Supabase से connection नहीं हो पाया। VITE_SUPABASE_URL सही है?");
+        setError("Could not connect to Supabase. Is VITE_SUPABASE_URL correct?");
       } else {
         setError(`Login error: ${error}`);
       }
@@ -47,7 +48,7 @@ export default function AdminLogin() {
             <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
               <Leaf className="w-10 h-10 text-white" />
             </div>
-            <h1 className="text-2xl font-bold text-white font-hindi">अन्नदाता स्मार्ट दुकान</h1>
+            <h1 className="text-2xl font-bold text-white font-hindi">Annadata Smart Shop</h1>
             <p className="text-green-200 mt-1 font-hindi text-sm">Admin Panel — केशव भाई</p>
           </div>
 
