@@ -1,3 +1,4 @@
+// AUTO-BILINGUAL UPDATE: Hardcoded Hindi UI labels converted to English where possible.
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { Search, Download, Phone, MapPin, CheckCircle, X } from "lucide-react";
@@ -71,7 +72,7 @@ export default function AdminKhata() {
       supabase.from("payments").insert([{
         customer_id: selected.id,
         amount: payAmount,
-        notes: payNotes || `₹${payAmount} प्राप्त`,
+        notes: payNotes || `₹${payAmount} Received`,
         created_by: user?.email || "admin"
       }]),
       supabase.from("customers").update({
@@ -91,7 +92,7 @@ export default function AdminKhata() {
   }
 
   function waReminder(c: any) {
-    const msg = `नमस्ते *${c.name}* जी 🙏\n\n*अन्नदाता एग्री & सीड्स*\nसलामतपुर, रायसेन | 📞 6261737388\n\nआपका उधार बकाया:\n💰 *₹${Number(c.total_udhaar).toLocaleString("en-IN")}*\n\nकृपया जल्दी जमा करें।\n\n_धन्यवाद — केशव भाई 🌾_`;
+    const msg = `नमस्ते *${c.name}* जी 🙏\n\n*अन्नदाता एग्री & सीड्स*\nसलामतपुर, रायtoन | 📞 6261737388\n\nआपका Credit बकाया:\n💰 *₹${Number(c.total_udhaar).toLocaleString("en-IN")}*\n\nकृपया Soon जमा करें।\n\n_धन्यवाद — केशव भाई 🌾_`;
     window.open(`https://wa.me/91${c.mobile}?text=${encodeURIComponent(msg)}`, "_blank");
   }
 
@@ -100,8 +101,8 @@ export default function AdminKhata() {
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb,
       XLSX.utils.json_to_sheet(udhaarList.map(c => ({
-        नाम: c.name, मोबाइल: c.mobile, गांव: c.village,
-        उधार_राशि: c.total_udhaar, कुल_खरीद: c.total_purchase
+        नाम: c.name, Mobile: c.mobile, Village: c.village,
+        Credit_Amount: c.total_udhaar, कुल_खरीद: c.total_purchase
       }))), "Udhaar");
     XLSX.writeFile(wb, "annadata_udhaar.xlsx");
   }
@@ -112,10 +113,10 @@ export default function AdminKhata() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold text-gray-800 font-hindi">खाता / उधार</h2>
+        <h2 className="text-xl font-bold text-gray-800 font-hindi">खाता / Credit</h2>
         <button onClick={exportUdhaar}
           className="flex items-center gap-2 bg-gray-100 text-gray-700 px-3 py-2 rounded-xl text-sm font-hindi hover:bg-gray-200">
-          <Download className="w-4 h-4" /> एक्सपोर्ट
+          <Download className="w-4 h-4" /> Export
         </button>
       </div>
 
@@ -123,11 +124,11 @@ export default function AdminKhata() {
       <div className="grid grid-cols-2 gap-3">
         <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl p-5 text-white shadow-lg">
           <p className="text-3xl font-bold">₹{totalUdhaar.toLocaleString("en-IN")}</p>
-          <p className="text-orange-100 font-hindi mt-1 text-sm">कुल उधार बकाया</p>
+          <p className="text-orange-100 font-hindi mt-1 text-sm">Total Credit बकाया</p>
         </div>
         <div className="bg-gradient-to-br from-red-500 to-red-600 rounded-2xl p-5 text-white shadow-lg">
           <p className="text-3xl font-bold">{udhaarCount}</p>
-          <p className="text-red-100 font-hindi mt-1 text-sm">उधारदार ग्राहक</p>
+          <p className="text-red-100 font-hindi mt-1 text-sm">Creditदार ग्राहक</p>
         </div>
       </div>
 
@@ -136,12 +137,12 @@ export default function AdminKhata() {
         <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <input value={search} onChange={e => setSearch(e.target.value)}
-            placeholder="नाम, मोबाइल या गांव..."
+            placeholder="नाम, Mobile या Village..."
             className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-green-500 font-hindi" />
         </div>
         <select value={villageFilter} onChange={e => setVillageFilter(e.target.value)}
           className="border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-green-500 font-hindi">
-          <option value="all">सभी गांव</option>
+          <option value="all">All Villages</option>
           {villages.map(v => <option key={v} value={v}>{v}</option>)}
         </select>
       </div>
@@ -163,16 +164,16 @@ export default function AdminKhata() {
             <div className="p-6 space-y-4">
               <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 text-center">
                 <p className="text-4xl font-bold text-orange-600">₹{Number(selected.total_udhaar).toLocaleString("en-IN")}</p>
-                <p className="text-gray-500 font-hindi text-sm mt-1">बकाया उधार</p>
+                <p className="text-gray-500 font-hindi text-sm mt-1">बकाया Credit</p>
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 font-hindi mb-2">भुगतान राशि (₹)</label>
+                <label className="block text-sm font-semibold text-gray-700 font-hindi mb-2">Payment Amount (₹)</label>
                 <div className="flex gap-2">
                   <input type="number" min="0" max={Number(selected.total_udhaar)}
                     value={payAmount || ""}
                     onChange={e => setPayAmount(Number(e.target.value))}
-                    placeholder="₹ राशि दर्ज करें"
+                    placeholder="₹ Amount दर्ज करें"
                     className="flex-1 border-2 border-gray-200 rounded-xl px-4 py-3 text-xl font-bold text-center focus:outline-none focus:border-green-500" />
                   <button onClick={() => setPayAmount(Number(selected.total_udhaar))}
                     className="bg-green-50 text-green-700 px-4 py-3 rounded-xl text-sm font-hindi font-bold hover:bg-green-100 border-2 border-green-200 transition-colors">
@@ -181,7 +182,7 @@ export default function AdminKhata() {
                 </div>
                 {payAmount > 0 && (
                   <p className="text-sm text-gray-500 font-hindi mt-2 text-center">
-                    बाकी बचेगा: <span className="font-bold text-gray-700">
+                    Due बचेगा: <span className="font-bold text-gray-700">
                       ₹{Math.max(0, Number(selected.total_udhaar) - payAmount).toLocaleString("en-IN")}
                     </span>
                   </p>
@@ -189,14 +190,14 @@ export default function AdminKhata() {
               </div>
 
               <input value={payNotes} onChange={e => setPayNotes(e.target.value)}
-                placeholder="नोट (वैकल्पिक)..."
+                placeholder="Notes (optional)..."
                 className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-green-500 font-hindi" />
 
               <div className="flex gap-2">
                 <button onClick={addPayment} disabled={saving || payAmount <= 0}
                   className="flex-1 bg-green-600 text-white py-3 rounded-xl font-hindi font-bold hover:bg-green-700 disabled:opacity-60 flex items-center justify-center gap-2 transition-colors">
                   <CheckCircle className="w-5 h-5" />
-                  {saving ? "..." : "भुगतान दर्ज करें"}
+                  {saving ? "..." : "Payment दर्ज करें"}
                 </button>
                 <button onClick={() => waReminder(selected)}
                   className="px-4 bg-[#25D366] text-white py-3 rounded-xl font-bold hover:opacity-90 transition-opacity text-lg">
@@ -207,7 +208,7 @@ export default function AdminKhata() {
               {/* Payment History */}
               {payments.length > 0 && (
                 <div>
-                  <h4 className="font-bold text-gray-700 font-hindi border-t pt-3 mb-2">भुगतान इतिहास</h4>
+                  <h4 className="font-bold text-gray-700 font-hindi border-t pt-3 mb-2">Payment History</h4>
                   <div className="space-y-2 max-h-32 overflow-y-auto">
                     {payments.map((p: any) => (
                       <div key={p.id} className="flex justify-between items-center py-2 border-b border-gray-50 last:border-0 text-sm">
@@ -225,7 +226,7 @@ export default function AdminKhata() {
               {/* Udhaar invoices */}
               {invoices.length > 0 && (
                 <div>
-                  <h4 className="font-bold text-gray-700 font-hindi border-t pt-3 mb-2">उधार बिल</h4>
+                  <h4 className="font-bold text-gray-700 font-hindi border-t pt-3 mb-2">Credit बिल</h4>
                   <div className="space-y-2 max-h-40 overflow-y-auto">
                     {invoices.map((inv: any) => (
                       <div key={inv.id} className="flex justify-between items-center py-2 border-b border-gray-50 last:border-0 text-sm">
@@ -254,8 +255,8 @@ export default function AdminKhata() {
         </div>
       ) : filtered.length === 0 ? (
         <div className="bg-green-50 border border-green-200 rounded-2xl p-10 text-center">
-          <p className="text-green-700 font-hindi text-xl font-bold">✅ कोई उधार बकाया नहीं!</p>
-          <p className="text-green-500 font-hindi text-sm mt-2">सभी ग्राहकों का हिसाब साफ है</p>
+          <p className="text-green-700 font-hindi text-xl font-bold">✅ कोई Credit बकाया नहीं!</p>
+          <p className="text-green-500 font-hindi text-sm mt-2">All Customersों का हिसाब साफ है</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -287,7 +288,7 @@ export default function AdminKhata() {
               <div className="flex gap-2 mt-3" onClick={e => e.stopPropagation()}>
                 <button onClick={() => openCustomer(c)}
                   className="flex-1 flex items-center justify-center gap-1.5 bg-green-50 text-green-700 py-2 rounded-xl text-xs font-hindi font-bold hover:bg-green-100 transition-colors border border-green-100">
-                  <CheckCircle className="w-3.5 h-3.5" /> भुगतान लें
+                  <CheckCircle className="w-3.5 h-3.5" /> Payment लें
                 </button>
                 <button onClick={() => waReminder(c)}
                   className="flex-1 flex items-center justify-center gap-1.5 bg-[#25D366]/10 text-green-700 py-2 rounded-xl text-xs font-hindi font-bold hover:bg-green-100 transition-colors border border-green-100">
