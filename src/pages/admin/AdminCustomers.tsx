@@ -1,3 +1,4 @@
+// AUTO-BILINGUAL UPDATE: Hardcoded Hindi UI labels converted to English where possible.
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import {
@@ -42,21 +43,21 @@ function followUpStatus(days: number, limit: number): "green" | "yellow" | "red"
 
 const STATUS_CONFIG = {
   green: {
-    label: "✅ हाल में आए",
+    label: "✅ Recent",
     badge: "bg-green-100 text-green-700 border-green-200",
     card: "border-green-200",
     icon: CheckCircle2,
     iconColor: "text-green-500",
   },
   yellow: {
-    label: "⏰ जल्दी फॉलो-अप करें",
+    label: "⏰ Follow-up Soon",
     badge: "bg-yellow-100 text-yellow-700 border-yellow-200",
     card: "border-yellow-300",
     icon: Clock,
     iconColor: "text-yellow-500",
   },
   red: {
-    label: "🔴 फॉलो-अप जरूरी",
+    label: "🔴 Follow-up Required",
     badge: "bg-red-100 text-red-700 border-red-200",
     card: "border-red-300",
     icon: AlertCircle,
@@ -214,12 +215,12 @@ export default function AdminCustomers() {
       `नमस्ते *${c.name}* जी 🙏`,
       ``,
       `*अन्नदाता एग्री & सीड्स*`,
-      `सलामतपुर, रायसेन | 📞 6261737388`,
+      `सलामतपुर, रायtoन | 📞 6261737388`,
       ``,
-      `आपका उधार बकाया:`,
+      `आपका Credit बकाया:`,
       `💰 *₹${Number(c.total_udhaar).toLocaleString("en-IN")}*`,
       ``,
-      `कृपया जल्दी जमा करें।`,
+      `कृपया Soon जमा करें।`,
       `_धन्यवाद — केशव भाई 🌾_`
     ].join("\n");
     window.open(`https://wa.me/91${c.mobile}?text=${encodeURIComponent(msg)}`, "_blank");
@@ -231,13 +232,13 @@ export default function AdminCustomers() {
     const msg = [
       `नमस्ते *${c.name}* जी 🌾`,
       ``,
-      `Annadata Agri & Seeds से *केशव भाई* बोल रहे हैं।`,
+      `Annadata Agri & Seeds to *केशव भाई* बोल रहे हैं।`,
       ``,
       `आपकी *${cropHi}* फसल के लिए अगर`,
       `*${catHi}* या किसी और चीज़ की ज़रूरत हो`,
       `तो हमें बताएं — हम आपके लिए हमेशा तैयार हैं! 💚`,
       ``,
-      `📍 सलामतपुर, रायसेन`,
+      `📍 सलामतपुर, रायtoन`,
       `📞 6261737388`,
       ``,
       `_जय किसान 🌱 — अन्नदाता एग्री & सीड्स_`
@@ -250,8 +251,8 @@ export default function AdminCustomers() {
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb,
       XLSX.utils.json_to_sheet(customers.map(c => ({
-        नाम: c.name, मोबाइल: c.mobile, गांव: c.village,
-        कुल_खरीद: c.total_purchase, कुल_उधार: c.total_udhaar,
+        नाम: c.name, Mobile: c.mobile, Village: c.village,
+        कुल_खरीद: c.total_purchase, कुल_Credit: c.total_udhaar,
         तारीख: new Date(c.created_at).toLocaleDateString("hi-IN")
       }))), "Customers");
     XLSX.writeFile(wb, "annadata_customers.xlsx");
@@ -286,10 +287,10 @@ export default function AdminCustomers() {
     <div className="space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold text-gray-800 font-hindi">ग्राहक मैनेजमेंट</h2>
+        <h2 className="text-xl font-bold text-gray-800 font-hindi">Customer Management</h2>
         <button onClick={exportCustomers}
           className="flex items-center gap-2 bg-gray-100 text-gray-700 px-3 py-2 rounded-xl text-sm font-hindi hover:bg-gray-200">
-          <Download className="w-4 h-4" /> एक्सपोर्ट
+          <Download className="w-4 h-4" /> Export
         </button>
       </div>
 
@@ -297,19 +298,19 @@ export default function AdminCustomers() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 text-center">
           <p className="text-2xl font-bold text-gray-800">{customers.length}</p>
-          <p className="text-gray-500 text-xs font-hindi mt-1">कुल ग्राहक</p>
+          <p className="text-gray-500 text-xs font-hindi mt-1">Total Customers</p>
         </div>
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 text-center">
           <p className="text-lg font-bold text-green-700">₹{totalPurchase.toLocaleString("en-IN")}</p>
-          <p className="text-gray-500 text-xs font-hindi mt-1">कुल बिक्री</p>
+          <p className="text-gray-500 text-xs font-hindi mt-1">Total Sales</p>
         </div>
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 text-center">
           <p className="text-lg font-bold text-orange-600">₹{totalUdhaar.toLocaleString("en-IN")}</p>
-          <p className="text-gray-500 text-xs font-hindi mt-1">कुल उधार</p>
+          <p className="text-gray-500 text-xs font-hindi mt-1">Total Credit</p>
         </div>
         <div className="bg-gradient-to-br from-red-500 to-red-600 rounded-2xl shadow-sm p-4 text-center">
           <p className="text-2xl font-bold text-white">{dueCount || "—"}</p>
-          <p className="text-red-100 text-xs font-hindi mt-1">फॉलो-अप जरूरी</p>
+          <p className="text-red-100 text-xs font-hindi mt-1">Follow-up Required</p>
         </div>
       </div>
 
@@ -317,12 +318,12 @@ export default function AdminCustomers() {
       <div className="flex gap-2 bg-gray-100 p-1 rounded-xl w-fit">
         <button onClick={() => switchTab("all")}
           className={`px-4 py-2 rounded-lg text-sm font-hindi transition-all ${activeTab === "all" ? "bg-white text-green-700 font-bold shadow-sm" : "text-gray-600"}`}>
-          सभी ग्राहक
+          All Customers
         </button>
         <button onClick={() => switchTab("followup")}
           className={`px-4 py-2 rounded-lg text-sm font-hindi transition-all flex items-center gap-1.5 ${activeTab === "followup" ? "bg-white text-green-700 font-bold shadow-sm" : "text-gray-600"}`}>
           <Bell className="w-3.5 h-3.5" />
-          किसान फॉलो-अप
+          Farmer Follow-up
           {dueCount > 0 && (
             <span className="bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold">
               {dueCount}
@@ -348,26 +349,26 @@ export default function AdminCustomers() {
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-green-50 rounded-xl p-3 text-center border border-green-100">
                   <p className="font-bold text-green-700 text-xl">₹{Number(selected.total_purchase).toLocaleString("en-IN")}</p>
-                  <p className="text-gray-500 text-xs font-hindi">कुल खरीद</p>
+                  <p className="text-gray-500 text-xs font-hindi">Total Purchase</p>
                 </div>
                 <div className="bg-orange-50 rounded-xl p-3 text-center border border-orange-100">
                   <p className="font-bold text-orange-600 text-xl">₹{Number(selected.total_udhaar).toLocaleString("en-IN")}</p>
-                  <p className="text-gray-500 text-xs font-hindi">कुल उधार</p>
+                  <p className="text-gray-500 text-xs font-hindi">Total Credit</p>
                 </div>
               </div>
               <div className="flex gap-2">
                 <a href={`tel:${selected.mobile}`}
                   className="flex-1 flex items-center justify-center gap-2 bg-green-600 text-white py-2.5 rounded-xl text-sm font-hindi font-bold hover:bg-green-700 transition-colors">
-                  <Phone className="w-4 h-4" /> Call करें
+                  <Phone className="w-4 h-4" /> Call
                 </a>
                 {Number(selected.total_udhaar) > 0 && (
                   <button onClick={() => waReminder(selected)}
                     className="flex-1 flex items-center justify-center gap-2 bg-[#25D366] text-white py-2.5 rounded-xl text-sm font-hindi font-bold hover:opacity-90 transition-opacity">
-                    📱 उधार रिमाइंडर
+                    📱 Credit Reminder
                   </button>
                 )}
               </div>
-              <h4 className="font-bold text-gray-700 font-hindi border-t pt-4">खरीद इतिहास</h4>
+              <h4 className="font-bold text-gray-700 font-hindi border-t pt-4">Purchase History</h4>
               {histLoading ? (
                 <div className="flex justify-center py-6">
                   <div className="w-8 h-8 border-4 border-green-500 border-t-transparent rounded-full animate-spin" />
@@ -375,7 +376,7 @@ export default function AdminCustomers() {
               ) : (
                 <div className="space-y-2 max-h-52 overflow-y-auto">
                   {history.length === 0
-                    ? <p className="text-center text-gray-400 font-hindi py-4">कोई खरीद नहीं</p>
+                    ? <p className="text-center text-gray-400 font-hindi py-4">No purchases</p>
                     : history.map((inv: any) => (
                       <div key={inv.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
                         <div>
@@ -385,7 +386,7 @@ export default function AdminCustomers() {
                         <div className="text-right">
                           <p className="font-bold text-sm text-gray-800">₹{Number(inv.final_amount).toLocaleString("en-IN")}</p>
                           <span className={`text-xs font-hindi ${inv.payment_status === "paid" ? "text-green-600" : "text-orange-600"}`}>
-                            {inv.payment_status === "paid" ? "पेड" : "उधार"}
+                            {inv.payment_status === "paid" ? "Paid" : "Credit"}
                           </span>
                         </div>
                       </div>
@@ -410,12 +411,12 @@ export default function AdminCustomers() {
                 <div className="relative flex-1 min-w-[200px]">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <input value={search} onChange={e => setSearch(e.target.value)}
-                    placeholder="नाम, मोबाइल या गांव से खोजें..."
+                    placeholder="Search by name, mobile or village..."
                     className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-green-500 font-hindi" />
                 </div>
                 <select value={villageFilter} onChange={e => setVillageFilter(e.target.value)}
                   className="border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-green-500 font-hindi">
-                  <option value="all">सभी गांव</option>
+                  <option value="all">All Villages</option>
                   {villages.map(v => <option key={v} value={v}>{v}</option>)}
                 </select>
               </div>
@@ -446,12 +447,12 @@ export default function AdminCustomers() {
                     <div className="flex gap-3 mt-3">
                       <div className="flex-1 bg-green-50 rounded-xl py-2 text-center border border-green-100">
                         <p className="font-bold text-green-700 text-sm">₹{Number(c.total_purchase).toLocaleString("en-IN")}</p>
-                        <p className="text-gray-500 text-xs font-hindi">कुल खरीद</p>
+                        <p className="text-gray-500 text-xs font-hindi">Total Purchase</p>
                       </div>
                       {Number(c.total_udhaar) > 0 && (
                         <div className="flex-1 bg-orange-50 rounded-xl py-2 text-center border border-orange-100">
                           <p className="font-bold text-orange-600 text-sm">₹{Number(c.total_udhaar).toLocaleString("en-IN")}</p>
-                          <p className="text-gray-500 text-xs font-hindi">उधार</p>
+                          <p className="text-gray-500 text-xs font-hindi">Credit</p>
                         </div>
                       )}
                     </div>
@@ -459,7 +460,7 @@ export default function AdminCustomers() {
                 ))}
                 {filtered.length === 0 && (
                   <div className="text-center py-12 text-gray-400 font-hindi">
-                    {search || villageFilter !== "all" ? "कोई ग्राहक नहीं मिला" : "अभी कोई ग्राहक नहीं"}
+                    {search || villageFilter !== "all" ? "No customer found" : "No customers yet"}
                   </div>
                 )}
               </div>
@@ -476,9 +477,9 @@ export default function AdminCustomers() {
                     <Leaf className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <p className="font-bold font-hindi text-base">किसान स्मार्ट फॉलो-अप सिस्टम</p>
+                    <p className="font-bold font-hindi text-base">Farmer Smart Follow-up System</p>
                     <p className="text-green-200 text-xs font-hindi mt-0.5">
-                      बीज खरीदी → 25 दिन बाद | कीटनाशक/दवाई → 15 दिन बाद | खाद → 20 दिन बाद
+                      Seeds → after 25 days | Pesticide/medicine → after 15 days | Fertilizer → after 20 days
                     </p>
                   </div>
                 </div>
@@ -487,10 +488,10 @@ export default function AdminCustomers() {
               {/* Status filters */}
               <div className="flex gap-2 flex-wrap">
                 {([
-                  { id: "all", label: `सभी (${followupData.length})` },
-                  { id: "red", label: `🔴 जरूरी (${followupData.filter(c => c.followUpStatus === "red").length})` },
-                  { id: "yellow", label: `⏰ जल्दी (${followupData.filter(c => c.followUpStatus === "yellow").length})` },
-                  { id: "green", label: `✅ ठीक है (${followupData.filter(c => c.followUpStatus === "green").length})` },
+                  { id: "all", label: `All (${followupData.length})` },
+                  { id: "red", label: `🔴 Important (${followupData.filter(c => c.followUpStatus === "red").length})` },
+                  { id: "yellow", label: `⏰ Soon (${followupData.filter(c => c.followUpStatus === "yellow").length})` },
+                  { id: "green", label: `✅ OK (${followupData.filter(c => c.followUpStatus === "green").length})` },
                 ] as const).map(opt => (
                   <button key={opt.id} onClick={() => setFuFilter(opt.id as any)}
                     className={`px-3 py-1.5 rounded-xl text-xs font-hindi font-semibold border transition-all ${fuFilter === opt.id ? "bg-gray-800 text-white border-gray-800" : "bg-white text-gray-600 border-gray-200 hover:border-gray-400"}`}>
@@ -503,19 +504,19 @@ export default function AdminCustomers() {
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <input value={fuSearch} onChange={e => setFuSearch(e.target.value)}
-                  placeholder="ग्राहक खोजें..."
+                  placeholder="Search customer..."
                   className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-green-500 font-hindi" />
               </div>
 
               {followupLoading ? (
                 <div className="flex flex-col items-center justify-center py-16 gap-3">
                   <div className="w-10 h-10 border-4 border-green-500 border-t-transparent rounded-full animate-spin" />
-                  <p className="text-gray-500 font-hindi text-sm">डेटा लोड हो रहा है...</p>
+                  <p className="text-gray-500 font-hindi text-sm">Loading data...</p>
                 </div>
               ) : filteredFollowup.length === 0 ? (
                 <div className="text-center py-12 bg-white rounded-2xl border border-gray-100">
                   <p className="text-gray-400 font-hindi">
-                    {fuFilter !== "all" ? "इस श्रेणी में कोई ग्राहक नहीं" : "अभी कोई डेटा नहीं"}
+                    {fuFilter !== "all" ? "No customers in this category" : "No data yet"}
                   </p>
                 </div>
               ) : (
@@ -573,7 +574,7 @@ export default function AdminCustomers() {
                           {c.daysSince !== null && (
                             <span className="bg-gray-50 border border-gray-200 text-gray-600 text-xs px-2.5 py-1 rounded-lg font-hindi">
                               <Clock className="w-3 h-3 inline mr-1" />
-                              {c.daysSince} दिन पहले खरीदा
+                              {c.daysSince} days ago purchased
                             </span>
                           )}
                           {c.nextFollowUp && (
@@ -584,7 +585,7 @@ export default function AdminCustomers() {
                                 ? "bg-yellow-50 border-yellow-200 text-yellow-700"
                                 : "bg-blue-50 border-blue-200 text-blue-700"
                             }`}>
-                              📅 फॉलो-अप: {c.nextFollowUp}
+                              📅 Follow-up: {c.nextFollowUp}
                             </span>
                           )}
                         </div>
@@ -594,7 +595,7 @@ export default function AdminCustomers() {
                           {c.mobile && (
                             <button onClick={() => waFollowUp(c)}
                               className="flex-1 flex items-center justify-center gap-1.5 bg-[#25D366] text-white py-2.5 rounded-xl text-xs font-hindi font-bold hover:opacity-90 transition-opacity shadow-sm">
-                              📱 फॉलो-अप WhatsApp
+                              📱 Follow-up WhatsApp
                             </button>
                           )}
                           <a href={`tel:${c.mobile}`}
@@ -611,7 +612,7 @@ export default function AdminCustomers() {
                         {c.daysSince !== null && c.followUpDays && (
                           <div className="mt-3">
                             <div className="flex justify-between text-xs text-gray-400 font-hindi mb-1">
-                              <span>खरीद की तारीख</span>
+                              <span>Purchase Date</span>
                               <span>{Math.min(c.daysSince, c.followUpDays)}/{c.followUpDays} दिन</span>
                             </div>
                             <div className="w-full bg-gray-100 rounded-full h-1.5">
