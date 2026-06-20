@@ -7,6 +7,7 @@ import {
   Users, AlertCircle, CalendarDays, Filter
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useLang } from "@/hooks/useLang";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import * as XLSX from "xlsx";
@@ -211,9 +212,9 @@ function generatePrintHTML(inv: any, items: CartItem[]) {
         ${note ? `<div class="note"><strong>नोट:</strong> ${safe(note)}</div>` : ""}
       </div>
       <div class="totals">
-        <div class="total-line"><span>उप-कुल</span><span>${fmtRs(inv?.total_amount || 0)}</span></div>
+        <div class="total-line"><span>{L("उप-कुल", "Subtotal")}</span><span>${fmtRs(inv?.total_amount || 0)}</span></div>
         ${Number(inv?.discount) > 0 ? `<div class="total-line"><span>छूट</span><span class="discount">− ${fmtRs(inv?.discount || 0)}</span></div>` : ""}
-        <div class="grand"><span>कुल राशि</span><span>${fmtRs(inv?.final_amount || 0)}</span></div>
+        <div class="grand"><span>{L("कुल राशि", "Total Amount")}</span><span>${fmtRs(inv?.final_amount || 0)}</span></div>
         <div class="total-line"><span>जमा राशि</span><span class="paid">${fmtRs(inv?.paid_amount || 0)}</span></div>
         <div class="total-line"><span>बाकी / उधार</span><span class="due">${fmtRs(inv?.udhaar_amount || 0)}</span></div>
       </div>
@@ -250,6 +251,9 @@ export default function AdminBilling() {
   const [isNewRoute] = useRoute("/admin/billing/new");
   const [, setLocation] = useLocation();
   const { user } = useAuth();
+  const { lang, t } = useLang();
+  const L = (hi: string, en: string) => (lang === "en" ? en : hi);
+  const locale = lang === "en" ? "en-IN" : "hi-IN";
   const [activeTab, setActiveTab] = useState<"new" | "list">(isNewRoute ? "new" : "list");
 
   /* ── Data ── */
@@ -344,8 +348,8 @@ export default function AdminBilling() {
 
   /* ── Save bill ── */
   async function saveBill() {
-    if (!customerName.trim()) return setSaveError("ग्राहक का नाम लिखें!");
-    if (cart.length === 0) return setSaveError("कम से कम एक प्रोडक्ट जोड़ें!");
+    if (!customerName.trim()) return setSaveError(L("ग्राहक का नाम लिखें!", "Enter customer name!"));
+    if (cart.length === 0) return setSaveError(L("कम से कम एक प्रोडक्ट जोड़ें!", "Add at least one product!"));
     setSaveError(""); setSaving(true);
     const invNum = makeInvoiceNumber();
     const combinedNotes = buildNotes(payMode, customerCrop, billNotes);
@@ -366,7 +370,7 @@ export default function AdminBilling() {
     }]).select().single();
 
     if (invErr || !inv) {
-      setSaveError("बिल सेव नहीं हुआ: " + (invErr?.message || "Unknown error"));
+      setSaveError(L("बिल सेव नहीं हुआ: ", "Bill was not saved: ") + (invErr?.message || "Unknown error"));
       setSaving(false); return;
     }
 
@@ -386,7 +390,7 @@ export default function AdminBilling() {
       await supabase.from("stock_movements").insert([{
         product_id: item.product_id, movement_type: "out",
         quantity: item.quantity, previous_stock: item.current_stock, new_stock: newStock,
-        notes: `बिल: ${invNum}`, created_by: user?.email || "admin"
+        notes: `${L("बिल", "Bill")}: ${invNum}`, created_by: user?.email || "admin"
       }]);
     }
 
@@ -520,7 +524,7 @@ export default function AdminBilling() {
       `👤 ग्राहक: ${inv.customer_name}`,
       inv.customer_village ? `🏘️ गांव: ${inv.customer_village}` : "",
       crop ? `🌾 फसल: ${crop}` : "",
-      `📅 तारीख: ${new Date(inv.created_at).toLocaleDateString("hi-IN")}`,
+      `📅 तारीख: ${new Date(inv.created_at).toLocaleDateString(locale)}`,
       mode ? `💳 भुगतान: ${mode.toUpperCase()}` : "",
       ``,
       `💰 *कुल राशि: ${fmtRs(inv.final_amount)}*`,
@@ -544,7 +548,7 @@ export default function AdminBilling() {
         भुगतान_तरीका: mode.toUpperCase(),
         कुल: i.final_amount, जमा: i.paid_amount, उधार: i.udhaar_amount,
         स्थिति: i.payment_status === "paid" ? "पेड" : i.payment_status === "udhaar" ? "उधार" : "आंशिक",
-        तारीख: new Date(i.created_at).toLocaleDateString("hi-IN"),
+        तारीख: new Date(i.created_at).toLocaleDateString(locale),
         नोट: note
       };
     });
@@ -574,10 +578,10 @@ export default function AdminBilling() {
       {/* ─── Dashboard Stat Cards ─── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {[
-          { icon: <Receipt className="w-5 h-5 text-green-700" />, bg: "bg-green-100", val: todayInvoices.length, label: "आज के बिल" },
-          { icon: <TrendingUp className="w-5 h-5 text-yellow-700" />, bg: "bg-yellow-100", val: fmtRs(todaySales), label: "आज की बिक्री" },
-          { icon: <AlertCircle className="w-5 h-5 text-orange-600" />, bg: "bg-orange-100", val: fmtRs(totalUdhaar), label: "कुल उधार बाकी" },
-          { icon: <Users className="w-5 h-5 text-blue-600" />, bg: "bg-blue-100", val: totalCustomers, label: "कुल ग्राहक" },
+          { icon: <Receipt className="w-5 h-5 text-green-700" />, bg: "bg-green-100", val: todayInvoices.length, label: L("आज के बिल", "Today's Bills") },
+          { icon: <TrendingUp className="w-5 h-5 text-yellow-700" />, bg: "bg-yellow-100", val: fmtRs(todaySales), label: L("आज की बिक्री", "Today's Sales") },
+          { icon: <AlertCircle className="w-5 h-5 text-orange-600" />, bg: "bg-orange-100", val: fmtRs(totalUdhaar), label: L("कुल उधार बाकी", "Total Credit Due") },
+          { icon: <Users className="w-5 h-5 text-blue-600" />, bg: "bg-blue-100", val: totalCustomers, label: L("कुल ग्राहक", "Total Customers") },
         ].map(card => (
           <div key={card.label} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-3">
             <div className={`w-10 h-10 ${card.bg} rounded-xl flex items-center justify-center flex-shrink-0`}>
@@ -593,7 +597,7 @@ export default function AdminBilling() {
 
       {/* ─── Header ─── */}
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold text-gray-800 font-hindi">बिलिंग</h2>
+        <h2 className="text-xl font-bold text-gray-800 font-hindi">{t("billing")}</h2>
         {activeTab === "list" && (
           <button onClick={exportSales}
             className="flex items-center gap-2 bg-gray-100 text-gray-700 px-3 py-2 rounded-xl text-sm font-hindi hover:bg-gray-200 transition-colors">
@@ -621,36 +625,36 @@ export default function AdminBilling() {
           {/* Bill date banner */}
           <div className="bg-green-50 border border-green-200 rounded-xl px-4 py-2.5 flex items-center gap-2">
             <IndianRupee className="w-4 h-4 text-green-600 flex-shrink-0" />
-            <span className="font-hindi text-green-800 text-sm font-semibold">नया बिल</span>
+            <span className="font-hindi text-green-800 text-sm font-semibold">{L("नया बिल", "New Bill")}</span>
             <span className="ml-auto text-xs text-green-600">
-              {new Date().toLocaleDateString("hi-IN", { day: "2-digit", month: "long", year: "numeric" })}
+              {new Date().toLocaleDateString(locale, { day: "2-digit", month: "long", year: "numeric" })}
             </span>
           </div>
 
           {/* ─── Customer ─── */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 space-y-3">
             <h3 className="font-bold text-gray-700 font-hindi text-base flex items-center gap-2">
-              <Users className="w-4 h-4 text-green-600" /> ग्राहक जानकारी
+              <Users className="w-4 h-4 text-green-600" /> {L("ग्राहक जानकारी", "Customer Information")}
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
               <input value={customerName} onChange={e => setCustomerName(e.target.value)}
-                placeholder="ग्राहक का नाम *"
+                placeholder={L("ग्राहक का नाम *", "Customer Name *")}
                 className="border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-green-500 font-hindi" />
               <input value={customerMobile} onChange={e => setCustomerMobile(e.target.value)}
-                placeholder="मोबाइल नंबर" type="tel"
+                placeholder={L("मोबाइल नंबर", "Mobile Number")} type="tel"
                 className="border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-green-500" />
               <input value={customerVillage} onChange={e => setCustomerVillage(e.target.value)}
-                placeholder="गांव का नाम"
+                placeholder={L("गांव का नाम", "Village Name")}
                 className="border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-green-500 font-hindi" />
               <select value={customerCrop} onChange={e => setCustomerCrop(e.target.value)}
                 className="border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-green-500 font-hindi text-gray-700 bg-white">
-                <option value="">🌾 फसल चुनें</option>
-                <option value="धान">🌾 धान</option>
-                <option value="गेहूं">🌿 गेहूं</option>
-                <option value="सोयाबीन">🫘 सोयाबीन</option>
-                <option value="चना">🟤 चना</option>
-                <option value="मक्का">🌽 मक्का</option>
-                <option value="अन्य">अन्य</option>
+                <option value="">{L("🌾 फसल चुनें", "🌾 Select Crop")}</option>
+                <option value="धान">{L("🌾 धान", "🌾 Paddy")}</option>
+                <option value="गेहूं">{L("🌿 गेहूं", "🌿 Wheat")}</option>
+                <option value="सोयाबीन">{L("🫘 सोयाबीन", "🫘 Soyabean")}</option>
+                <option value="चना">{L("🟤 चना", "🟤 Gram")}</option>
+                <option value="मक्का">{L("🌽 मक्का", "🌽 Maize")}</option>
+                <option value="अन्य">{L("अन्य", "Other")}</option>
               </select>
             </div>
           </div>
@@ -659,11 +663,11 @@ export default function AdminBilling() {
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 space-y-3">
             <div className="flex items-center justify-between">
               <h3 className="font-bold text-gray-700 font-hindi text-base flex items-center gap-2">
-                <FileText className="w-4 h-4 text-green-600" /> प्रोडक्ट ({cart.length})
+                <FileText className="w-4 h-4 text-green-600" /> {t("product")} ({cart.length})
               </h3>
               <button onClick={() => setShowProdDropdown(v => !v)}
                 className="flex items-center gap-1.5 bg-green-600 text-white px-3 py-2 rounded-xl text-sm font-hindi hover:bg-green-700 transition-colors">
-                <Plus className="w-4 h-4" /> प्रोडक्ट जोड़ें
+                <Plus className="w-4 h-4" /> {L("प्रोडक्ट जोड़ें", "Add Product")}
               </button>
             </div>
 
@@ -671,12 +675,12 @@ export default function AdminBilling() {
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <input autoFocus value={prodSearch} onChange={e => setProdSearch(e.target.value)}
-                  placeholder="प्रोडक्ट खोजें (नाम / केटेगरी)..."
+                  placeholder={L("प्रोडक्ट खोजें (नाम / केटेगरी)...", "Search product (name / category)...")}
                   className="w-full pl-9 pr-4 py-2.5 border-2 border-green-400 rounded-xl text-sm focus:outline-none font-hindi" />
                 {prodSearch && (
                   <div className="absolute top-full left-0 right-0 bg-white rounded-xl shadow-xl border border-gray-100 mt-1 max-h-52 overflow-y-auto z-30">
                     {prodDropdownList.length === 0
-                      ? <p className="px-4 py-3 text-gray-400 text-sm font-hindi">कोई प्रोडक्ट नहीं मिला</p>
+                      ? <p className="px-4 py-3 text-gray-400 text-sm font-hindi">{L("कोई प्रोडक्ट नहीं मिला", "No product found")}</p>
                       : prodDropdownList.map(p => (
                         <button key={p.id} onClick={() => addToCart(p)}
                           className="w-full text-left px-4 py-3 hover:bg-green-50 border-b last:border-0 transition-colors">
@@ -687,7 +691,7 @@ export default function AdminBilling() {
                           <div className="flex items-center gap-2 mt-0.5">
                             <span className="text-gray-400 text-xs bg-gray-100 px-1.5 py-0.5 rounded">{p.category}</span>
                             <span className={`text-xs font-semibold ${Number(p.current_stock) <= Number(p.low_stock_limit) ? "text-red-500" : "text-gray-400"}`}>
-                              स्टॉक: {p.current_stock} {p.unit}
+                              {L("स्टॉक", "Stock")}: {p.current_stock} {p.unit}
                             </span>
                           </div>
                         </button>
@@ -698,17 +702,17 @@ export default function AdminBilling() {
             )}
 
             {cart.length === 0
-              ? <p className="text-center text-gray-400 font-hindi py-8 text-sm">ऊपर "+ प्रोडक्ट जोड़ें" दबाएं</p>
+              ? <p className="text-center text-gray-400 font-hindi py-8 text-sm">{L('ऊपर "+ प्रोडक्ट जोड़ें" दबाएं', 'Press "+ Add Product" above')}</p>
               : (
                 <>
                   {/* Table header */}
                   <div className="hidden sm:grid grid-cols-[1fr_1.2fr_auto_auto_auto_auto_auto] gap-2 px-3 py-1.5 bg-green-50 rounded-lg text-xs font-hindi font-bold text-green-800">
-                    <span>प्रोडक्ट</span>
-                    <span>केटेगरी</span>
-                    <span className="text-center">मात्रा</span>
-                    <span className="text-center">रेट (₹)</span>
-                    <span className="text-center">छूट (₹)</span>
-                    <span className="text-right">कुल (₹)</span>
+                    <span>{L("प्रोडक्ट", "Product")}</span>
+                    <span>{L("केटेगरी", "Category")}</span>
+                    <span className="text-center">{L("मात्रा", "Qty")}</span>
+                    <span className="text-center">{L("रेट (₹)", "Rate (₹)")}</span>
+                    <span className="text-center">{L("छूट (₹)", "Discount (₹)")}</span>
+                    <span className="text-right">{L("कुल (₹)", "Total (₹)")}</span>
                     <span></span>
                   </div>
                   <div className="space-y-2">
@@ -747,19 +751,19 @@ export default function AdminBilling() {
                         {/* Mobile: inputs */}
                         <div className="grid grid-cols-3 gap-2 mt-2 sm:hidden">
                           <div>
-                            <p className="text-xs text-gray-400 font-hindi mb-1">मात्रा ({item.unit})</p>
+                            <p className="text-xs text-gray-400 font-hindi mb-1">{L("मात्रा", "Qty")} ({item.unit})</p>
                             <input type="number" min="1" value={item.quantity}
                               onChange={e => updateCartItem(item.product_id, "quantity", Number(e.target.value))}
                               className="w-full border border-gray-200 rounded-lg px-2 py-1.5 text-sm text-center focus:outline-none focus:border-green-500" />
                           </div>
                           <div>
-                            <p className="text-xs text-gray-400 font-hindi mb-1">रेट (₹)</p>
+                            <p className="text-xs text-gray-400 font-hindi mb-1">{L("रेट (₹)", "Rate (₹)")}</p>
                             <input type="number" min="0" value={item.selling_price}
                               onChange={e => updateCartItem(item.product_id, "selling_price", Number(e.target.value))}
                               className="w-full border border-gray-200 rounded-lg px-2 py-1.5 text-sm text-center focus:outline-none focus:border-green-500" />
                           </div>
                           <div>
-                            <p className="text-xs text-gray-400 font-hindi mb-1">छूट (₹)</p>
+                            <p className="text-xs text-gray-400 font-hindi mb-1">{L("छूट (₹)", "Discount (₹)")}</p>
                             <input type="number" min="0" value={item.discount}
                               onChange={e => updateCartItem(item.product_id, "discount", Number(e.target.value))}
                               className="w-full border border-gray-200 rounded-lg px-2 py-1.5 text-sm text-center focus:outline-none focus:border-green-500" />
@@ -778,35 +782,35 @@ export default function AdminBilling() {
           {/* ─── Payment ─── */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 space-y-4">
             <h3 className="font-bold text-gray-700 font-hindi text-base flex items-center gap-2">
-              <IndianRupee className="w-4 h-4 text-green-600" /> भुगतान
+              <IndianRupee className="w-4 h-4 text-green-600" /> {L("भुगतान", "Payment")}
             </h3>
 
             {/* Totals */}
             <div className="bg-gray-50 rounded-xl p-3 space-y-2">
               <div className="flex items-center justify-between text-sm">
-                <span className="font-hindi text-gray-600">उप-कुल</span>
+                <span className="font-hindi text-gray-600">{L("उप-कुल", "Subtotal")}</span>
                 <span className="font-bold text-gray-800">{fmtRs(subtotal)}</span>
               </div>
               <div className="flex items-center justify-between text-sm">
-                <span className="font-hindi text-gray-600">अतिरिक्त छूट (₹)</span>
+                <span className="font-hindi text-gray-600">{L("अतिरिक्त छूट (₹)", "Extra Discount (₹)")}</span>
                 <input type="number" min="0" max={subtotal} value={extraDiscount}
                   onChange={e => setExtraDiscount(Number(e.target.value))}
                   className="w-28 text-right border border-gray-200 rounded-lg px-2 py-1 text-sm focus:outline-none focus:border-green-500" />
               </div>
               <div className="flex items-center justify-between border-t border-gray-200 pt-2">
-                <span className="font-hindi font-bold text-gray-800 text-base">कुल राशि</span>
+                <span className="font-hindi font-bold text-gray-800 text-base">{L("कुल राशि", "Total Amount")}</span>
                 <span className="font-bold text-green-700 text-2xl">{fmtRs(finalAmount)}</span>
               </div>
             </div>
 
             {/* Payment Mode: Cash / UPI / Credit */}
             <div>
-              <p className="text-sm font-semibold text-gray-700 font-hindi mb-2">💳 भुगतान का तरीका</p>
+              <p className="text-sm font-semibold text-gray-700 font-hindi mb-2">{L("💳 भुगतान का तरीका", "💳 Payment Method")}</p>
               <div className="flex gap-2 flex-wrap">
                 {[
-                  { v: "cash" as PayMode, l: "💵 नकद (Cash)" },
+                  { v: "cash" as PayMode, l: L("💵 नकद (Cash)", "💵 Cash") },
                   { v: "upi" as PayMode, l: "📱 UPI" },
-                  { v: "credit" as PayMode, l: "🏦 क्रेडिट / Online" },
+                  { v: "credit" as PayMode, l: L("🏦 क्रेडिट / Online", "🏦 Credit / Online") },
                 ].map(opt => (
                   <button key={opt.v} onClick={() => setPayMode(opt.v)}
                     className={`px-4 py-2 rounded-xl text-sm font-hindi font-bold border-2 transition-all ${payMode === opt.v ? "border-green-500 bg-green-50 text-green-700" : "border-gray-200 text-gray-500 hover:border-gray-300"}`}>
@@ -818,12 +822,12 @@ export default function AdminBilling() {
 
             {/* Pay Status */}
             <div>
-              <p className="text-sm font-semibold text-gray-700 font-hindi mb-2">📋 भुगतान स्थिति</p>
+              <p className="text-sm font-semibold text-gray-700 font-hindi mb-2">{L("📋 भुगतान स्थिति", "📋 Payment Status")}</p>
               <div className="flex gap-2">
                 {[
-                  { v: "paid" as const, l: "✅ पूरा पेड" },
-                  { v: "udhaar" as const, l: "📒 पूरा उधार" },
-                  { v: "partial" as const, l: "💰 आंशिक" }
+                  { v: "paid" as const, l: L("✅ पूरा पेड", "✅ Fully Paid") },
+                  { v: "udhaar" as const, l: L("📒 पूरा उधार", "📒 Full Credit") },
+                  { v: "partial" as const, l: L("💰 आंशिक", "💰 Partial") }
                 ].map(opt => (
                   <button key={opt.v} onClick={() => setPayStatus(opt.v)}
                     className={`flex-1 py-2.5 rounded-xl text-sm font-hindi font-bold border-2 transition-all ${payStatus === opt.v ? "border-green-500 bg-green-50 text-green-700" : "border-gray-200 text-gray-500 hover:border-gray-300"}`}>
@@ -835,7 +839,7 @@ export default function AdminBilling() {
 
             {payStatus === "partial" && (
               <div className="flex items-center justify-between text-sm">
-                <span className="font-hindi text-gray-600">जमा राशि (₹)</span>
+                <span className="font-hindi text-gray-600">{L("जमा राशि (₹)", "Paid Amount (₹)")}</span>
                 <input type="number" min="0" max={finalAmount} value={paidAmount}
                   onChange={e => setPaidAmount(Number(e.target.value))}
                   className="w-28 text-right border border-gray-200 rounded-lg px-2 py-1 text-sm focus:outline-none focus:border-green-500" />
@@ -844,12 +848,12 @@ export default function AdminBilling() {
 
             {udhaarAmount > 0 && (
               <div className="bg-orange-50 border border-orange-200 rounded-xl p-3 text-center">
-                <span className="font-hindi text-orange-700 font-bold">📒 बाकी राशि: {fmtRs(udhaarAmount)}</span>
+                <span className="font-hindi text-orange-700 font-bold">{L("📒 बाकी राशि", "📒 Due Amount")}: {fmtRs(udhaarAmount)}</span>
               </div>
             )}
 
             <input value={billNotes} onChange={e => setBillNotes(e.target.value)}
-              placeholder="📝 कोई नोट (वैकल्पिक)..."
+              placeholder={L("📝 कोई नोट (वैकल्पिक)...", "📝 Any note (optional)...")}
               className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-green-500 font-hindi" />
 
             {saveError && (
@@ -860,7 +864,7 @@ export default function AdminBilling() {
 
             <button onClick={saveBill} disabled={saving}
               className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white py-4 rounded-xl font-hindi font-bold text-lg hover:from-green-700 hover:to-green-800 disabled:opacity-60 shadow-lg transition-all">
-              {saving ? "⏳ बिल बन रहा है..." : "✅ बिल सेव करें"}
+              {saving ? L("⏳ बिल बन रहा है...", "⏳ Creating bill...") : L("✅ बिल सेव करें", "✅ Save Bill")}
             </button>
           </div>
         </div>
@@ -874,7 +878,7 @@ export default function AdminBilling() {
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input value={invoiceSearch} onChange={e => setInvoiceSearch(e.target.value)}
-              placeholder="नाम, बिल नंबर, गांव, मोबाइल..."
+              placeholder={L("नाम, बिल नंबर, गांव, मोबाइल...", "Name, bill number, village, mobile...")}
               className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-green-500 font-hindi" />
           </div>
 
@@ -884,16 +888,16 @@ export default function AdminBilling() {
             <CalendarDays className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
             <input type="date" value={filterFrom} onChange={e => setFilterFrom(e.target.value)}
               className="flex-1 min-w-0 border border-gray-200 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:border-green-500" />
-            <span className="text-gray-400 text-xs flex-shrink-0">से</span>
+            <span className="text-gray-400 text-xs flex-shrink-0">{L("से", "to")}</span>
             <input type="date" value={filterTo} onChange={e => setFilterTo(e.target.value)}
               className="flex-1 min-w-0 border border-gray-200 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:border-green-500" />
             {(filterFrom || filterTo) && (
               <button onClick={() => { setFilterFrom(""); setFilterTo(""); }}
                 className="text-xs text-red-500 font-hindi hover:underline flex-shrink-0 flex items-center gap-0.5">
-                <X className="w-3.5 h-3.5" /> हटाएं
+                <X className="w-3.5 h-3.5" /> {L("हटाएं", "Clear")}
               </button>
             )}
-            <span className="text-xs text-gray-500 font-hindi flex-shrink-0">{filteredInvoices.length} बिल</span>
+            <span className="text-xs text-gray-500 font-hindi flex-shrink-0">{filteredInvoices.length} {L("बिल", "Bills")}</span>
           </div>
 
           {listLoading ? (
@@ -913,7 +917,7 @@ export default function AdminBilling() {
                           <span className="text-gray-400 text-xs font-mono">{inv.invoice_number}</span>
                           {inv.customer_village && <span className="text-gray-400 text-xs font-hindi">• {inv.customer_village}</span>}
                           {crop && <span className="text-xs text-green-600 font-hindi">🌾 {crop}</span>}
-                          <span className="text-gray-400 text-xs">• {new Date(inv.created_at).toLocaleDateString("hi-IN")}</span>
+                          <span className="text-gray-400 text-xs">• {new Date(inv.created_at).toLocaleDateString(locale)}</span>
                           {mode && <span className="text-xs bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded-md font-bold">{mode.toUpperCase()}</span>}
                         </div>
                         {inv.customer_mobile && (
@@ -926,14 +930,14 @@ export default function AdminBilling() {
                       <div className="text-right flex-shrink-0">
                         <p className="font-bold text-gray-800">{fmtRs(inv.final_amount)}</p>
                         {Number(inv.udhaar_amount) > 0 && (
-                          <p className="text-orange-600 text-xs font-hindi font-semibold">बाकी {fmtRs(inv.udhaar_amount)}</p>
+                          <p className="text-orange-600 text-xs font-hindi font-semibold">{L("बाकी", "Due")} {fmtRs(inv.udhaar_amount)}</p>
                         )}
                         <span className={`text-xs px-2 py-0.5 rounded-full font-hindi font-bold mt-0.5 inline-block ${
                           inv.payment_status === "paid" ? "bg-green-100 text-green-700" :
                           inv.payment_status === "udhaar" ? "bg-orange-100 text-orange-700" :
                           "bg-yellow-100 text-yellow-700"
                         }`}>
-                          {inv.payment_status === "paid" ? "पेड" : inv.payment_status === "udhaar" ? "उधार" : "आंशिक"}
+                          {inv.payment_status === "paid" ? t("paid") : inv.payment_status === "udhaar" ? t("udhaar") : t("partial")}
                         </span>
                       </div>
                     </div>
@@ -941,7 +945,7 @@ export default function AdminBilling() {
                     <div className="flex gap-2 mt-3">
                       <button onClick={() => handlePrintFromList(inv)}
                         className="flex-1 flex items-center justify-center gap-1.5 bg-green-50 text-green-700 py-2 rounded-xl text-xs font-hindi font-semibold hover:bg-green-100 transition-colors">
-                        <Printer className="w-3.5 h-3.5" /> प्रिंट
+                        <Printer className="w-3.5 h-3.5" /> {t("print")}
                       </button>
                       <button onClick={() => generatePDF(inv)}
                         className="flex-1 flex items-center justify-center gap-1.5 bg-blue-50 text-blue-600 py-2 rounded-xl text-xs font-hindi font-semibold hover:bg-blue-100 transition-colors">
@@ -964,7 +968,7 @@ export default function AdminBilling() {
               {filteredInvoices.length === 0 && (
                 <div className="text-center py-16 text-gray-400 font-hindi">
                   <FileText className="w-12 h-12 mx-auto mb-3 opacity-30" />
-                  <p>{invoiceSearch || filterFrom || filterTo ? "कोई बिल नहीं मिला" : "अभी कोई बिल नहीं"}</p>
+                  <p>{invoiceSearch || filterFrom || filterTo ? L("कोई बिल नहीं मिला", "No bill found") : t("noBillYet")}</p>
                 </div>
               )}
             </div>
