@@ -49,16 +49,16 @@ const STATUS_COLORS = {
 };
 
 const STATUS_LABELS = {
-  paid: "पेड ✅",
-  partial: "आंशिक 🕐",
-  pending: "बाकी ❗",
+  paid: "Paid ✅",
+  partial: "Partial 🕐",
+  pending: "Pending ❗",
 };
 
 const MODE_LABELS: Record<string, string> = {
-  cash: "नकद 💵",
+  cash: "Cash 💵",
   upi: "UPI 📱",
-  bank: "बैंक 🏦",
-  cheque: "चेक 📝",
+  bank: "Bank 🏦",
+  cheque: "Cheque 📝",
 };
 
 function makeBillNo() {
@@ -252,7 +252,7 @@ export default function AdminCompanyPayments() {
     const name = supForm.name.trim();
 
     if (!name) {
-      setSupError("कंपनी / सप्लायर का नाम जरूरी है");
+      setSupError("Company / Supplier name is required");
       return;
     }
 
@@ -274,7 +274,7 @@ export default function AdminCompanyPayments() {
 
     if (error) {
       console.error("Add supplier error:", error);
-      setSupError(error.message || "Company save nahi ho rahi. Supabase table/RLS check karo.");
+      setSupError(error.message || "Company is not saving. Check Supabase table/RLS.");
       setSupSaving(false);
       return;
     }
@@ -296,7 +296,7 @@ export default function AdminCompanyPayments() {
   }
 
   async function deleteSupplier(id: string) {
-    if (!confirm("इस कंपनी / सप्लायर को हटाएं?")) return;
+    if (!confirm("Delete this company / supplier?")) return;
 
     const { error } = await supabase
       .from("suppliers")
@@ -311,7 +311,7 @@ export default function AdminCompanyPayments() {
     const prod = products.find((p) => p.id === selProduct);
 
     if (!selProduct || selQty <= 0 || selRate <= 0) {
-      setBillError("Product, quantity और rate सही डालें");
+      setBillError("Enter product, quantity and rate correctly");
       return;
     }
 
@@ -363,12 +363,12 @@ export default function AdminCompanyPayments() {
     setBillError("");
 
     if (!billSupplierId) {
-      setBillError("सप्लायर / कंपनी चुनें");
+      setBillError("Select supplier / company");
       return;
     }
 
     if (billItems.length === 0) {
-      setBillError("कम से कम एक आइटम जोड़ें");
+      setBillError("Add at least one item");
       return;
     }
 
@@ -449,7 +449,7 @@ export default function AdminCompanyPayments() {
                   quantity: i.quantity,
                   previous_stock: oldStock,
                   new_stock: newStock,
-                  notes: `कंपनी खरीद ${billNumber}`,
+                  notes: `Company purchase ${billNumber}`,
                   created_by: user?.email || "admin",
                 },
               ]);
@@ -468,7 +468,7 @@ export default function AdminCompanyPayments() {
 
       setTimeout(() => setBillSaved(false), 4000);
     } catch (e: any) {
-      setBillError(e.message || "Bill save nahi hua");
+      setBillError(e.message || "Bill was not saved");
     } finally {
       setBillSaving(false);
     }
@@ -478,12 +478,12 @@ export default function AdminCompanyPayments() {
     setPayError("");
 
     if (!payBillId) {
-      setPayError("बिल चुनें");
+      setPayError("Select bill");
       return;
     }
 
     if (!payAmount || payAmount <= 0) {
-      setPayError("राशि डालें");
+      setPayError("Enter amount");
       return;
     }
 
@@ -491,7 +491,7 @@ export default function AdminCompanyPayments() {
 
     try {
       const bill = bills.find((b) => b.id === payBillId);
-      if (!bill) throw new Error("Bill नहीं मिला");
+      if (!bill) throw new Error("Bill not found");
 
       const oldPaid = Number(bill.paid_amount || 0);
       const total = Number(bill.total_amount || 0);
@@ -536,17 +536,17 @@ export default function AdminCompanyPayments() {
       setTimeout(() => setPaySaved(false), 3000);
       fetchBills();
     } catch (e: any) {
-      setPayError(e.message || "Payment save nahi hui");
+      setPayError(e.message || "Payment was not saved");
     } finally {
       setPaySaving(false);
     }
   }
 
   function copyWAMessage(sup: any) {
-    const msg = `नमस्ते ${sup.name},
+    const msg = `Hello ${sup.name},
 
-Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString("en-IN")} payment बाकी है।
-कृपया confirm करें।
+Payment of ₹${sup.remaining.toLocaleString("en-IN")} is pending from Annadata Agri & Seeds.
+Please confirm.
 
 — Keshav Bhai, Annadata Agri & Seeds
 📞 6261737388`;
@@ -558,10 +558,10 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
   }
 
   const tabs = [
-    { id: "suppliers" as Tab, label: "कंपनियाँ", icon: <Building2 className="w-4 h-4" /> },
-    { id: "newbill" as Tab, label: "नई खरीद", icon: <Plus className="w-4 h-4" /> },
+    { id: "suppliers" as Tab, label: "Companies", icon: <Building2 className="w-4 h-4" /> },
+    { id: "newbill" as Tab, label: "New Purchase", icon: <Plus className="w-4 h-4" /> },
     { id: "payments" as Tab, label: "Payment", icon: <CreditCard className="w-4 h-4" /> },
-    { id: "reports" as Tab, label: "रिपोर्ट", icon: <BarChart3 className="w-4 h-4" /> },
+    { id: "reports" as Tab, label: "Reports", icon: <BarChart3 className="w-4 h-4" /> },
   ];
 
   return (
@@ -569,10 +569,10 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
       <div>
         <h1 className="text-2xl font-bold text-gray-800 font-hindi flex items-center gap-2">
           <Building2 className="w-6 h-6 text-purple-600" />
-          Company को देना है 💼
+          Company Payments 💼
         </h1>
         <p className="text-gray-400 text-sm font-hindi mt-1">
-          सप्लायर और कंपनी का हिसाब-किताब
+          Supplier and Company Accounts
         </p>
       </div>
 
@@ -597,7 +597,7 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
         <div className="space-y-3">
           {supSaved && (
             <p className="text-green-700 font-hindi text-sm bg-green-50 border border-green-200 rounded-xl px-4 py-3">
-              कंपनी सेव हो गई ✅
+              Company saved successfully ✅
             </p>
           )}
 
@@ -606,27 +606,27 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
             className="flex items-center gap-2 bg-purple-600 text-white px-5 py-3 rounded-xl font-hindi font-bold hover:bg-purple-700 transition-colors shadow-md"
           >
             <Plus className="w-4 h-4" />
-            नई कंपनी / सप्लायर जोड़ें
+            Add Company / Supplier
           </button>
 
           {showAddSup && (
             <div className="bg-purple-50 border-2 border-purple-200 rounded-2xl p-4 space-y-3">
               <h3 className="font-bold text-purple-800 font-hindi">
-                नई कंपनी का विवरण
+                New Company Details
               </h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <input
                   value={supForm.name}
                   onChange={(e) => setSupForm((p) => ({ ...p, name: e.target.value }))}
-                  placeholder="कंपनी / सप्लायर का नाम *"
+                  placeholder="Company / Supplier Name *"
                   className="border-2 border-purple-200 focus:border-purple-500 rounded-xl px-4 py-3 font-hindi outline-none text-sm"
                 />
 
                 <input
                   value={supForm.mobile}
                   onChange={(e) => setSupForm((p) => ({ ...p, mobile: e.target.value }))}
-                  placeholder="मोबाइल नंबर"
+                  placeholder="Mobile Number"
                   className="border-2 border-purple-200 focus:border-purple-500 rounded-xl px-4 py-3 font-hindi outline-none text-sm"
                 />
 
@@ -640,7 +640,7 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
                 <input
                   value={supForm.address}
                   onChange={(e) => setSupForm((p) => ({ ...p, address: e.target.value }))}
-                  placeholder="पता / शहर"
+                  placeholder="Address / City"
                   className="border-2 border-purple-200 focus:border-purple-500 rounded-xl px-4 py-3 font-hindi outline-none text-sm"
                 />
 
@@ -670,14 +670,14 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
                   ) : (
                     <CheckCircle className="w-4 h-4" />
                   )}
-                  सेव करें
+                  Save
                 </button>
 
                 <button
                   onClick={() => setShowAddSup(false)}
                   className="px-4 py-2.5 rounded-xl bg-gray-200 text-gray-700 font-hindi font-bold hover:bg-gray-300 transition-colors"
                 >
-                  रद्द
+                  Cancel
                 </button>
               </div>
             </div>
@@ -690,7 +690,7 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
           ) : suppliers.length === 0 ? (
             <div className="bg-gray-50 rounded-2xl p-10 text-center">
               <p className="text-gray-400 font-hindi text-lg">
-                कोई कंपनी नहीं जोड़ी गई
+                No company added yet
               </p>
             </div>
           ) : (
@@ -710,10 +710,10 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
               <CheckCircle className="w-6 h-6 text-green-600" />
               <div>
                 <p className="text-green-800 font-hindi font-bold">
-                  खरीदारी सेव हो गई ✅
+                  Purchase saved successfully ✅
                 </p>
                 <p className="text-green-600 text-sm font-hindi">
-                  स्टॉक ऑटो-अपडेट हो गया ✅
+                  Stock auto-updated ✅
                 </p>
               </div>
             </div>
@@ -721,7 +721,7 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
 
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-4">
             <h3 className="font-bold text-gray-700 font-hindi">
-              कंपनी / सप्लायर चुनें
+              Select Company / Supplier
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -730,7 +730,7 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
                 onChange={(e) => setBillSupplierId(e.target.value)}
                 className="border-2 border-gray-200 focus:border-purple-500 rounded-xl px-4 py-3 font-hindi outline-none text-base col-span-1 sm:col-span-2"
               >
-                <option value="">-- कंपनी / सप्लायर चुनें *</option>
+                <option value="">-- Select Company / Supplier *</option>
                 {suppliers.map((s) => (
                   <option key={s.id} value={s.id}>
                     {s.name}
@@ -742,7 +742,7 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
               <input
                 value={billNumber}
                 onChange={(e) => setBillNumber(e.target.value)}
-                placeholder="बिल नंबर"
+                placeholder="Bill Number"
                 className="border-2 border-gray-200 focus:border-purple-500 rounded-xl px-4 py-3 font-hindi outline-none text-base"
               />
 
@@ -757,7 +757,7 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
             <label className="flex items-center gap-3 cursor-pointer border-2 border-dashed border-purple-200 rounded-xl px-4 py-3 hover:bg-purple-50 transition-colors">
               <Upload className="w-5 h-5 text-purple-500" />
               <span className="font-hindi text-purple-700 text-sm">
-                {uploading ? "अपलोड हो रहा है..." : "बिल फोटो अपलोड करें"}
+                {uploading ? "Uploading..." : "Upload Bill Photo"}
               </span>
               <input
                 type="file"
@@ -770,7 +770,7 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
               {billPhoto && (
                 <>
                   <span className="ml-auto text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-hindi">
-                    ✅ अपलोड
+                    ✅ Uploaded
                   </span>
                   <button
                     type="button"
@@ -788,7 +788,7 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
           </div>
 
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-4">
-            <h3 className="font-bold text-gray-700 font-hindi">प्रोडक्ट जोड़ें</h3>
+            <h3 className="font-bold text-gray-700 font-hindi">Add Product</h3>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div className="col-span-2">
@@ -801,7 +801,7 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
                   }}
                   className="w-full border-2 border-gray-200 focus:border-purple-500 rounded-xl px-4 py-3 font-hindi outline-none text-base"
                 >
-                  <option value="">प्रोडक्ट चुनें</option>
+                  <option value="">Select Product</option>
                   {products.map((p) => (
                     <option key={p.id} value={p.id}>
                       {p.name} ({p.unit})
@@ -816,7 +816,7 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
                 step="0.1"
                 value={selQty || ""}
                 onChange={(e) => setSelQty(Number(e.target.value))}
-                placeholder="मात्रा"
+                placeholder="Quantity"
                 className="border-2 border-gray-200 focus:border-purple-500 rounded-xl px-4 py-3 font-hindi outline-none text-base"
               />
 
@@ -825,7 +825,7 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
                 min="0"
                 value={selRate || ""}
                 onChange={(e) => setSelRate(Number(e.target.value))}
-                placeholder="दाम ₹"
+                placeholder="Rate ₹"
                 className="border-2 border-gray-200 focus:border-purple-500 rounded-xl px-4 py-3 font-hindi outline-none text-base"
               />
             </div>
@@ -836,7 +836,7 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
               className="flex items-center gap-2 bg-purple-600 text-white px-5 py-3 rounded-xl font-hindi font-bold hover:bg-purple-700 disabled:opacity-50 transition-colors"
             >
               <Plus className="w-4 h-4" />
-              आइटम जोड़ें
+              Add Item
             </button>
 
             {billItems.length > 0 && (
@@ -871,7 +871,7 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
 
                 <div className="bg-purple-50 rounded-xl px-4 py-3 flex justify-between items-center">
                   <span className="font-hindi font-bold text-purple-800">
-                    कुल बिल राशि
+                    Total Bill Amount
                   </span>
                   <span className="text-2xl font-bold text-purple-700">
                     ₹{billTotal.toLocaleString("en-IN")}
@@ -882,12 +882,12 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
           </div>
 
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-4">
-            <h3 className="font-bold text-gray-700 font-hindi">Payment विवरण</h3>
+            <h3 className="font-bold text-gray-700 font-hindi">Payment Details</h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-semibold text-gray-600 font-hindi mb-1.5">
-                  अभी पेड राशि ₹
+                  Paid Amount Now ₹
                 </label>
                 <input
                   type="number"
@@ -901,7 +901,7 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
 
               <div className="flex flex-col justify-end">
                 <div className="bg-red-50 rounded-xl px-4 py-3 border border-red-100">
-                  <p className="text-xs text-red-600 font-hindi">बाकी राशि</p>
+                  <p className="text-xs text-red-600 font-hindi">Remaining Amount</p>
                   <p className="text-xl font-black text-red-600">
                     ₹{Math.max(0, billTotal - Number(billPaid || 0)).toLocaleString("en-IN")}
                   </p>
@@ -912,7 +912,7 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
             <textarea
               value={billNotes}
               onChange={(e) => setBillNotes(e.target.value)}
-              placeholder="नोट"
+              placeholder="Notes"
               rows={2}
               className="w-full border-2 border-gray-200 focus:border-purple-500 rounded-xl px-4 py-3 font-hindi outline-none text-sm resize-none"
             />
@@ -935,7 +935,7 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
             ) : (
               <CheckCircle className="w-5 h-5" />
             )}
-            {billSaving ? "सेव हो रहा है..." : "खरीदारी सेव करें"}
+            {billSaving ? "Saving..." : "Save Purchase"}
           </button>
         </div>
       )}
@@ -946,14 +946,14 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
             <div className="bg-green-50 border-2 border-green-400 rounded-2xl p-4 flex items-center gap-3">
               <CheckCircle className="w-6 h-6 text-green-600" />
               <p className="text-green-800 font-hindi font-bold">
-                Payment दर्ज हो गई ✅
+                Payment recorded successfully ✅
               </p>
             </div>
           )}
 
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-4">
             <h3 className="font-bold text-gray-700 font-hindi">
-              नई Payment दर्ज करें
+              Record New Payment
             </h3>
 
             <select
@@ -965,12 +965,12 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
               }}
               className="w-full border-2 border-gray-200 focus:border-purple-500 rounded-xl px-4 py-3 font-hindi outline-none text-base"
             >
-              <option value="">-- बिल चुनें</option>
+              <option value="">-- Select bill</option>
               {bills
                 .filter((b) => b.payment_status !== "paid")
                 .map((b) => (
                   <option key={b.id} value={b.id}>
-                    {b.supplier_name} — {b.bill_number} — बाकी ₹
+                    {b.supplier_name} — {b.bill_number} — Remaining ₹
                     {Number(b.remaining_amount).toLocaleString("en-IN")}
                   </option>
                 ))}
@@ -982,7 +982,7 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
                 min="1"
                 value={payAmount || ""}
                 onChange={(e) => setPayAmount(Number(e.target.value))}
-                placeholder="Payment राशि ₹"
+                placeholder="Payment Amount ₹"
                 className="border-2 border-gray-200 focus:border-purple-500 rounded-xl px-4 py-3 font-hindi outline-none text-base"
               />
 
@@ -1009,7 +1009,7 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
             <input
               value={payNotes}
               onChange={(e) => setPayNotes(e.target.value)}
-              placeholder="नोट"
+              placeholder="Notes"
               className="w-full border-2 border-gray-200 focus:border-purple-500 rounded-xl px-4 py-3 font-hindi outline-none text-sm"
             />
 
@@ -1029,12 +1029,12 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
               ) : (
                 <IndianRupee className="w-4 h-4" />
               )}
-              Payment दर्ज करें
+              Record Payment
             </button>
           </div>
 
           <h3 className="font-bold text-gray-700 font-hindi text-base mt-2">
-            सभी बिल
+            All Bills
           </h3>
 
           {billsLoading ? (
@@ -1043,7 +1043,7 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
             </div>
           ) : bills.length === 0 ? (
             <div className="bg-gray-50 rounded-2xl p-10 text-center">
-              <p className="text-gray-400 font-hindi">कोई बिल नहीं</p>
+              <p className="text-gray-400 font-hindi">No bills found</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -1064,24 +1064,24 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
                       </div>
 
                       <p className="text-gray-400 text-xs font-hindi mt-0.5">
-                        {b.bill_number} • {new Date(b.bill_date).toLocaleDateString("hi-IN")}
+                        {b.bill_number} • {new Date(b.bill_date).toLocaleDateString("en-IN")}
                       </p>
 
                       <div className="flex gap-4 mt-2">
                         <div>
-                          <p className="text-[10px] text-gray-400 font-hindi">कुल</p>
+                          <p className="text-[10px] text-gray-400 font-hindi">Total</p>
                           <p className="font-bold text-gray-700 text-sm">
                             ₹{Number(b.total_amount).toLocaleString("en-IN")}
                           </p>
                         </div>
                         <div>
-                          <p className="text-[10px] text-gray-400 font-hindi">पेड</p>
+                          <p className="text-[10px] text-gray-400 font-hindi">Paid</p>
                           <p className="font-bold text-green-600 text-sm">
                             ₹{Number(b.paid_amount).toLocaleString("en-IN")}
                           </p>
                         </div>
                         <div>
-                          <p className="text-[10px] text-gray-400 font-hindi">बाकी</p>
+                          <p className="text-[10px] text-gray-400 font-hindi">Remaining</p>
                           <p className="font-bold text-red-600 text-sm">
                             ₹{Number(b.remaining_amount).toLocaleString("en-IN")}
                           </p>
@@ -1124,7 +1124,7 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
                 ₹{reportData.reduce((s, r) => s + r.remaining, 0).toLocaleString("en-IN")}
               </p>
               <p className="text-white/80 text-xs font-hindi mt-1">
-                कुल बकाया
+                Total Pending
               </p>
             </div>
 
@@ -1134,7 +1134,7 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
                 {reportData.filter((r) => r.hasPending).length}
               </p>
               <p className="text-white/80 text-xs font-hindi mt-1">
-                कंपनियाँ जिन्हें देना है
+                Companies Payable
               </p>
             </div>
           </div>
@@ -1145,7 +1145,7 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
             </div>
           ) : reportData.length === 0 ? (
             <div className="bg-gray-50 rounded-2xl p-10 text-center">
-              <p className="text-gray-400 font-hindi">कोई डेटा नहीं</p>
+              <p className="text-gray-400 font-hindi">No data found</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -1193,21 +1193,21 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
 
                   <div className="grid grid-cols-3 gap-2">
                     <div className="bg-gray-50 rounded-xl px-3 py-2 text-center">
-                      <p className="text-[10px] text-gray-400 font-hindi">कुल खरीद</p>
+                      <p className="text-[10px] text-gray-400 font-hindi">Total Purchase</p>
                       <p className="font-bold text-sm text-gray-700">
                         ₹{r.totalPurchase.toLocaleString("en-IN")}
                       </p>
                     </div>
 
                     <div className="bg-gray-50 rounded-xl px-3 py-2 text-center">
-                      <p className="text-[10px] text-gray-400 font-hindi">कुल पेड</p>
+                      <p className="text-[10px] text-gray-400 font-hindi">Total Paid</p>
                       <p className="font-bold text-sm text-green-600">
                         ₹{r.totalPaid.toLocaleString("en-IN")}
                       </p>
                     </div>
 
                     <div className="bg-gray-50 rounded-xl px-3 py-2 text-center">
-                      <p className="text-[10px] text-gray-400 font-hindi">बाकी</p>
+                      <p className="text-[10px] text-gray-400 font-hindi">Remaining</p>
                       <p className={`font-bold text-sm ${r.remaining > 0 ? "text-red-600 font-black" : "text-gray-400"}`}>
                         ₹{r.remaining.toLocaleString("en-IN")}
                       </p>
@@ -1216,13 +1216,13 @@ Annadata Agri & Seeds की तरफ से ₹${sup.remaining.toLocaleString(
 
                   {r.lastPayDate && (
                     <p className="text-xs text-gray-400 font-hindi mt-2">
-                      आखिरी payment: {new Date(r.lastPayDate).toLocaleDateString("hi-IN")}
+                      Last payment: {new Date(r.lastPayDate).toLocaleDateString("en-IN")}
                     </p>
                   )}
 
                   {r.remaining <= 0 && r.totalPurchase > 0 && (
                     <div className="mt-2 bg-green-50 rounded-xl px-3 py-1.5 text-xs text-green-700 font-hindi font-bold text-center">
-                      ✅ पूरा पेड हो गया
+                      ✅ Fully paid
                     </div>
                   )}
                 </div>
