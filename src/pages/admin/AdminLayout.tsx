@@ -1,3 +1,4 @@
+// AUTO-BILINGUAL UPDATE: Hardcoded Hindi UI labels converted to English where possible.
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { useAuth } from "@/hooks/useAuth";
@@ -60,7 +61,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </div>
               <div>
                 <h1 className="text-white font-bold font-hindi text-base leading-tight">अन्नदाता</h1>
-                <p className="text-green-300 text-xs font-hindi">स्मार्ट दुकान</p>
+                <p className="text-green-300 text-xs font-hindi">स्मार्ट Shop</p>
               </div>
             </div>
 
