@@ -1,3 +1,4 @@
+// AUTO-BILINGUAL UPDATE: Hardcoded Hindi UI labels converted to English where possible.
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { Plus, Minus, RefreshCw, History, AlertTriangle, X } from "lucide-react";
@@ -5,7 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 type MovementType = "in" | "out" | "adjustment";
 
-const MOV_LABEL: Record<MovementType, string> = { in: "स्टॉक इन", out: "स्टॉक आउट", adjustment: "एडजस्ट" };
+const MOV_LABEL: Record<MovementType, string> = { in: "Stock In", out: "Stock Out", adjustment: "Adjust" };
 const MOV_COLOR: Record<MovementType, string> = {
   in: "text-green-600 bg-green-50",
   out: "text-red-600 bg-red-50",
@@ -98,14 +99,14 @@ export default function AdminStock() {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-bold text-gray-800 font-hindi">स्टॉक मैनेजमेंट</h2>
+      <h2 className="text-xl font-bold text-gray-800 font-hindi">Stock मैनेजमेंट</h2>
 
       {/* Tabs */}
       <div className="flex gap-2 bg-gray-100 p-1 rounded-xl w-fit flex-wrap">
         {([
-          { id: "stock", label: "स्टॉक" },
-          { id: "history", label: "इतिहास" },
-          { id: "alerts", label: `⚠️ अलर्ट (${lowStockProducts.length})` }
+          { id: "stock", label: "Stock" },
+          { id: "history", label: "History" },
+          { id: "alerts", label: `⚠️ Alerts (${lowStockProducts.length})` }
         ] as const).map(t => (
           <button key={t.id} onClick={() => setActiveTab(t.id)}
             className={`px-4 py-2 rounded-lg text-sm font-hindi transition-all ${activeTab === t.id ? "bg-white text-green-700 font-bold shadow-sm" : "text-gray-600"}`}>
@@ -128,7 +129,7 @@ export default function AdminStock() {
               <div className="bg-green-50 border border-green-200 rounded-xl p-4">
                 <p className="font-hindi font-bold text-gray-800">{selectedProduct.name}</p>
                 <p className="text-gray-500 text-sm font-hindi mt-1">
-                  मौजूदा स्टॉक:{" "}
+                  मौजूदा Stock:{" "}
                   <span className="font-bold text-gray-700">
                     {selectedProduct.current_stock} {selectedProduct.unit}
                   </span>
@@ -151,7 +152,7 @@ export default function AdminStock() {
               {/* Qty input */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 font-hindi mb-2">
-                  {movType === "adjustment" ? "नई मात्रा" : "मात्रा"} ({selectedProduct.unit})
+                  {movType === "adjustment" ? "नई Quantity" : "Quantity"} ({selectedProduct.unit})
                 </label>
                 <div className="flex items-center gap-3">
                   <button onClick={() => setQty(q => Math.max(movType === "adjustment" ? 0 : 1, q - 1))}
@@ -168,7 +169,7 @@ export default function AdminStock() {
                 </div>
                 {movType !== "adjustment" && (
                   <p className="text-sm text-gray-500 font-hindi mt-2 text-center">
-                    नया स्टॉक:{" "}
+                    नया Stock:{" "}
                     <span className="font-bold text-gray-700">
                       {movType === "in"
                         ? Number(selectedProduct.current_stock) + qty
@@ -180,7 +181,7 @@ export default function AdminStock() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 font-hindi mb-2">नोट (वैकल्पिक)</label>
+                <label className="block text-sm font-semibold text-gray-700 font-hindi mb-2">Notes (optional)</label>
                 <input value={notes} onChange={e => setNotes(e.target.value)}
                   className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-green-500 font-hindi"
                   placeholder="कोई कारण..." />
@@ -188,7 +189,7 @@ export default function AdminStock() {
 
               <button onClick={handleMovement} disabled={saving || qty < 0}
                 className="w-full bg-green-600 text-white py-3 rounded-xl font-hindi font-bold hover:bg-green-700 disabled:opacity-60 transition-colors">
-                {saving ? "सेव हो रहा है..." : "✅ सेव करें"}
+                {saving ? "Saving..." : "✅ Save"}
               </button>
             </div>
           </div>
@@ -205,15 +206,15 @@ export default function AdminStock() {
           {activeTab === "stock" && (
             <div className="space-y-3">
               <input value={prodSearch} onChange={e => setProdSearch(e.target.value)}
-                placeholder="प्रोडक्ट खोजें..."
+                placeholder="Product खोजें..."
                 className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-green-500 font-hindi" />
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th className="text-left px-4 py-3 font-hindi text-gray-600 font-semibold">प्रोडक्ट</th>
-                        <th className="text-right px-4 py-3 font-hindi text-gray-600 font-semibold">स्टॉक</th>
+                        <th className="text-left px-4 py-3 font-hindi text-gray-600 font-semibold">Product</th>
+                        <th className="text-right px-4 py-3 font-hindi text-gray-600 font-semibold">Stock</th>
                         <th className="text-right px-4 py-3 font-hindi text-gray-600 font-semibold hidden md:table-cell">लिमिट</th>
                         <th className="text-center px-4 py-3 font-hindi text-gray-600 font-semibold hidden sm:table-cell">स्थिति</th>
                         <th className="text-right px-4 py-3 font-hindi text-gray-600 font-semibold">क्रिया</th>
@@ -236,20 +237,20 @@ export default function AdminStock() {
                           </td>
                           <td className="px-4 py-3 text-center hidden sm:table-cell">
                             <span className={`text-xs px-2 py-1 rounded-full font-hindi font-bold ${Number(p.current_stock) <= Number(p.low_stock_limit) ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"}`}>
-                              {Number(p.current_stock) <= Number(p.low_stock_limit) ? "कम स्टॉक" : "ठीक है"}
+                              {Number(p.current_stock) <= Number(p.low_stock_limit) ? "Low Stock" : "OK"}
                             </span>
                           </td>
                           <td className="px-4 py-3 text-right">
                             <div className="flex gap-1 justify-end">
-                              <button onClick={() => openModal(p, "in")} title="स्टॉक इन"
+                              <button onClick={() => openModal(p, "in")} title="Stock In"
                                 className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors">
                                 <Plus className="w-4 h-4" />
                               </button>
-                              <button onClick={() => openModal(p, "out")} title="स्टॉक आउट"
+                              <button onClick={() => openModal(p, "out")} title="Stock Out"
                                 className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
                                 <Minus className="w-4 h-4" />
                               </button>
-                              <button onClick={() => openModal(p, "adjustment")} title="एडजस्ट"
+                              <button onClick={() => openModal(p, "adjustment")} title="Adjust"
                                 className="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors">
                                 <RefreshCw className="w-4 h-4" />
                               </button>
@@ -260,7 +261,7 @@ export default function AdminStock() {
                       {filteredProducts.length === 0 && (
                         <tr>
                           <td colSpan={5} className="text-center py-12 text-gray-400 font-hindi">
-                            कोई प्रोडक्ट नहीं मिला
+                            No product found
                           </td>
                         </tr>
                       )}
@@ -278,9 +279,9 @@ export default function AdminStock() {
                 <table className="w-full text-sm">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="text-left px-4 py-3 font-hindi text-gray-600 font-semibold">प्रोडक्ट</th>
+                      <th className="text-left px-4 py-3 font-hindi text-gray-600 font-semibold">Product</th>
                       <th className="text-center px-4 py-3 font-hindi text-gray-600 font-semibold">प्रकार</th>
-                      <th className="text-right px-4 py-3 font-hindi text-gray-600 font-semibold">मात्रा</th>
+                      <th className="text-right px-4 py-3 font-hindi text-gray-600 font-semibold">Quantity</th>
                       <th className="text-right px-4 py-3 font-hindi text-gray-600 font-semibold hidden md:table-cell">पुराना → नया</th>
                       <th className="text-right px-4 py-3 font-hindi text-gray-600 font-semibold hidden sm:table-cell">तारीख</th>
                     </tr>
@@ -312,7 +313,7 @@ export default function AdminStock() {
                     {movements.length === 0 && (
                       <tr>
                         <td colSpan={5} className="text-center py-12 text-gray-400 font-hindi">
-                          कोई इतिहास नहीं
+                          कोई History नहीं
                         </td>
                       </tr>
                     )}
@@ -327,8 +328,8 @@ export default function AdminStock() {
             <div className="space-y-3">
               {lowStockProducts.length === 0 ? (
                 <div className="bg-green-50 border border-green-200 rounded-2xl p-10 text-center">
-                  <p className="text-green-700 font-hindi text-xl font-bold">✅ सभी प्रोडक्ट का स्टॉक ठीक है!</p>
-                  <p className="text-green-500 font-hindi text-sm mt-2">कोई कम स्टॉक नहीं</p>
+                  <p className="text-green-700 font-hindi text-xl font-bold">✅ All Product का Stock OK!</p>
+                  <p className="text-green-500 font-hindi text-sm mt-2">कोई Low Stock नहीं</p>
                 </div>
               ) : (
                 lowStockProducts.map((p: any) => (
@@ -336,12 +337,12 @@ export default function AdminStock() {
                     <div>
                       <p className="font-hindi font-bold text-gray-800">{p.name}</p>
                       <p className="text-red-600 text-sm font-hindi mt-0.5">
-                        स्टॉक: <strong>{p.current_stock} {p.unit}</strong> (लिमिट: {p.low_stock_limit} {p.unit})
+                        Stock: <strong>{p.current_stock} {p.unit}</strong> (लिमिट: {p.low_stock_limit} {p.unit})
                       </p>
                     </div>
                     <button onClick={() => openModal(p, "in")}
                       className="bg-green-600 text-white px-4 py-2 rounded-xl text-sm font-hindi hover:bg-green-700 whitespace-nowrap flex-shrink-0">
-                      + स्टॉक इन
+                      + Stock In
                     </button>
                   </div>
                 ))
