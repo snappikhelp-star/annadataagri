@@ -1,3 +1,4 @@
+// AUTO-BILINGUAL UPDATE: Hardcoded Hindi UI labels converted to English where possible.
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useLang } from "@/hooks/useLang";
@@ -80,10 +81,10 @@ export default function AdminQuickStock() {
       {lowCount > 0 && (
         <div className="bg-red-50 border-2 border-red-200 rounded-2xl px-4 py-3 flex items-center gap-3">
           <AlertTriangle className="w-6 h-6 text-red-500 flex-shrink-0" />
-          <p className="font-hindi text-red-700 font-bold">{lowCount} प्रोडक्ट का स्टॉक कम है!</p>
+          <p className="font-hindi text-red-700 font-bold">{lowCount} Product का Stock कम है!</p>
           <button onClick={() => setFilter(f => f === "low" ? "all" : "low")}
             className={`ml-auto text-xs px-3 py-1 rounded-lg font-hindi font-bold transition-colors ${filter === "low" ? "bg-red-500 text-white" : "bg-red-100 text-red-700 hover:bg-red-200"}`}>
-            {filter === "low" ? "सब देखें" : "सिर्फ कम स्टॉक"}
+            {filter === "low" ? "सब देखें" : "सिर्फ Low Stock"}
           </button>
         </div>
       )}
@@ -91,7 +92,7 @@ export default function AdminQuickStock() {
       <div className="relative">
         <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
         <input value={search} onChange={e => setSearch(e.target.value)}
-          placeholder="प्रोडक्ट खोजें..."
+          placeholder="Product खोजें..."
           className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 focus:border-green-500 rounded-xl outline-none font-hindi text-base" />
       </div>
 
@@ -101,7 +102,7 @@ export default function AdminQuickStock() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-hindi font-bold text-gray-800 text-lg leading-tight">{selected.name}</p>
-                <p className="text-gray-400 text-sm font-hindi">वर्तमान स्टॉक: <strong className="text-gray-700">{selected.current_stock} {selected.unit}</strong></p>
+                <p className="text-gray-400 text-sm font-hindi">Current Stock: <strong className="text-gray-700">{selected.current_stock} {selected.unit}</strong></p>
               </div>
               <button onClick={() => setSelected(null)} className="p-2 hover:bg-gray-100 rounded-xl"><X className="w-5 h-5" /></button>
             </div>
@@ -129,7 +130,7 @@ export default function AdminQuickStock() {
               </div>
               {qty > 0 && (
                 <p className="text-center text-gray-500 font-hindi text-sm mt-2">
-                  नया स्टॉक: <strong className={movType === "in" ? "text-green-700" : "text-red-600"}>
+                  नया Stock: <strong className={movType === "in" ? "text-green-700" : "text-red-600"}>
                     {movType === "in" ? Number(selected.current_stock) + qty : Math.max(0, Number(selected.current_stock) - qty)} {selected.unit}
                   </strong>
                 </p>
@@ -138,12 +139,12 @@ export default function AdminQuickStock() {
 
             <div className="grid grid-cols-2 gap-3">
               <button onClick={() => setSelected(null)} className="py-4 bg-gray-100 text-gray-700 rounded-xl font-hindi font-bold text-base hover:bg-gray-200 transition-colors">
-                रद्द करें
+                Cancel करें
               </button>
               <button onClick={doMovement} disabled={saving || qty <= 0}
                 className={`py-4 rounded-xl font-hindi font-bold text-base text-white flex items-center justify-center gap-2 transition-colors disabled:opacity-60 ${movType === "in" ? "bg-green-600 hover:bg-green-700" : "bg-red-500 hover:bg-red-600"}`}>
                 {saving ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <Check className="w-5 h-5" />}
-                {saving ? "..." : "सेव करें"}
+                {saving ? "..." : "Save"}
               </button>
             </div>
           </div>
@@ -163,7 +164,7 @@ export default function AdminQuickStock() {
                     <p className="font-hindi font-bold text-gray-800 leading-tight">{p.name}</p>
                     <p className="text-gray-400 text-xs font-hindi mt-0.5">{p.category}</p>
                   </div>
-                  {isLow && <span className="flex-shrink-0 ml-2 bg-red-100 text-red-700 text-xs px-2 py-0.5 rounded-full font-hindi font-bold">कम स्टॉक ⚠️</span>}
+                  {isLow && <span className="flex-shrink-0 ml-2 bg-red-100 text-red-700 text-xs px-2 py-0.5 rounded-full font-hindi font-bold">Low Stock ⚠️</span>}
                 </div>
                 <div className="flex items-center justify-between mb-3">
                   <div>
