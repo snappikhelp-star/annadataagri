@@ -22,6 +22,7 @@ import shopImg2 from "@assets/shop2.webp";
 import shopImg3 from "@assets/shop3.webp";
 import shopImg4 from "@assets/shop4.webp";
 import { generateCustomerReview, SERVICES as ENGINE_SERVICES, type Lang } from "../lib/reviewEngine";
+import { supabase, supabaseConfigured } from "@/lib/supabase";
 
 const PHONE = "919691712455";
 const PHONE_SHORT = "9691712455";
@@ -78,6 +79,7 @@ export default function HomePage() {
         <HeroSection />
         <OnlineDhanBookingSection />
         <SmartFarmerHelpSection />
+        <KisanInfoCenterSection />
         <CropDoctorSection />
         <ProductsSection />
         <SeasonalCropCalendarSection />
@@ -523,14 +525,79 @@ function HeroSection() {
 /* ─── Quick Enquiry Modal ─── */
 interface ModalProps { open: boolean; onClose: () => void; problem: string; }
 function QuickEnquiryModal({ open, onClose, problem }: ModalProps) {
-  const [form, setForm] = useState({ name: "", mobile: "", village: "", crop: "", acres: "", message: "" });
+  const [form, setForm] = useState({ name: "", mobile: "", village: "", district: "", crop: "", acres: "", message: "" });
+  const [photo, setPhoto] = useState<File | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
     setForm(f => ({ ...f, [e.target.name]: e.target.value }));
 
-  const sendWA = () => {
-    const msg = `🌾 *Annadata Agri — किसान Enquiry*\n\n📌 समस्या: ${problem}\n👤 नाम: ${form.name}\n📱 मोबाइल: ${form.mobile}\n🏘️ गांव: ${form.village}\n🌱 फसल: ${form.crop}\n📐 एकड़: ${form.acres}\n💬 विवरण: ${form.message || "-"}`;
-    window.open(waLink(msg), "_blank");
+  const handleClose = () => {
+    setForm({ name: "", mobile: "", village: "", district: "", crop: "", acres: "", message: "" });
+    setPhoto(null);
+    setSuccess(false);
+    setError("");
     onClose();
+  };
+
+  const handleSubmit = async () => {
+    if (!form.name.trim() || !form.mobile.trim()) {
+      setError("नाम और मोबाइल नंबर जरूरी है।");
+      return;
+    }
+    if (form.mobile.replace(/\D/g, "").length < 10) {
+      setError("सही 10 अंकों का मोबाइल नंबर डालें।");
+      return;
+    }
+    setSubmitting(true);
+    setError("");
+
+    let photoUrl: string | null = null;
+
+    // Upload photo if selected
+    if (photo && supabaseConfigured) {
+      try {
+        const ext = photo.name.split(".").pop();
+        const fileName = `${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+        const { data: uploadData, error: uploadErr } = await supabase.storage
+          .from("enquiry-photos")
+          .upload(fileName, photo, { upsert: false });
+        if (!uploadErr && uploadData) {
+          // Store path only — bucket is private; admin views via signed URL
+          photoUrl = uploadData.path;
+        }
+      } catch (_) { /* proceed without photo if upload fails */ }
+    }
+
+    // Save to database
+    const { error: insertErr } = await supabase
+      .from("enquiries")
+      .insert({
+        name: form.name.trim(),
+        mobile: form.mobile.trim(),
+        village: form.village.trim(),
+        district: form.district.trim(),
+        crop: form.crop.trim(),
+        problem: problem,
+        land_area: form.acres.trim(),
+        message: form.message.trim(),
+        photo_url: photoUrl,
+        status: "pending",
+      });
+
+    if (insertErr) {
+      // Fallback: send via WhatsApp if DB fails
+      const msg = `🌾 *Annadata Agri — किसान Enquiry*\n\n📌 समस्या: ${problem}\n👤 नाम: ${form.name}\n📱 मोबाइल: ${form.mobile}\n🏘️ गांव: ${form.village}\n📍 जिला: ${form.district}\n🌱 फसल: ${form.crop}\n📐 एकड़: ${form.acres}\n💬 विवरण: ${form.message || "-"}`;
+      window.open(waLink(msg), "_blank");
+      handleClose();
+      setSubmitting(false);
+      return;
+    }
+
+    setSubmitting(false);
+    setSuccess(true);
   };
 
   return (
@@ -538,47 +605,360 @@ function QuickEnquiryModal({ open, onClose, problem }: ModalProps) {
       {open && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
           className="fixed inset-0 z-[1000] bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4"
-          onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
+          onClick={e => { if (e.target === e.currentTarget) handleClose(); }}>
           <motion.div initial={{ y: 60, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 60, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             className="bg-white rounded-t-3xl sm:rounded-3xl w-full sm:max-w-md max-h-[92vh] overflow-y-auto shadow-2xl">
             <div className="bg-primary p-5 rounded-t-3xl sm:rounded-t-3xl flex items-start justify-between">
               <div>
-                <p className="text-secondary font-bold text-xs uppercase tracking-widest mb-1">Annadata Agri — Enquiry</p>
+                <p className="text-secondary font-bold text-xs uppercase tracking-widest mb-1">Annadata Agri — Free Consultation</p>
                 <h3 className="text-white font-hindi font-bold text-lg leading-tight">📌 {problem}</h3>
               </div>
-              <button onClick={onClose} className="text-white/70 hover:text-white mt-1 flex-shrink-0"><X className="w-5 h-5" /></button>
+              <button onClick={handleClose} className="text-white/70 hover:text-white mt-1 flex-shrink-0"><X className="w-5 h-5" /></button>
             </div>
-            <div className="p-5 flex flex-col gap-3">
-              {[
-                { name: "name", label: "आपका नाम *", placeholder: "जैसे: रामप्रसाद यादव", type: "text" },
-                { name: "mobile", label: "मोबाइल नंबर *", placeholder: "10 अंकों का नंबर", type: "tel" },
-                { name: "village", label: "गांव / कस्बा *", placeholder: "जैसे: सलामतपुर", type: "text" },
-                { name: "crop", label: "फसल", placeholder: "जैसे: धान, गेहूं, सोयाबीन", type: "text" },
-                { name: "acres", label: "कितने एकड़", placeholder: "जैसे: 5", type: "number" },
-              ].map(f => (
-                <div key={f.name}>
-                  <label className="text-xs font-bold text-foreground/70 font-hindi mb-1 block">{f.label}</label>
-                  <input name={f.name} type={f.type} value={(form as any)[f.name]} onChange={handleChange} placeholder={f.placeholder}
-                    className="w-full border-2 border-border rounded-xl px-4 py-3 text-sm outline-none focus:border-primary transition-colors font-hindi" />
+
+            {success ? (
+              <div className="p-8 flex flex-col items-center text-center gap-4">
+                <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
+                  <span className="text-4xl">✅</span>
                 </div>
-              ))}
-              <div>
-                <label className="text-xs font-bold text-foreground/70 font-hindi mb-1 block">अतिरिक्त जानकारी</label>
-                <textarea name="message" value={form.message} onChange={handleChange} rows={3}
-                  placeholder="कोई और बात बताना हो तो यहाँ लिखें..."
-                  className="w-full border-2 border-border rounded-xl px-4 py-3 text-sm outline-none focus:border-primary transition-colors resize-none font-hindi" />
+                <h3 className="text-xl font-bold font-hindi text-foreground">Enquiry भेज दी गई!</h3>
+                <p className="text-muted-foreground font-hindi text-sm leading-relaxed">
+                  नमस्ते! आपकी enquiry हमें मिल गई है।<br />
+                  Keshav Bhai जल्द ही आपसे संपर्क करेंगे। 🙏
+                </p>
+                <div className="bg-green-50 border border-green-200 rounded-xl p-3 w-full">
+                  <p className="text-green-700 font-hindi text-xs font-medium">📞 जरूरी हो तो अभी Call करें: <span className="font-bold">9691712455</span></p>
+                </div>
+                <button onClick={handleClose}
+                  className="w-full py-3 bg-primary text-white font-bold rounded-2xl font-hindi transition-all hover:bg-primary/90">
+                  ठीक है, बंद करें
+                </button>
               </div>
-              <button onClick={sendWA}
-                className="w-full py-4 bg-[#25D366] hover:bg-[#1ebe5d] text-white font-bold rounded-2xl flex items-center justify-center gap-2 text-base transition-all hover:scale-[1.02] shadow-lg mt-1">
-                <FaWhatsapp className="w-5 h-5" /> WhatsApp पर Keshav Bhai को भेजें
-              </button>
-              <p className="text-center text-xs text-muted-foreground font-hindi">आपकी जानकारी पूरी तरह सुरक्षित है।</p>
-            </div>
+            ) : (
+              <div className="p-5 flex flex-col gap-3">
+                {[
+                  { name: "name", label: "आपका नाम *", placeholder: "जैसे: रामप्रसाद यादव", type: "text" },
+                  { name: "mobile", label: "मोबाइल नंबर *", placeholder: "10 अंकों का नंबर", type: "tel" },
+                  { name: "village", label: "गांव / कस्बा", placeholder: "जैसे: सलामतपुर", type: "text" },
+                  { name: "district", label: "जिला", placeholder: "जैसे: रायसेन", type: "text" },
+                  { name: "crop", label: "फसल", placeholder: "जैसे: धान, गेहूं, सोयाबीन", type: "text" },
+                  { name: "acres", label: "कितने एकड़", placeholder: "जैसे: 5", type: "number" },
+                ].map(f => (
+                  <div key={f.name}>
+                    <label className="text-xs font-bold text-foreground/70 font-hindi mb-1 block">{f.label}</label>
+                    <input name={f.name} type={f.type} value={(form as any)[f.name]} onChange={handleChange} placeholder={f.placeholder}
+                      className="w-full border-2 border-border rounded-xl px-4 py-3 text-sm outline-none focus:border-primary transition-colors font-hindi" />
+                  </div>
+                ))}
+                <div>
+                  <label className="text-xs font-bold text-foreground/70 font-hindi mb-1 block">अतिरिक्त जानकारी</label>
+                  <textarea name="message" value={form.message} onChange={handleChange} rows={3}
+                    placeholder="कोई और बात बताना हो तो यहाँ लिखें..."
+                    className="w-full border-2 border-border rounded-xl px-4 py-3 text-sm outline-none focus:border-primary transition-colors resize-none font-hindi" />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-foreground/70 font-hindi mb-1 block">खेत की फोटो (optional)</label>
+                  <label className="flex items-center gap-3 w-full border-2 border-dashed border-border rounded-xl px-4 py-3 cursor-pointer hover:border-primary transition-colors">
+                    <span className="text-2xl">📸</span>
+                    <span className="text-sm font-hindi text-muted-foreground flex-1">
+                      {photo ? photo.name : "फोटो चुनें (jpg/png)"}
+                    </span>
+                    <input type="file" accept="image/*" className="hidden" onChange={e => setPhoto(e.target.files?.[0] || null)} />
+                  </label>
+                </div>
+                {error && <p className="text-red-500 text-xs font-hindi text-center">{error}</p>}
+                <button onClick={handleSubmit} disabled={submitting}
+                  className="w-full py-4 bg-primary hover:bg-primary/90 text-white font-bold rounded-2xl flex items-center justify-center gap-2 text-base transition-all hover:scale-[1.02] shadow-lg mt-1 disabled:opacity-60 disabled:cursor-not-allowed font-hindi">
+                  {submitting ? (
+                    <><div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> भेज रहे हैं...</>
+                  ) : (
+                    <>✅ Enquiry भेजें — निःशुल्क सलाह पाएं</>
+                  )}
+                </button>
+                <p className="text-center text-xs text-muted-foreground font-hindi">🔒 आपकी जानकारी पूरी तरह सुरक्षित है। WhatsApp पर कोई spam नहीं।</p>
+              </div>
+            )}
           </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
+  );
+}
+
+/* ─── Kisan Information Center ─── */
+const KISAN_PROBLEMS = [
+  {
+    id: "rice-not-growing", emoji: "🌱", nameHi: "धान की ग्रोथ नहीं", nameEn: "Rice Not Growing", color: "#4CAF50",
+    symptoms: ["पौधे छोटे रह जाते हैं", "नए पत्ते नहीं आते", "फसल पीली या हल्की हरी दिखती है"],
+    howToIdentify: "खेत में जाकर देखें — पौधे की ऊंचाई सामान्य से कम, पत्ते पीले या हल्के हरे हों।",
+    causes: ["नाइट्रोजन की कमी", "जड़ में कोई समस्या", "मिट्टी में pH असंतुलन", "अधिक जलभराव"],
+    expectedLoss: "20-40% तक पैदावार कम हो सकती है",
+    expertNote: "रोपाई के 15 दिन बाद भी ग्रोथ न हो तो तुरंत विशेषज्ञ से परामर्श लें।",
+  },
+  {
+    id: "poor-tillering", emoji: "🌾", nameHi: "कल्ले नहीं आना", nameEn: "Poor Tillering", color: "#F9A825",
+    symptoms: ["प्रति पौधे कल्ले बहुत कम", "पत्ते पतले और पीले", "पौधा कमज़ोर दिखता है"],
+    howToIdentify: "सामान्य धान में रोपाई के 30-45 दिन में 15-20 कल्ले होने चाहिए। इससे कम हो तो समस्या है।",
+    causes: ["जिंक की कमी", "नाइट्रोजन की कमी", "गहरी रोपाई", "कम रोशनी या घना पानी"],
+    expectedLoss: "30-50% पैदावार प्रभावित होती है",
+    expertNote: "कल्ले आने की अवस्था सबसे महत्वपूर्ण है — देर से इलाज करने पर नुकसान होता है।",
+  },
+  {
+    id: "leaf-blast", emoji: "🍂", nameHi: "पत्ता झुलसा (Leaf Blast)", nameEn: "Leaf Blast", color: "#ef4444",
+    symptoms: ["पत्तों पर आँख के आकार के भूरे-सफेद धब्बे", "धब्बों के किनारे लाल-भूरे", "पत्ते सूखने लगते हैं"],
+    howToIdentify: "पत्तियों पर चौड़े बीच और पतले सिरे वाले धब्बे देखें। नमी में ग्रे फफूंद दिखती है।",
+    causes: ["Pyricularia oryzae फफूंद", "अधिक नमी और ओस", "घना पौधारोपण", "अधिक यूरिया"],
+    expectedLoss: "10-30% उपज हानि, गभोट अवस्था में अधिक",
+    expertNote: "Leaf Blast दिखे तो 7-10 दिन में Neck Blast बन सकता है। तुरंत कार्रवाई जरूरी।",
+  },
+  {
+    id: "neck-blast", emoji: "🌾", nameHi: "गभोट झुलसा (Neck Blast)", nameEn: "Neck Blast", color: "#7E57C2",
+    symptoms: ["बाली की गर्दन पर भूरा-काला धब्बा", "बाली नीचे झुक जाती है", "दाने नहीं भरते"],
+    howToIdentify: "बाली निकलने के समय गर्दन पर गहरे भूरे रंग का घाव — बाली टूटकर झुक जाती है।",
+    causes: ["Pyricularia oryzae फफूंद", "बाली निकलने के समय नमी", "Leaf Blast का फैलाव"],
+    expectedLoss: "40-70% तक उपज नष्ट हो सकती है — सबसे खतरनाक अवस्था",
+    expertNote: "बाली निकलने से 7 दिन पहले और 7 दिन बाद निगरानी जरूरी। यह समय सबसे critical है।",
+  },
+  {
+    id: "blb", emoji: "🟡", nameHi: "BLB (जीवाणु पत्ता झुलसा)", nameEn: "Bacterial Leaf Blight", color: "#EF6C00",
+    symptoms: ["पत्ते के किनारे पीले-भूरे रंग से सूखते हैं", "सूखापन ऊपर से शुरू होता है", "पत्ते मुड़ते हैं"],
+    howToIdentify: "सुबह पत्तियों पर पीले रंग का चिपचिपा पदार्थ दिखे — यह bacterial exudate है।",
+    causes: ["Xanthomonas oryzae bacteria", "तेज़ हवा और बारिश", "खेत में पानी खड़ा रहना", "अधिक नाइट्रोजन"],
+    expectedLoss: "20-40% उपज हानि संभव",
+    expertNote: "BLB को ठीक करने के लिए Copper-based या Kasugamycin जैसी दवाएं काम करती हैं — पर खुराक फसल अवस्था पर निर्भर है।",
+  },
+  {
+    id: "bph", emoji: "🦗", nameHi: "भूरा माहू (Brown Plant Hopper)", nameEn: "Brown Plant Hopper", color: "#795548",
+    symptoms: ["पौधे के तने पर भूरे छोटे कीड़े", "पौधे पीले पड़कर सूख जाते हैं (Hopperburn)", "खेत में गोल-गोल जले हुए स्थान"],
+    howToIdentify: "तने और पत्ती के आधार पर छोटे भूरे कीड़े देखें। 'Hopperburn' — गोल जले पैच बनते हैं।",
+    causes: ["घना पौधारोपण", "अधिक नाइट्रोजन", "कीटनाशकों का गलत उपयोग", "प्राकृतिक शत्रुओं की कमी"],
+    expectedLoss: "भारी प्रकोप में 80-100% फसल नष्ट हो सकती है",
+    expertNote: "BPH के लिए सही कीटनाशक चुनना जरूरी है — गलत दवाई से resistance बढ़ता है।",
+  },
+  {
+    id: "stem-borer", emoji: "🪲", nameHi: "तना छेदक (Stem Borer)", nameEn: "Stem Borer", color: "#0288D1",
+    symptoms: ["मध्य पत्ती पीली होकर सूख जाती है (Dead Heart)", "बाली सूखी और खाली (White Ear)", "तने में सुराख"],
+    howToIdentify: "तने को काटें — अंदर इल्ली मिलेगी। पत्तियों में अनियमित छेद।",
+    causes: ["Scirpophaga incertulas कीट", "रात में रोशनी के पास अंडे देना", "जल्दी रोपाई"],
+    expectedLoss: "Dead Heart: 5-20%, White Ear: 20-40% हानि",
+    expertNote: "Stem Borer के लिए तना छेदने से पहले ही treatment जरूरी — बाद में असर कम होता है।",
+  },
+  {
+    id: "armyworm", emoji: "🐛", nameHi: "सेना कीड़ा (Armyworm)", nameEn: "Armyworm", color: "#6D4C41",
+    symptoms: ["रात में झुंड में पत्तियां खाता है", "पत्तियां कंकाल जैसी रह जाती हैं", "सुबह खेत में खाई हुई फसल"],
+    howToIdentify: "दिन में मिट्टी में छुपता है — रात में देखें। हरे-भूरे रंग की इल्लियां।",
+    causes: ["Mythimna separata कीट", "मौसम में बदलाव", "कम समय में बड़ी आबादी"],
+    expectedLoss: "72 घंटे में पूरे खेत की फसल नष्ट कर सकता है",
+    expertNote: "Armyworm बहुत तेज़ी से फैलता है — पड़ोसी किसानों को भी सतर्क करें।",
+  },
+  {
+    id: "first-spray", emoji: "💧", nameHi: "First Spray (रोपाई के बाद)", nameEn: "First Spray Guidance", color: "#22c55e",
+    symptoms: ["रोपाई के 15-20 दिन बाद की अवस्था", "खरपतवार और शुरुआती कीट नियंत्रण", "ग्रोथ बूस्टर की जरूरत"],
+    howToIdentify: "रोपाई के 15-20 दिन बाद — यह First Spray का सही समय है।",
+    causes: ["खरपतवार प्रतिस्पर्धा", "शुरुआती कीट-रोग", "पोषण की जरूरत"],
+    expectedLoss: "First Spray न करने पर 20-35% उपज हानि संभव",
+    expertNote: "हर किसान की जमीन और धान की किस्म अलग है — First Spray की दवाई भी अलग-अलग होती है।",
+  },
+  {
+    id: "weight-increase", emoji: "⚖️", nameHi: "दाना भरना (Weight Increase)", nameEn: "Grain Filling Guidance", color: "#00897B",
+    symptoms: ["बाली निकल आई है", "दाने भरने की अवस्था", "अधिकतम वज़न और चमक चाहिए"],
+    howToIdentify: "बाली निकलने के बाद दाने दूधिया अवस्था में हों — यह दाना भरने का समय है।",
+    causes: ["पोटेशियम और बोरान की जरूरत", "Silica पोषण", "Fungal attack से बचाव"],
+    expectedLoss: "सही treatment से 15-25% अधिक उपज संभव",
+    expertNote: "दाना भरने की अवस्था में सही पोषण देने से उपज और quality दोनों बढ़ते हैं।",
+  },
+  {
+    id: "micronutrient", emoji: "🧪", nameHi: "सूक्ष्म पोषक तत्व", nameEn: "Micronutrient Deficiency", color: "#E91E63",
+    symptoms: ["पत्तियों पर रंग बदलना", "ग्रोथ रुकना", "फसल में कमज़ोरी"],
+    howToIdentify: "Zinc कमी: नई पत्तियां पीली-भूरी। Iron कमी: धारीदार पत्तियां। Boron कमी: दाने नहीं भरते।",
+    causes: ["मिट्टी में pH असंतुलन", "एकपक्षीय खाद का उपयोग", "अधिक सिंचाई"],
+    expectedLoss: "10-30% उपज हानि, Quality प्रभावित",
+    expertNote: "Micronutrient deficiency की पहचान मिट्टी परीक्षण और पत्ती के लक्षणों से होती है।",
+  },
+  {
+    id: "fertilizer-planning", emoji: "📋", nameHi: "उर्वरक योजना", nameEn: "Fertilizer Planning", color: "#607D8B",
+    symptoms: ["बुवाई/रोपाई से पहले की तैयारी", "कौन सी खाद, कब और कितनी?", "Budget में अधिकतम उपज"],
+    howToIdentify: "मिट्टी परीक्षण रिपोर्ट के अनुसार खाद योजना बनाएं।",
+    causes: ["खाद की जानकारी की कमी", "असंतुलित पोषण", "खाद पर अधिक खर्च"],
+    expectedLoss: "सही योजना न हो तो 15-40% अधिक लागत या कम उपज",
+    expertNote: "हर फसल और हर खेत के लिए fertilizer plan अलग होता है — एक ही formula सबके लिए सही नहीं।",
+  },
+];
+
+function KisanInfoCenterSection() {
+  const [openId, setOpenId] = useState<string | null>(null);
+  const [enquiryProblem, setEnquiryProblem] = useState<string | null>(null);
+  const selectedProblem = KISAN_PROBLEMS.find(p => p.id === openId);
+
+  return (
+    <section className="py-14 md:py-22 bg-background relative overflow-hidden">
+      <div className="absolute inset-0 opacity-[0.015] pointer-events-none"
+        style={{ backgroundImage: "radial-gradient(circle at 1px 1px, #4CAF50 1px, transparent 0)", backgroundSize: "32px 32px" }} />
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
+        {/* Heading */}
+        <div className="text-center mb-10 md:mb-14">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            className="inline-flex items-center gap-2 bg-secondary/20 text-secondary font-bold px-4 py-2 rounded-full mb-3 text-sm font-hindi">
+            📚 Kisan Information Center
+          </motion.div>
+          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
+            className="text-3xl md:text-5xl font-hindi font-black text-foreground leading-tight">
+            फसल की समस्या<br />
+            <span className="text-primary">पहचानें और समझें</span>
+          </motion.h2>
+          <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
+            className="text-muted-foreground font-hindi mt-3 text-base md:text-lg max-w-xl mx-auto">
+            हर समस्या की जानकारी — लक्षण, कारण, और सही समय पर सही सलाह
+          </motion.p>
+          <motion.div initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }} transition={{ delay: 0.25, duration: 0.8 }}
+            className="w-24 h-1 bg-secondary mx-auto mt-4 rounded-full" />
+        </div>
+
+        {/* Problem Cards Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4 max-w-5xl mx-auto">
+          {KISAN_PROBLEMS.map((p, i) => (
+            <motion.button key={p.id}
+              onClick={() => setOpenId(openId === p.id ? null : p.id)}
+              initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}
+              transition={{ delay: i * 0.04, duration: 0.35 }}
+              whileHover={hw({ scale: 1.04 })} whileTap={{ scale: 0.96 }}
+              className={`group relative rounded-2xl p-4 text-center border-2 transition-all cursor-pointer ${
+                openId === p.id
+                  ? "shadow-xl"
+                  : "bg-white border-border hover:shadow-md btn-glow"
+              }`}
+              style={{
+                borderColor: openId === p.id ? p.color : undefined,
+                background: openId === p.id ? `${p.color}10` : undefined,
+              }}>
+              <div className="text-3xl mb-2">{p.emoji}</div>
+              <p className="font-hindi font-bold text-sm text-foreground leading-tight">{p.nameHi}</p>
+              <p className="text-[11px] text-muted-foreground mt-0.5 hidden sm:block">{p.nameEn}</p>
+              <div className="mt-2 inline-flex items-center gap-1 text-xs font-medium" style={{ color: p.color }}>
+                {openId === p.id ? "बंद करें ↑" : "जानकारी ↓"}
+              </div>
+            </motion.button>
+          ))}
+        </div>
+
+        {/* Expanded Info Panel */}
+        <AnimatePresence>
+          {selectedProblem && (
+            <motion.div
+              key={selectedProblem.id}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+              className="max-w-3xl mx-auto mt-6 rounded-2xl overflow-hidden shadow-xl border"
+              style={{ borderColor: `${selectedProblem.color}40` }}>
+              {/* Panel Header */}
+              <div className="p-5 text-white" style={{ background: `linear-gradient(135deg, ${selectedProblem.color}ee, ${selectedProblem.color}99)` }}>
+                <div className="flex items-center gap-3">
+                  <span className="text-4xl">{selectedProblem.emoji}</span>
+                  <div>
+                    <h3 className="font-hindi font-black text-xl leading-tight">{selectedProblem.nameHi}</h3>
+                    <p className="text-white/80 text-sm">{selectedProblem.nameEn}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Panel Content */}
+              <div className="bg-white p-5 space-y-4">
+                {/* Symptoms */}
+                <div>
+                  <p className="font-hindi font-bold text-foreground text-sm uppercase tracking-wide mb-2" style={{ color: selectedProblem.color }}>🔍 लक्षण (Symptoms)</p>
+                  <ul className="space-y-1">
+                    {selectedProblem.symptoms.map((s, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm font-hindi text-gray-700">
+                        <span className="mt-0.5 flex-shrink-0" style={{ color: selectedProblem.color }}>•</span>
+                        {s}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* How to Identify */}
+                <div className="bg-gray-50 rounded-xl p-3">
+                  <p className="font-hindi font-bold text-foreground text-sm mb-1">👁️ कैसे पहचानें?</p>
+                  <p className="text-sm font-hindi text-gray-700 leading-relaxed">{selectedProblem.howToIdentify}</p>
+                </div>
+
+                {/* Possible Causes */}
+                <div>
+                  <p className="font-hindi font-bold text-foreground text-sm uppercase tracking-wide mb-2">⚡ संभावित कारण</p>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedProblem.causes.map((c, i) => (
+                      <span key={i} className="text-xs font-hindi px-3 py-1.5 rounded-full border font-medium"
+                        style={{ borderColor: `${selectedProblem.color}50`, color: selectedProblem.color, background: `${selectedProblem.color}10` }}>
+                        {c}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Expected Loss */}
+                <div className="flex items-center gap-3 bg-red-50 border border-red-100 rounded-xl p-3">
+                  <span className="text-2xl">📉</span>
+                  <div>
+                    <p className="font-hindi font-bold text-sm text-red-700">संभावित नुकसान</p>
+                    <p className="font-hindi text-sm text-red-600">{selectedProblem.expectedLoss}</p>
+                  </div>
+                </div>
+
+                {/* When Expert Advice */}
+                <div className="flex items-start gap-3 bg-blue-50 border border-blue-100 rounded-xl p-3">
+                  <span className="text-xl">💡</span>
+                  <div>
+                    <p className="font-hindi font-bold text-sm text-blue-700 mb-0.5">विशेषज्ञ सलाह कब लें?</p>
+                    <p className="font-hindi text-sm text-blue-600 leading-relaxed">{selectedProblem.expertNote}</p>
+                  </div>
+                </div>
+
+                {/* Disclaimer */}
+                <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
+                  <p className="font-hindi text-yellow-800 text-sm leading-relaxed font-medium">
+                    ⚠ हर खेत अलग होता है। गलत दवाई या गलत मात्रा से फसल को नुकसान हो सकता है।
+                  </p>
+                </div>
+
+                {/* CTA */}
+                <button
+                  onClick={() => setEnquiryProblem(selectedProblem.nameHi)}
+                  className="w-full py-4 text-white font-hindi font-black text-base rounded-2xl flex items-center justify-center gap-2 transition-all hover:scale-[1.02] shadow-lg"
+                  style={{ background: `linear-gradient(135deg, ${selectedProblem.color}, ${selectedProblem.color}cc)` }}>
+                  ✅ व्यक्तिगत सलाह पाएं — निःशुल्क Enquiry भेजें
+                </button>
+
+                {/* Store Products Note */}
+                <div className="flex items-center gap-3 rounded-xl border p-3" style={{ borderColor: `${selectedProblem.color}30`, background: `${selectedProblem.color}05` }}>
+                  <span className="text-xl">🏪</span>
+                  <div>
+                    <p className="font-hindi font-bold text-sm text-foreground">Annadata Agri & Seeds में उपलब्ध</p>
+                    <p className="font-hindi text-xs text-muted-foreground">असली और प्रमाणित दवाइयां — सही दाम में</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* CTA at bottom */}
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
+          className="text-center mt-12">
+          <p className="font-hindi text-muted-foreground text-sm mb-4">
+            विशेषज्ञ सलाह चाहिए? हमसे सीधे पूछें।
+          </p>
+          <button onClick={() => setEnquiryProblem("फसल की समस्या")}
+            className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white font-hindi font-black rounded-2xl shadow-lg hover:bg-primary/90 transition-all hover:scale-105 text-base">
+            🌾 व्यक्तिगत परामर्श पाएं — निःशुल्क
+          </button>
+        </motion.div>
+      </div>
+
+      <QuickEnquiryModal open={!!enquiryProblem} onClose={() => setEnquiryProblem(null)} problem={enquiryProblem || ""} />
+    </section>
   );
 }
 
@@ -657,25 +1037,22 @@ function SmartFarmerHelpSection() {
 /* ─── Crop Doctor Section ─── */
 function CropDoctorSection() {
   const [selected, setSelected] = useState<number | null>(null);
+  const [enquiryProblem, setEnquiryProblem] = useState<string | null>(null);
+
   const problems = [
     { emoji: "🍂", label: "पत्ते पीले पड़ रहे हैं", tip: "💡 पोषक तत्वों की कमी या पत्ता पीलापन रोग हो सकता है। Zinc या Urea Spray + Fungicide की जरूरत है।" },
     { emoji: "🌱", label: "फसल की ग्रोथ रुक गई है", tip: "💡 जड़ कमज़ोर हो सकती है या मिट्टी में NPK की कमी है। Growth Booster + Root Strengthener की जरूरत है।" },
-    { emoji: "🐛", label: "कीड़े लग रहे हैं।", tip: "💡 रस चूसक कीट (BPH) या इल्ली हो सकती है। सही कीटनाशक की Spray जरूरी है — Keshav Bhai से पूछें।" },
+    { emoji: "🐛", label: "कीड़े लग रहे हैं", tip: "💡 रस चूसक कीट (BPH) या इल्ली हो सकती है। सही कीटनाशक की Spray जरूरी है — Keshav Bhai से पूछें।" },
     { emoji: "🍃", label: "रोग लग गया है", tip: "💡 Blast, Sheath Blight या Bacterial Blight हो सकता है। तुरंत Fungicide Spray करें।" },
     { emoji: "🌿", label: "धान खरपतवार नाशक", tip: "💡 धान में खरपतवार से फसल की पैदावार 30–50% कम हो सकती है। सही खरपतवार नाशक जल्दी डालें।" },
     { emoji: "🌾", label: "जड़ सड़न", tip: "💡 अधिक पानी या Sheath Rot रोग हो सकता है। Carbendazim या Tricyclazole Spray लें।" },
     { emoji: "💦", label: "धान First Spray पूछना है", tip: "💡 रोपाई के 15–20 दिन बाद First Spray जरूरी है। Keshav Bhai से सही Spray Schedule लें।" },
     { emoji: "🌾", label: "धान कल्ले नहीं कर रही", tip: "💡 कल्ले न फूटना जिंक या नाइट्रोजन की कमी का संकेत है। Zinc Sulphate + Urea Spray तुरंत करें।" },
-    { emoji: "🧪", label: "कौन सी दवाई डालें?", tip: "💡 फसल की अवस्था और समस्या देखकर सही दवाई चुनें। WhatsApp पर फोटो भेजें — निःशुल्क सलाह पाएं।" },
+    { emoji: "🧪", label: "कौन सी दवाई डालें?", tip: "💡 फसल की अवस्था और समस्या देखकर सही दवाई चुनें। फोटो सहित enquiry भेजें — निःशुल्क सलाह पाएं।" },
   ];
 
   const handleProblemClick = (i: number) => {
     setSelected(selected === i ? null : i);
-  };
-
-  const openWhatsApp = (p: typeof problems[0]) => {
-    const msg = `नमस्ते Keshav Bhai! 🙏\n\nमेरी फसल में समस्या है: *${p.label}*\n\n${p.tip}\n\nकृपया सही दवाई/सलाह बताएं।\n\n📍 अन्नदाता एग्री & सीड्स`;
-    window.open(`https://wa.me/919691712455?text=${encodeURIComponent(msg)}`, "_blank");
   };
 
   return (
@@ -692,7 +1069,7 @@ function CropDoctorSection() {
             className="text-3xl md:text-4xl font-hindi font-black text-white">
             फसल में क्या समस्या है?
           </motion.h2>
-          <p className="text-white/60 font-hindi mt-2">समस्या चुनें — पहले सलाह पढ़ें, फिर WhatsApp पर पूछें 📲</p>
+          <p className="text-white/60 font-hindi mt-2">समस्या चुनें — सलाह पढ़ें, व्यक्तिगत परामर्श के लिए Enquiry भेजें 📲</p>
           <motion.div initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }} transition={{ delay: 0.2, duration: 0.8 }}
             className="w-24 h-1 bg-secondary mx-auto mt-4 rounded-full" />
         </div>
@@ -737,13 +1114,17 @@ function CropDoctorSection() {
                 </p>
               </div>
             </div>
+            <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-3 mb-3">
+              <p className="text-yellow-300 font-hindi text-xs leading-relaxed">
+                ⚠ हर खेत अलग होता है। गलत दवाई या गलत मात्रा से फसल को नुकसान हो सकता है।
+              </p>
+            </div>
             <div className="flex items-center gap-3">
               <button
-                onClick={() => openWhatsApp(problems[selected])}
-                className="flex-1 flex items-center justify-center gap-2 bg-[#25D366] text-white font-hindi font-bold py-3 rounded-xl text-sm hover:bg-[#1ebe5d] transition-colors active:scale-95"
+                onClick={() => setEnquiryProblem(problems[selected].label)}
+                className="flex-1 flex items-center justify-center gap-2 bg-secondary text-foreground font-hindi font-bold py-3 rounded-xl text-sm hover:bg-secondary/90 transition-colors active:scale-95 shadow-lg"
               >
-                <FaWhatsapp className="w-4 h-4" />
-                Keshav Bhai से पूछें — WhatsApp
+                ✅ व्यक्तिगत सलाह पाएं — निःशुल्क Enquiry
               </button>
               <button
                 onClick={() => setSelected(null)}
@@ -756,9 +1137,10 @@ function CropDoctorSection() {
         )}
 
         <p className="text-center text-white/40 font-hindi text-xs">
-          👆 किसी भी समस्या पर टैप करें — सलाह पढ़ें, फिर WhatsApp पर संपर्क करें
+          👆 किसी भी समस्या पर टैप करें — सलाह पढ़ें, व्यक्तिगत परामर्श के लिए Enquiry भेजें
         </p>
       </div>
+      <QuickEnquiryModal open={!!enquiryProblem} onClose={() => setEnquiryProblem(null)} problem={enquiryProblem || ""} />
     </section>
   );
 }

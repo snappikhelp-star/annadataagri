@@ -13,10 +13,14 @@ export interface AuthContextType {
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 async function upsertProfile(user: User) {
-  const fullName = (user.email || "").split("@")[0];
+  const name = (user.email || "").split("@")[0];
+  // ignoreDuplicates: true — only inserts if no row exists yet.
+  // This preserves an existing role (e.g. 'user') and never overwrites it.
+  // New profiles default to 'admin' via the table DEFAULT, suitable for
+  // this single-owner shop where accounts are invitation-only.
   const { error } = await supabase.from("profiles").upsert(
-    { id: user.id, email: user.email, full_name: fullName, role: "admin" },
-    { onConflict: "id" }
+    { id: user.id, email: user.email, name },
+    { onConflict: "id", ignoreDuplicates: true }
   );
   if (error) console.warn("Profile upsert:", error.message);
 }

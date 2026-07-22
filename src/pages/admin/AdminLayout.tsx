@@ -6,7 +6,7 @@ import { useLang } from "@/hooks/useLang";
 import {
   LayoutDashboard, Package, ShoppingCart, Users, BookOpen,
   BarChart3, Boxes, LogOut, Menu, X, Leaf, ChevronRight,
-  Zap, CalendarDays, Camera, Truck, Bell, Globe, Layers, Building2, Wallet
+  Zap, CalendarDays, Camera, Truck, Bell, Globe, Layers, Building2, Wallet, Inbox
 } from "lucide-react";
 
 const fullNavItems = [
@@ -23,6 +23,7 @@ const fullNavItems = [
   { path: "/admin/purchase", key: "purchase", icon: Truck, simple: false },
   { path: "/admin/company-payments", key: "companyPayments", icon: Building2, simple: false },
   { path: "/admin/udhaar", key: "udhaarCollection", icon: Wallet, simple: true },
+  { path: "/admin/enquiries", key: "enquiries", icon: Inbox, simple: true },
   { path: "/admin/followup", key: "followup", icon: Bell, simple: false },
   { path: "/admin/reports", key: "reports", icon: BarChart3, simple: false },
 ];

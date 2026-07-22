@@ -1,0 +1,279 @@
+We are upgrading the existing Annadata Agri & Seeds website.
+
+IMPORTANT
+
+Do NOT redesign the existing UI.
+
+The current design, animations, branding, responsiveness, typography, SEO and performance are already excellent.
+
+Preserve everything exactly as it is.
+
+This is a feature and business conversion update only.
+
+==================================================
+
+MAIN OBJECTIVE
+
+Transform the website from an information website into a sales-focused agricultural consultation platform.
+
+Goals:
+
+• Increase product sales
+• Increase farmer enquiries
+• Build trust
+• Improve customer experience
+• Reduce WhatsApp dependency
+• Store all customer enquiries inside the website database
+• Build a proper enquiry management system
+• Make the website scalable for future growth
+
+==================================================
+
+CUSTOMER FLOW
+
+Replace the current enquiry workflow.
+
+OLD
+
+Website
+→ WhatsApp
+→ Chat lost
+→ Difficult to manage
+
+NEW
+
+Website
+→ Enquiry Form
+→ Store in Database
+→ Admin Dashboard
+→ Admin Reply
+→ Farmer can check response inside website
+
+WhatsApp should remain only for:
+
+• Floating button
+• Emergency support
+• Direct calling option
+
+Do not use WhatsApp as the primary enquiry system.
+
+==================================================
+
+NEW FEATURE
+
+Add a premium section called
+
+"Kisan Information Center"
+
+Purpose:
+
+Educate farmers.
+
+Build trust.
+
+Generate enquiries.
+
+Increase product sales.
+
+This section should NOT provide complete treatment or exact medicine dosage.
+
+Only include:
+
+• Problem Name
+• Symptoms
+• How to Identify
+• Possible Causes
+• Expected Crop Loss
+• When Expert Advice is Needed
+
+At the bottom of every article display
+
+⚠ Every farm is different.
+
+Wrong medicine or wrong dosage may damage the crop.
+
+Then display a premium CTA
+
+"Get Personalized Recommendation"
+
+Opening this button should launch the enquiry form.
+
+==================================================
+
+PROBLEMS TO INCLUDE
+
+Rice Growth Problem
+
+Rice not growing
+
+Poor Tillering
+
+Leaf Blast
+
+Neck Blast
+
+BLB
+
+Brown Plant Hopper (Mahu)
+
+Stem Borer
+
+Armyworm
+
+Rice Caterpillar
+
+Weight Increase Guidance
+
+First Spray
+
+Second Spray
+
+Third Spray
+
+Micronutrient Requirement
+
+Humic Acid
+
+Micro Raja
+
+Fertilizer Planning
+
+More problems can be added in future.
+
+Every problem card should open the enquiry form instead of WhatsApp.
+
+==================================================
+
+ENQUIRY FORM
+
+Collect
+
+Name
+
+Mobile Number
+
+Village
+
+District
+
+Crop
+
+Problem
+
+Land Area
+
+Message
+
+Photo Upload
+
+Submit
+
+Store everything securely in the website database.
+
+==================================================
+
+ADMIN PANEL
+
+Create a complete admin dashboard.
+
+Features:
+
+View enquiries
+
+Reply enquiries
+
+Change status
+
+Search farmers
+
+Filter enquiries
+
+View uploaded photos
+
+Export enquiry data
+
+Dashboard analytics
+
+==================================================
+
+PRODUCT SALES
+
+Never expose complete treatment publicly.
+
+Instead encourage consultation.
+
+Every problem page should contain:
+
+Recommended by Annadata Agri & Seeds
+
+Available in Store
+
+Request Price
+
+Call Now
+
+Book Recommendation
+
+The objective is increasing sales instead of giving complete prescriptions.
+
+==================================================
+
+SOCIAL PROOF
+
+Strengthen trust by adding
+
+Farmer Testimonials
+
+Success Stories
+
+Customer Reviews
+
+Google Rating
+
+Original Products
+
+Expert Guidance
+
+Fast Support
+
+Trusted by Farmers
+
+==================================================
+
+CONVERSION
+
+Every major section should end with
+
+Need Expert Advice?
+
+Get Personalized Recommendation
+
+This should open the enquiry form.
+
+==================================================
+
+PERFORMANCE
+
+Do not reduce website speed.
+
+Maintain current Lighthouse score.
+
+Maintain SEO.
+
+Maintain lazy loading.
+
+Maintain animations.
+
+Maintain responsiveness.
+
+Do not modify the existing design system.
+
+==================================================
+
+IMPORTANT
+
+Focus on business growth, lead generation and product sales.
+
+The website should feel like a premium agricultural consultation platform that helps farmers while encouraging them to purchase products from Annadata Agri & Seeds.
+
+Build clean, scalable, production-ready code with proper architecture for future expansion.

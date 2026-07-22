@@ -22,6 +22,7 @@ import AdminPurchase from "@/pages/admin/AdminPurchase";
 import AdminFollowup from "@/pages/admin/AdminFollowup";
 import AdminCompanyPayments from "@/pages/admin/AdminCompanyPayments";
 import AdminUdhaar from "@/pages/admin/AdminUdhaar";
+import AdminEnquiries from "@/pages/admin/AdminEnquiries";
 import NotFound from "@/pages/not-found";
 import HomePage from "@/pages/home";
 import ReviewsPage from "@/pages/reviews";
@@ -50,6 +51,7 @@ function AdminRoutes() {
           <Route path="/admin/followup" component={AdminFollowup} />
           <Route path="/admin/company-payments" component={AdminCompanyPayments} />
           <Route path="/admin/udhaar" component={AdminUdhaar} />
+          <Route path="/admin/enquiries" component={AdminEnquiries} />
           <Route path="/admin/reports" component={AdminReports} />
           <Route component={NotFound} />
         </Switch>
