@@ -1,5 +1,5 @@
 run = "npm install && npm run dev"
-modules = ["nodejs-20", "python-3.11"]
+modules = ["nodejs-20", "web", "nix"]
 
 [deployment]
 run = ["sh", "-c", "npm install && npm run build && npx serve -s dist -l 3000"]
