@@ -1,78 +1,49 @@
-# Annadata Agri & Seeds Website
+# Annadata Agri & Seeds — Website
 
-## Project Overview
-
-A bilingual (Hindi/English) agricultural consultation platform and retail management system for **Annadata Agri & Seeds**, Salamatpur, Raisen, MP. Built with React + Vite + Supabase.
-
-### Public Website (`/`)
-- Hero section with seasonal messaging
-- **Kisan Information Center** — 12 rice/crop problem cards with symptoms, causes, expected loss, expert advice, and enquiry CTA
-- Smart Farmer Help Section — problem-based quick enquiry triggers
-- Crop Doctor Section — interactive crop problem diagnosis
-- Products section, seasonal crop calendar, Dhan booking, pickup service
-- WhyChoose, Stats, Shop Gallery, Owner profile, Kisan Club, Contact, Map
-- Google Reviews integration
-- PWA support (install as app)
-
-### Enquiry System
-- Database-backed enquiry form (Name, Mobile, Village, District, Crop, Problem, Land Area, Message, Photo)
-- Stores all enquiries in Supabase `enquiries` table
-- WhatsApp fallback if DB unavailable
-- Admin dashboard to view, reply, filter, export enquiries
-
-### Admin Panel (`/admin`)
-- Login: Supabase Auth
-- **Enquiries** — view/reply/status-change/export farmer enquiries (NEW)
-- Dashboard — farmer follow-up system
-- Quick Sale / Quick Stock
-- Billing — PDF invoice generation (jsPDF)
-- Products, Stock, Customers, Khata/Udhaar
-- Bill Photo, Purchase (supplier bills), Company Payments
-- Follow-up, Reports
-- Simple Mode / Full Mode toggle
+A React + Vite frontend website for Annadata Agri & Seeds, a farm supply store in Salamatpur, Raisen. Includes a public-facing website and an admin panel (Smart Dukaan system).
 
 ## Tech Stack
-
-- **Frontend**: React 19, Vite 7, TypeScript, Tailwind CSS v4, Framer Motion
-- **Backend**: Supabase (PostgreSQL + Auth + Storage)
+- **Frontend**: React 19, TypeScript, Vite, Tailwind CSS v4
+- **Backend/Database**: Supabase (PostgreSQL)
+- **UI**: Radix UI components, Framer Motion, shadcn/ui
 - **Routing**: Wouter
 - **State**: TanStack Query
-- **UI**: Shadcn UI (Radix primitives)
-- **Charts**: Recharts
-- **PDF**: jsPDF + jsPDF-AutoTable
-- **Export**: SheetJS (xlsx)
 
-## How to Run
-
+## Running the App
 ```bash
 npm install && npm run dev
 ```
-
 Runs on port 5000.
 
-## Environment
+## Required Secrets
+Set these in Replit Secrets before running:
+- `VITE_SUPABASE_URL` — your Supabase project URL
+- `VITE_SUPABASE_ANON_KEY` — your Supabase anon/public key
 
-Supabase URL and Anon Key are configured in Replit environment variables:
-- `VITE_SUPABASE_URL`
-- `VITE_SUPABASE_ANON_KEY`
+The app works without Supabase (falls back to hardcoded data), but features like enquiry forms, billing, products, and the Kisan Info Center won't persist.
 
 ## Database Setup
+Run the SQL files in your Supabase SQL Editor:
+1. `supabase_schema.sql` — core tables (products, customers, bills, etc.)
+2. `supabase-enquiries.sql` — farmer enquiries table
+3. `supabase-company-payments.sql` — company payments table
+4. `supabase-kisan-info.sql` — Kisan Information Center table (NEW)
 
-Run SQL files in Supabase SQL Editor (in order):
-1. `supabase_schema.sql` — core tables (products, customers, invoices, etc.)
-2. `supabase-company-payments.sql` — supplier payments
-3. `supabase-enquiries.sql` — farmer enquiry system (NEW)
+## Key Pages
+- `/` — Public website (home page)
+- `/reviews` — Google reviews page
+- `/admin/login` — Admin login
+- `/admin` — Admin dashboard (requires Supabase auth)
 
-Also create a Supabase Storage bucket named `enquiry-photos` (**Private** — not public). Admins view photos via short-lived signed URLs; farmers cannot access photos directly.
-
-## Deployment
-
-See `README_DEPLOY.txt` for Cloudflare Pages / Vercel deploy instructions.
+## Admin Sections
+- Today's Summary, Quick Sale, Quick Stock
+- Billing, Products, Stock management
+- Customers, Khata/Credit ledger
+- Udhaar Collection, Farmer Enquiries
+- **Kisan Info Center** — manage farm problem info cards shown on the website
+- Company Payments, Purchase bills
+- Follow-up tracker, Reports
 
 ## User Preferences
-
-- Do NOT redesign the existing UI — design, animations, branding, typography are fixed
-- Feature and business conversion updates only
-- Maintain Lighthouse score, SEO, lazy loading, animations, responsiveness
-- Hindi-first content with English labels in admin
-- Keep all customer enquiries in database (not just WhatsApp)
+- Hindi UI labels are used throughout (with English toggle in admin)
+- Keep existing project structure — do not restructure or migrate

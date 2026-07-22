@@ -214,13 +214,7 @@ function Navbar() {
               <Phone className="w-3.5 h-3.5 text-secondary" />{PHONE_SHORT}
             </a>
             <InstallAppButton variant="button" />
-            <a href={waLink("नमस्ते Keshav Bhai!")} target="_blank" rel="noreferrer" data-testid="nav-whatsapp" className="bg-[#25D366] text-white px-4 py-2 rounded-full font-bold text-sm flex items-center gap-1.5 hover:bg-[#1ebe5d] transition-colors shadow-lg">
-              <FaWhatsapp className="w-3.5 h-3.5" />WhatsApp
-            </a>
           </div>
-          <a href={waLink("नमस्ते Keshav Bhai!")} target="_blank" rel="noreferrer" className="md:hidden bg-[#25D366] text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg flex-shrink-0">
-            <FaWhatsapp className="w-5 h-5" />
-          </a>
         </div>
       </header>
     </>
@@ -367,17 +361,6 @@ function HeroSection() {
                 style={{ boxShadow: "0 6px 20px rgba(21,128,61,0.35)" }}
               >
                 <Phone className="w-5 h-5" /> Call Now
-              </motion.a>
-              <motion.a
-                href={waLink("नमस्ते Keshav Bhai! मुझे धान First Spray और दवाई की सलाह चाहिए। खेत की फोटो भेज रहा हूँ।")}
-                target="_blank" rel="noreferrer"
-                data-testid="button-whatsapp-hero"
-                whileHover={{ scale: 1.04, y: -2 }}
-                whileTap={{ scale: 0.96 }}
-                className="flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-hindi font-black text-base bg-[#25D366] hover:bg-[#1ebe5d] text-white shadow-lg transition-colors"
-                style={{ boxShadow: "0 6px 20px rgba(37,211,102,0.35)" }}
-              >
-                <FaWhatsapp className="w-5 h-5" /> WhatsApp करें
               </motion.a>
               <motion.a
                 href={MAPS_LINK}
@@ -786,13 +769,62 @@ const KISAN_PROBLEMS = [
   },
 ];
 
+/* Normalise a Supabase kisan_info row to the KISAN_PROBLEMS shape */
+function dbRowToKisanProblem(d: Record<string, unknown>) {
+  return {
+    id: d.id as string,
+    emoji: d.emoji as string,
+    nameHi: d.name_hi as string,
+    nameEn: (d.name_en as string) || "",
+    color: (d.color as string) || "#4CAF50",
+    symptoms: (d.symptoms as string[]) || [],
+    howToIdentify: (d.how_to_identify as string) || "",
+    causes: (d.causes as string[]) || [],
+    expectedLoss: (d.expected_loss as string) || "",
+    expertNote: (d.expert_note as string) || "",
+  };
+}
+
 function KisanInfoCenterSection() {
   const [openId, setOpenId] = useState<string | null>(null);
   const [enquiryProblem, setEnquiryProblem] = useState<string | null>(null);
-  const selectedProblem = KISAN_PROBLEMS.find(p => p.id === openId);
+  const [problems, setProblems] = useState(KISAN_PROBLEMS);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  /* Fetch from Supabase; fall back to hardcoded list */
+  useEffect(() => {
+    if (!supabaseConfigured) return;
+    supabase
+      .from("kisan_info")
+      .select("*")
+      .eq("is_active", true)
+      .order("sort_order", { ascending: true })
+      .then(({ data }) => {
+        if (data && data.length > 0) setProblems(data.map(dbRowToKisanProblem));
+      });
+  }, []);
+
+  /* Click — open & scroll section to top so details appear right at eye level */
+  function handleSelect(id: string) {
+    if (openId === id) {
+      setOpenId(null);
+    } else {
+      setOpenId(id);
+      setTimeout(() => {
+        sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 80);
+    }
+  }
+
+  const selectedProblem = problems.find(p => p.id === openId);
+
+  /* Re-order: clicked card always appears first in the grid */
+  const orderedProblems = openId
+    ? [...problems.filter(p => p.id === openId), ...problems.filter(p => p.id !== openId)]
+    : problems;
 
   return (
-    <section className="py-14 md:py-22 bg-background relative overflow-hidden">
+    <section ref={sectionRef} id="kisan-info" className="py-14 md:py-22 bg-background relative overflow-hidden scroll-mt-24">
       <div className="absolute inset-0 opacity-[0.015] pointer-events-none"
         style={{ backgroundImage: "radial-gradient(circle at 1px 1px, #4CAF50 1px, transparent 0)", backgroundSize: "32px 32px" }} />
       <div className="container mx-auto px-4 md:px-6 relative z-10">
@@ -809,129 +841,101 @@ function KisanInfoCenterSection() {
           </motion.h2>
           <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
             className="text-muted-foreground font-hindi mt-3 text-base md:text-lg max-w-xl mx-auto">
-            हर समस्या की जानकारी — लक्षण, कारण, और सही समय पर सही सलाह
+            समस्या पर click करें — जानकारी ऊपर आ जाएगी
           </motion.p>
           <motion.div initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }} transition={{ delay: 0.25, duration: 0.8 }}
             className="w-24 h-1 bg-secondary mx-auto mt-4 rounded-full" />
         </div>
 
-        {/* Problem Cards Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4 max-w-5xl mx-auto">
-          {KISAN_PROBLEMS.map((p, i) => (
-            <motion.button key={p.id}
-              onClick={() => setOpenId(openId === p.id ? null : p.id)}
-              initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}
-              transition={{ delay: i * 0.04, duration: 0.35 }}
-              whileHover={hw({ scale: 1.04 })} whileTap={{ scale: 0.96 }}
-              className={`group relative rounded-2xl p-4 text-center border-2 transition-all cursor-pointer ${
-                openId === p.id
-                  ? "shadow-xl"
-                  : "bg-white border-border hover:shadow-md btn-glow"
-              }`}
-              style={{
-                borderColor: openId === p.id ? p.color : undefined,
-                background: openId === p.id ? `${p.color}10` : undefined,
-              }}>
-              <div className="text-3xl mb-2">{p.emoji}</div>
-              <p className="font-hindi font-bold text-sm text-foreground leading-tight">{p.nameHi}</p>
-              <p className="text-[11px] text-muted-foreground mt-0.5 hidden sm:block">{p.nameEn}</p>
-              <div className="mt-2 inline-flex items-center gap-1 text-xs font-medium" style={{ color: p.color }}>
-                {openId === p.id ? "बंद करें ↑" : "जानकारी ↓"}
-              </div>
-            </motion.button>
-          ))}
-        </div>
-
-        {/* Expanded Info Panel */}
-        <AnimatePresence>
+        {/* Expanded panel — shown ABOVE the grid when a card is selected */}
+        <AnimatePresence mode="wait">
           {selectedProblem && (
             <motion.div
-              key={selectedProblem.id}
-              initial={{ opacity: 0, y: -10 }}
+              key={selectedProblem.id + "-panel"}
+              initial={{ opacity: 0, y: -16 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
+              exit={{ opacity: 0, y: -16 }}
               transition={{ duration: 0.3 }}
-              className="max-w-3xl mx-auto mt-6 rounded-2xl overflow-hidden shadow-xl border"
-              style={{ borderColor: `${selectedProblem.color}40` }}>
-              {/* Panel Header */}
-              <div className="p-5 text-white" style={{ background: `linear-gradient(135deg, ${selectedProblem.color}ee, ${selectedProblem.color}99)` }}>
+              className="max-w-3xl mx-auto mb-8 rounded-2xl overflow-hidden shadow-2xl border-2"
+              style={{ borderColor: selectedProblem.color }}>
+
+              {/* Header — tap to close */}
+              <button
+                onClick={() => setOpenId(null)}
+                className="w-full text-left p-5 text-white flex items-center justify-between gap-3"
+                style={{ background: `linear-gradient(135deg, ${selectedProblem.color}ee, ${selectedProblem.color}99)` }}>
                 <div className="flex items-center gap-3">
                   <span className="text-4xl">{selectedProblem.emoji}</span>
                   <div>
                     <h3 className="font-hindi font-black text-xl leading-tight">{selectedProblem.nameHi}</h3>
-                    <p className="text-white/80 text-sm">{selectedProblem.nameEn}</p>
+                    {selectedProblem.nameEn && <p className="text-white/80 text-sm">{selectedProblem.nameEn}</p>}
                   </div>
                 </div>
-              </div>
+                <span className="text-white/80 text-sm font-hindi font-bold flex-shrink-0 border border-white/40 rounded-lg px-2 py-1">बंद करें ✕</span>
+              </button>
 
-              {/* Panel Content */}
+              {/* Content */}
               <div className="bg-white p-5 space-y-4">
-                {/* Symptoms */}
-                <div>
-                  <p className="font-hindi font-bold text-foreground text-sm uppercase tracking-wide mb-2" style={{ color: selectedProblem.color }}>🔍 लक्षण (Symptoms)</p>
-                  <ul className="space-y-1">
-                    {selectedProblem.symptoms.map((s, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm font-hindi text-gray-700">
-                        <span className="mt-0.5 flex-shrink-0" style={{ color: selectedProblem.color }}>•</span>
-                        {s}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* How to Identify */}
-                <div className="bg-gray-50 rounded-xl p-3">
-                  <p className="font-hindi font-bold text-foreground text-sm mb-1">👁️ कैसे पहचानें?</p>
-                  <p className="text-sm font-hindi text-gray-700 leading-relaxed">{selectedProblem.howToIdentify}</p>
-                </div>
-
-                {/* Possible Causes */}
-                <div>
-                  <p className="font-hindi font-bold text-foreground text-sm uppercase tracking-wide mb-2">⚡ संभावित कारण</p>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedProblem.causes.map((c, i) => (
-                      <span key={i} className="text-xs font-hindi px-3 py-1.5 rounded-full border font-medium"
-                        style={{ borderColor: `${selectedProblem.color}50`, color: selectedProblem.color, background: `${selectedProblem.color}10` }}>
-                        {c}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Expected Loss */}
-                <div className="flex items-center gap-3 bg-red-50 border border-red-100 rounded-xl p-3">
-                  <span className="text-2xl">📉</span>
+                {selectedProblem.symptoms.length > 0 && (
                   <div>
-                    <p className="font-hindi font-bold text-sm text-red-700">संभावित नुकसान</p>
-                    <p className="font-hindi text-sm text-red-600">{selectedProblem.expectedLoss}</p>
+                    <p className="font-hindi font-bold text-foreground text-sm uppercase tracking-wide mb-2" style={{ color: selectedProblem.color }}>🔍 लक्षण (Symptoms)</p>
+                    <ul className="space-y-1">
+                      {selectedProblem.symptoms.map((s, i) => (
+                        <li key={i} className="flex items-start gap-2 text-sm font-hindi text-gray-700">
+                          <span className="mt-0.5 flex-shrink-0" style={{ color: selectedProblem.color }}>•</span>{s}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                </div>
-
-                {/* When Expert Advice */}
-                <div className="flex items-start gap-3 bg-blue-50 border border-blue-100 rounded-xl p-3">
-                  <span className="text-xl">💡</span>
+                )}
+                {selectedProblem.howToIdentify && (
+                  <div className="bg-gray-50 rounded-xl p-3">
+                    <p className="font-hindi font-bold text-foreground text-sm mb-1">👁️ कैसे पहचानें?</p>
+                    <p className="text-sm font-hindi text-gray-700 leading-relaxed">{selectedProblem.howToIdentify}</p>
+                  </div>
+                )}
+                {selectedProblem.causes.length > 0 && (
                   <div>
-                    <p className="font-hindi font-bold text-sm text-blue-700 mb-0.5">विशेषज्ञ सलाह कब लें?</p>
-                    <p className="font-hindi text-sm text-blue-600 leading-relaxed">{selectedProblem.expertNote}</p>
+                    <p className="font-hindi font-bold text-foreground text-sm uppercase tracking-wide mb-2">⚡ संभावित कारण</p>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedProblem.causes.map((c, i) => (
+                        <span key={i} className="text-xs font-hindi px-3 py-1.5 rounded-full border font-medium"
+                          style={{ borderColor: `${selectedProblem.color}50`, color: selectedProblem.color, background: `${selectedProblem.color}10` }}>
+                          {c}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
-
-                {/* Disclaimer */}
+                )}
+                {selectedProblem.expectedLoss && (
+                  <div className="flex items-center gap-3 bg-red-50 border border-red-100 rounded-xl p-3">
+                    <span className="text-2xl">📉</span>
+                    <div>
+                      <p className="font-hindi font-bold text-sm text-red-700">संभावित नुकसान</p>
+                      <p className="font-hindi text-sm text-red-600">{selectedProblem.expectedLoss}</p>
+                    </div>
+                  </div>
+                )}
+                {selectedProblem.expertNote && (
+                  <div className="flex items-start gap-3 bg-blue-50 border border-blue-100 rounded-xl p-3">
+                    <span className="text-xl">💡</span>
+                    <div>
+                      <p className="font-hindi font-bold text-sm text-blue-700 mb-0.5">विशेषज्ञ सलाह कब लें?</p>
+                      <p className="font-hindi text-sm text-blue-600 leading-relaxed">{selectedProblem.expertNote}</p>
+                    </div>
+                  </div>
+                )}
                 <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
                   <p className="font-hindi text-yellow-800 text-sm leading-relaxed font-medium">
                     ⚠ हर खेत अलग होता है। गलत दवाई या गलत मात्रा से फसल को नुकसान हो सकता है।
                   </p>
                 </div>
-
-                {/* CTA */}
                 <button
                   onClick={() => setEnquiryProblem(selectedProblem.nameHi)}
                   className="w-full py-4 text-white font-hindi font-black text-base rounded-2xl flex items-center justify-center gap-2 transition-all hover:scale-[1.02] shadow-lg"
                   style={{ background: `linear-gradient(135deg, ${selectedProblem.color}, ${selectedProblem.color}cc)` }}>
                   ✅ व्यक्तिगत सलाह पाएं — निःशुल्क Enquiry भेजें
                 </button>
-
-                {/* Store Products Note */}
                 <div className="flex items-center gap-3 rounded-xl border p-3" style={{ borderColor: `${selectedProblem.color}30`, background: `${selectedProblem.color}05` }}>
                   <span className="text-xl">🏪</span>
                   <div>
@@ -944,12 +948,39 @@ function KisanInfoCenterSection() {
           )}
         </AnimatePresence>
 
-        {/* CTA at bottom */}
+        {/* Problem Cards Grid — selected card floats to first position */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4 max-w-5xl mx-auto">
+          {orderedProblems.map((p, i) => (
+            <motion.button key={p.id}
+              onClick={() => handleSelect(p.id)}
+              layout
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: i * 0.03, duration: 0.3 }}
+              whileHover={hw({ scale: 1.04 })} whileTap={{ scale: 0.96 }}
+              className={`group relative rounded-2xl p-4 text-center border-2 transition-all cursor-pointer ${
+                openId === p.id
+                  ? "shadow-xl"
+                  : "bg-white border-border hover:shadow-md btn-glow"
+              }`}
+              style={{
+                borderColor: openId === p.id ? p.color : undefined,
+                background: openId === p.id ? `${p.color}15` : undefined,
+              }}>
+              <div className="text-3xl mb-2">{p.emoji}</div>
+              <p className="font-hindi font-bold text-sm text-foreground leading-tight">{p.nameHi}</p>
+              <p className="text-[11px] text-muted-foreground mt-0.5 hidden sm:block">{p.nameEn}</p>
+              <div className="mt-2 inline-flex items-center gap-1 text-xs font-medium" style={{ color: p.color }}>
+                {openId === p.id ? "बंद करें ↑" : "जानकारी देखें ↓"}
+              </div>
+            </motion.button>
+          ))}
+        </div>
+
+        {/* Bottom CTA */}
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
           className="text-center mt-12">
-          <p className="font-hindi text-muted-foreground text-sm mb-4">
-            विशेषज्ञ सलाह चाहिए? हमसे सीधे पूछें।
-          </p>
+          <p className="font-hindi text-muted-foreground text-sm mb-4">विशेषज्ञ सलाह चाहिए? हमसे सीधे पूछें।</p>
           <button onClick={() => setEnquiryProblem("फसल की समस्या")}
             className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white font-hindi font-black rounded-2xl shadow-lg hover:bg-primary/90 transition-all hover:scale-105 text-base">
             🌾 व्यक्तिगत परामर्श पाएं — निःशुल्क
