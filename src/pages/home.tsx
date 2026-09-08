@@ -1957,7 +1957,7 @@ function SecondTickerStrip() {
 function StatsSection() {
   const stats = [
     { val: "200+", label: "किसान ग्राहक", sub: "Happy Farmers" },
-    { val: "45K+", label: "इंस्टाग्राम", sub: "Followers" },
+    { val: "50K+", label: "इंस्टाग्राम", sub: "Followers" },
     { val: "32K+", label: "फेसबुक", sub: "Followers" },
     { val: "8K+", label: "यूट्यूब", sub: "Subscribers" },
     { val: "4.9★", label: "गूगल रेटिंग", sub: "Google Rating" },
@@ -2078,7 +2078,7 @@ function ShopGallerySection() {
           <a href="https://www.instagram.com/lifeofkeshavmeena?igsh=MXc0emJjanFrbzluOQ==" target="_blank" rel="noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-white text-sm transition-all hover:scale-105 shadow-lg"
             style={{ background: "linear-gradient(135deg, #405DE6, #833AB4, #C13584, #E1306C, #FD1D1D, #F56040, #F77737, #FCAF45)" }}>
-            <FaInstagram className="w-4 h-4" /> @lifeofkeshavmeena — 45K+ Followers
+            <FaInstagram className="w-4 h-4" /> @lifeofkeshavmeena — 50K+ Followers
           </a>
         </motion.div>
       </div>
@@ -2160,7 +2160,7 @@ function OwnerSection() {
             <div className="flex flex-wrap gap-5 justify-center md:justify-start mb-7">
               {[
                 { val: "1 Year", label: "In Business" },
-                { val: "45K+", label: "Instagram" },
+                { val: "50K+", label: "Instagram" },
                 { val: "32K+", label: "Facebook" },
                 { val: "8K+", label: "YouTube" },
                 { val: "200+", label: "Farmers" },
@@ -2649,7 +2649,7 @@ function Footer() {
           <div className="flex flex-wrap gap-3 justify-center">
             <a href="https://www.instagram.com/lifeofkeshavmeena?igsh=MXc0emJjanFrbzluOQ==" target="_blank" rel="noreferrer"
               className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/10 hover:bg-secondary hover:text-foreground transition-all border border-white/10 text-sm font-medium text-white">
-              <FaInstagram className="w-4 h-4 text-pink-400" />@lifeofkeshavmeena 45K+
+              <FaInstagram className="w-4 h-4 text-pink-400" />@lifeofkeshavmeena 50K+
             </a>
             <a href={FACEBOOK_LINK} target="_blank" rel="noreferrer"
               className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/10 hover:bg-[#1877F2] transition-all border border-white/10 text-sm font-medium text-white">
